@@ -31,9 +31,16 @@ export function ProductCard({ product }: ProductCardProps) {
       <div>
         {/* Top Header with Badges */}
         <div className="p-4 pb-0 flex items-center justify-between gap-2">
-          <Badge variant="botanical" className="text-[10px] tracking-wider font-semibold">
-            {formatSubCategory(product.subCategory)}
-          </Badge>
+          <div className="flex items-center gap-1.5">
+            <Badge variant="botanical" className="text-[10px] tracking-wider font-semibold">
+              {formatSubCategory(product.subCategory)}
+            </Badge>
+            {(product.isNew || (product.category === 'cosmetics' && (product.id.startsWith('prod-1') || product.id === 'prod-20'))) && (
+              <span className="px-1.5 py-0.5 rounded bg-emerald-100 text-emerald-900 border border-emerald-300 font-mono text-[9px] font-bold tracking-tight shadow-2xs">
+                NEW LAUNCH
+              </span>
+            )}
+          </div>
           <span className="text-[11px] font-mono text-[#595C54] tracking-tight">
             {packSizeDisplay}
           </span>

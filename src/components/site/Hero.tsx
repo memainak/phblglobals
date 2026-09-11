@@ -3,8 +3,14 @@ import Link from 'next/link';
 import { ArrowRight, ShieldCheck, Award, Sparkles, CheckCircle2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { BatchSearchWidget } from '@/components/site/BatchSearchWidget';
+import { HeroNewProductsSlider } from '@/components/site/HeroNewProductsSlider';
+import { Product } from '@/types';
 
-export function Hero() {
+interface HeroProps {
+  newProducts?: Product[];
+}
+
+export function Hero({ newProducts = [] }: HeroProps) {
   return (
     <section className="relative overflow-hidden pt-12 pb-20 border-b border-[rgba(18,21,15,0.08)] bg-[#FAFAF8]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -80,16 +86,35 @@ export function Hero() {
             </div>
           </div>
 
-          {/* Right Column: Clean Clinical Photography & Lab Credibility Visual */}
+          {/* Right Column: Interactive New Launches Slider */}
           <div className="lg:col-span-5 relative">
-            <div className="relative mx-auto max-w-md lg:max-w-none rounded-lg border border-[rgba(18,21,15,0.1)] bg-white p-6 shadow-sm overflow-hidden">
-              {/* Background ambient pattern */}
-              <div className="absolute top-0 right-0 -mt-8 -mr-8 w-48 h-48 bg-[#F0F5F2] rounded-full blur-2xl pointer-events-none" />
+            {newProducts && newProducts.length > 0 ? (
+              <div className="space-y-3">
+                <HeroNewProductsSlider products={newProducts} />
 
-              {/* Central Clinical Glassware Composition */}
-              <div className="aspect-4/3 rounded-md bg-[#F7F7F4] border border-[rgba(18,21,15,0.06)] flex flex-col items-center justify-center relative p-8 text-center">
-                {/* Visual Representation of Amber Apothecary Flask & Pipette */}
-                <div className="relative flex items-center justify-center">
+                {/* Floating Quality Attribute Cards */}
+                <div className="grid grid-cols-2 gap-3">
+                  <div className="p-2.5 rounded-lg bg-white border border-[rgba(18,21,15,0.08)] shadow-2xs">
+                    <span className="text-[10px] uppercase font-mono text-[#595C54] block">
+                      Formulation Base
+                    </span>
+                    <span className="text-xs font-semibold text-[#1F4D3A]">
+                      100% Herbal Actives
+                    </span>
+                  </div>
+                  <div className="p-2.5 rounded-lg bg-white border border-[rgba(18,21,15,0.08)] shadow-2xs">
+                    <span className="text-[10px] uppercase font-mono text-[#595C54] block">
+                      Quality Standards
+                    </span>
+                    <span className="text-xs font-semibold text-[#12150F]">
+                      GMP & ISO 9001 Certified
+                    </span>
+                  </div>
+                </div>
+              </div>
+            ) : (
+              <div className="relative mx-auto max-w-md lg:max-w-none rounded-lg border border-[rgba(18,21,15,0.1)] bg-white p-6 shadow-sm overflow-hidden">
+                <div className="aspect-4/3 rounded-md bg-[#F7F7F4] border border-[rgba(18,21,15,0.06)] flex flex-col items-center justify-center relative p-8 text-center">
                   <div className="w-28 h-44 rounded-lg bg-gradient-to-b from-[#3D2614] via-[#2A180B] to-[#170C05] shadow-lg border border-amber-900/40 flex flex-col items-center justify-between p-3.5 text-white">
                     <div className="w-10 h-4 rounded-t-sm bg-neutral-300 border-b border-neutral-400" />
                     <div className="w-full text-center space-y-1 my-auto">
@@ -103,49 +128,10 @@ export function Hero() {
                         HPI / GHP GRADE
                       </span>
                     </div>
-                    <div className="w-full border-t border-white/20 pt-1 text-[7px] font-mono text-white/70 flex justify-between">
-                      <span>450 ML</span>
-                      <span>100% ENA</span>
-                    </div>
-                  </div>
-
-                  {/* Pipette & Dropper accent */}
-                  <div className="absolute -right-6 top-8 w-6 h-32 rounded-full bg-white/70 backdrop-blur-xs border border-[rgba(18,21,15,0.1)] shadow-md flex flex-col items-center py-2">
-                    <div className="w-3 h-5 rounded-full bg-[#1F4D3A]" />
-                    <div className="w-1 h-20 bg-amber-600/60 mt-1 rounded-full" />
                   </div>
                 </div>
-
-                <div className="mt-6 text-center space-y-1">
-                  <span className="text-[11px] font-mono uppercase tracking-wider text-[#1F4D3A] font-semibold">
-                    In-House Bonded Laboratory
-                  </span>
-                  <p className="font-serif text-sm font-semibold text-[#12150F]">
-                    Saratpally, Paschim Medinipur Plant
-                  </p>
-                </div>
               </div>
-
-              {/* Floating Quality Attribute Cards */}
-              <div className="grid grid-cols-2 gap-3 mt-4">
-                <div className="p-3 rounded-md bg-[#FAFAF8] border border-[rgba(18,21,15,0.08)]">
-                  <span className="text-[10px] uppercase font-mono text-[#595C54] block">
-                    Extraction Vehicle
-                  </span>
-                  <span className="text-xs font-semibold text-[#1F4D3A]">
-                    100% Extra Neutral Alcohol
-                  </span>
-                </div>
-                <div className="p-3 rounded-md bg-[#FAFAF8] border border-[rgba(18,21,15,0.08)]">
-                  <span className="text-[10px] uppercase font-mono text-[#595C54] block">
-                    Standardisation
-                  </span>
-                  <span className="text-xs font-semibold text-[#12150F]">
-                    HPTLC Fingerprinted
-                  </span>
-                </div>
-              </div>
-            </div>
+            )}
           </div>
         </div>
       </div>

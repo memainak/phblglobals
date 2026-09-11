@@ -44,6 +44,7 @@ export async function POST(req: NextRequest) {
       caution: data.caution,
       images: body.images?.length ? body.images : ['/images/products/bottle-default.webp'],
       featured: data.featured ?? false,
+      isNew: data.isNew ?? false,
       order: data.order ?? 99,
       seo: {
         title: `${data.name} | PHBL Monograph`,

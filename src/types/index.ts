@@ -25,6 +25,7 @@ export interface Product {
   caution?: string;
   images: string[];
   featured: boolean;
+  isNew?: boolean;
   order: number;
   seo: {
     title: string;

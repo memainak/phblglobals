@@ -109,6 +109,7 @@ export const productSchema = z.object({
   caution: z.string().optional(),
   images: z.array(z.string()).optional(),
   featured: z.boolean().default(false),
+  isNew: z.boolean().default(false).optional(),
   order: z.number().default(0),
   published: z.boolean().default(true),
 });

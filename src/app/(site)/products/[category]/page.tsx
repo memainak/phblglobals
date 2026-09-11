@@ -24,10 +24,10 @@ const categoryMeta: Record<
       'Classical and patent homoeopathic medicines prepared in strict accordance with the Homoeopathic Pharmacopoeia of India (HPI) using 100% pure Extra Neutral Alcohol (ENA).',
   },
   cosmetics: {
-    title: 'Therapeutic Cosmetics & Hand Care',
-    subtitle: 'Protectin Sanitizer Rub & Puro Herbal Body Oil',
+    title: 'PHBL Naturals · Cosmetics & Herbal Care Range',
+    subtitle: 'Newly Launched Botanical Skin Care, Shampoos, Hair Oils & Creams',
     description:
-      'Dermatologist-formulated herbal antiseptic and skin-nourishment preparations combining pharmacological ethanol purity with active botanicals.',
+      'Pure herbal formulations combining classical homoeopathic botanicals (Neem, Tulsi, Arnica, Calendula, Berberis, Aloe Vera) with modern dermatological standards. 100% natural extracts, sulphate-free, paraben-free, and cruelty-free.',
   },
   homoeovet: {
     title: 'Homoeo Vet Animal Health Range',
@@ -102,6 +102,37 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
             {meta.description}
           </p>
         </div>
+
+        {/* Cosmetics Highlight Banner */}
+        {validCategory === 'cosmetics' && (
+          <div className="rounded-xl bg-gradient-to-r from-[#EBF5EE] via-[#F4F9F6] to-[#FAF8F5] border border-[#1F4D3A]/20 p-5 sm:p-6 shadow-xs flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+            <div className="space-y-1.5 max-w-2xl">
+              <div className="flex items-center gap-2">
+                <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-[#1F4D3A] text-white text-[10px] font-mono font-semibold tracking-wider">
+                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                  OFFICIAL NEW LAUNCH
+                </span>
+                <span className="text-xs font-semibold text-[#1F4D3A]">
+                  8 New PHBL Naturals Formulations Available
+                </span>
+              </div>
+              <p className="text-xs text-[#595C54] leading-relaxed">
+                Formulated under the clinical supervision of <strong>Dr. Trinath</strong> at our Saratpally, Paschim Medinipur facility. Enriched with authentic mother tinctures & herbal extracts for daily skin purification, deep dandruff control, root revitalization, and dermatological protection.
+              </p>
+            </div>
+            <div className="flex flex-wrap items-center gap-2 text-xs font-mono text-[#1F4D3A] font-medium shrink-0">
+              <span className="px-2.5 py-1 rounded bg-white border border-[#1F4D3A]/20 shadow-2xs">
+                🌿 100% Herbal Actives
+              </span>
+              <span className="px-2.5 py-1 rounded bg-white border border-[#1F4D3A]/20 shadow-2xs">
+                ✨ Zero Parabens
+              </span>
+              <span className="px-2.5 py-1 rounded bg-white border border-[#1F4D3A]/20 shadow-2xs">
+                🐰 Cruelty Free
+              </span>
+            </div>
+          </div>
+        )}
 
         {/* Catalog Filter with initialCategory set */}
         <ProductCatalogFilter

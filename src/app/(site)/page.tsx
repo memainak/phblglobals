@@ -13,16 +13,21 @@ import { getSiteSettings, getProducts, getTestimonials } from '@/lib/queries';
 export const revalidate = 3600; // ISR 1 hour
 
 export default async function HomePage() {
-  const [settings, featuredProducts, testimonials] = await Promise.all([
+  const [settings, allProducts, testimonials] = await Promise.all([
     getSiteSettings(),
-    getProducts({ featuredOnly: true, limitCount: 8 }),
+    getProducts(),
     getTestimonials(),
   ]);
 
+  // Extract newly launched products (up to 8)
+  const newProducts = allProducts
+    .filter((p) => p.isNew || (p.category === 'cosmetics' && (p.id.startsWith('prod-1') || p.id === 'prod-20')))
+    .slice(0, 8);
+
   return (
     <>
-      {/* 1. Hero */}
-      <Hero />
+      {/* 1. Hero with Newly Launched Auto-Sliding Products */}
+      <Hero newProducts={newProducts} />
 
       {/* 2. Trust Stats */}
       <TrustStats stats={settings.stats} />
@@ -31,7 +36,7 @@ export default async function HomePage() {
       <AboutTeaser />
 
       {/* 4. Product Showcase */}
-      <ProductShowcase products={featuredProducts} />
+      <ProductShowcase products={allProducts} />
 
       {/* 5. Capabilities */}
       <Capabilities />

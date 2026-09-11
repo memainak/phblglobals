@@ -446,6 +446,7 @@ export const initialProducts: Product[] = [
       '/images/products/phbl-neem-tulsi-facewash.jpg',
     ],
     featured: true,
+    isNew: true,
     order: 13,
     seo: {
       title: 'Neem & Tulsi Face Wash | PHBL Naturals',
@@ -477,6 +478,7 @@ export const initialProducts: Product[] = [
       '/images/products/phbl-arnica-rosemary-hibiscus-oil.jpg',
     ],
     featured: true,
+    isNew: true,
     order: 14,
     seo: {
       title: 'Arnica with Rosemary & Hibiscus Hair Oil | PHBL Naturals',
@@ -506,7 +508,8 @@ export const initialProducts: Product[] = [
       '/images/products/phbl-activated-charcoal-facewash.webp',
       '/images/products/phbl-activated-charcoal-facewash.jpg',
     ],
-    featured: false,
+    featured: true,
+    isNew: true,
     order: 15,
     seo: {
       title: 'Activated Charcoal Facewash | PHBL Naturals',
@@ -537,6 +540,7 @@ export const initialProducts: Product[] = [
       '/images/products/phbl-aloe-vera-gel.jpg',
     ],
     featured: true,
+    isNew: true,
     order: 16,
     seo: {
       title: 'Aloe Vera Multi-Purpose Gel | PHBL Naturals',
@@ -568,6 +572,7 @@ export const initialProducts: Product[] = [
       '/images/products/phbl-all-purpose-cream.jpg',
     ],
     featured: true,
+    isNew: true,
     order: 17,
     seo: {
       title: 'All Purpose Cream with Aloe, Berberis & Calendula | PHBL Naturals',
@@ -599,6 +604,7 @@ export const initialProducts: Product[] = [
       '/images/products/phbl-glow-and-beauty-cream.jpg',
     ],
     featured: true,
+    isNew: true,
     order: 18,
     seo: {
       title: 'Glow & Beauty Cream | PHBL Naturals',
@@ -630,7 +636,8 @@ export const initialProducts: Product[] = [
       '/images/products/phbl-lemon-ginger-shampoo.webp',
       '/images/products/phbl-lemon-ginger-shampoo.jpg',
     ],
-    featured: false,
+    featured: true,
+    isNew: true,
     order: 19,
     seo: {
       title: 'Lemon Ginger Anti-Dandruff Shampoo | PHBL Naturals',
@@ -661,6 +668,7 @@ export const initialProducts: Product[] = [
       '/images/products/phbl-arnica-rosemary-shampoo.jpg',
     ],
     featured: true,
+    isNew: true,
     order: 20,
     seo: {
       title: 'Arnica & Rosemary Shampoo | PHBL Naturals',

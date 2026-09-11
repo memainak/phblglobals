@@ -21,8 +21,8 @@ export function ProductShowcase({ products }: ProductShowcaseProps) {
 
   const tabs: { id: 'all' | ProductCategory; label: string }[] = [
     { id: 'all', label: 'All Formulations' },
+    { id: 'cosmetics', label: 'PHBL Naturals Cosmetics (New Launch)' },
     { id: 'homoeopathy', label: 'Homoeopathy (Tinctures & Tonics)' },
-    { id: 'cosmetics', label: 'Cosmetics & Sanitizers' },
     { id: 'homoeovet', label: 'Homoeo Vet Care' },
   ];
 
