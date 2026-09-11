@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { ShieldCheck, Lock, Mail, AlertCircle, ArrowRight } from 'lucide-react';
+import { ShieldCheck, Lock, Mail, AlertCircle, ArrowRight, Eye, EyeOff } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { auth } from '@/lib/firebase/client';
@@ -12,6 +12,7 @@ export default function AdminLoginPage() {
   const router = useRouter();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -129,12 +130,25 @@ export default function AdminLoginPage() {
               <Lock className="w-4 h-4 text-[#595C54] absolute left-3 top-3 pointer-events-none" />
               <Input
                 required
-                type="password"
+                type={showPassword ? 'text' : 'password'}
                 placeholder="Enter authorized password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="pl-9"
+                className="pl-9 pr-10"
               />
+              <button
+                type="button"
+                onClick={() => setShowPassword((prev) => !prev)}
+                className="absolute right-3 top-2.5 p-0.5 text-[#595C54] hover:text-[#12150F] focus:outline-none cursor-pointer transition-colors"
+                title={showPassword ? 'Hide password' : 'Show password'}
+                aria-label={showPassword ? 'Hide password' : 'Show password'}
+              >
+                {showPassword ? (
+                  <EyeOff className="w-4 h-4 text-emerald-700" />
+                ) : (
+                  <Eye className="w-4 h-4 text-[#595C54]" />
+                )}
+              </button>
             </div>
           </div>
 
