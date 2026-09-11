@@ -11,36 +11,34 @@ interface TubesGatewayProps {
 }
 
 export function TubesGateway({ onEnter }: TubesGatewayProps) {
-  const [isVisible, setIsVisible] = useState(false);
-  const [hasCheckedSession, setHasCheckedSession] = useState(false);
+  // Always show first on landing page/fresh visit
+  const [isVisible, setIsVisible] = useState(true);
 
   useEffect(() => {
-    // Check if user already dismissed gateway in this browser session
     try {
       if (typeof window !== 'undefined') {
+        // Clear any old sessionStorage suppression from previous sessions
+        sessionStorage.removeItem('phbl_gateway_dismissed');
+
         const urlParams = new URLSearchParams(window.location.search);
-        if (urlParams.get('intro') === '1') {
-          setIsVisible(true);
-          setHasCheckedSession(true);
-          return;
+        if (urlParams.get('skip_intro') === '1') {
+          setIsVisible(false);
         }
       }
-      const dismissed = sessionStorage.getItem('phbl_gateway_dismissed');
-      if (!dismissed) {
-        setIsVisible(true);
-      }
-    } catch {
-      setIsVisible(true);
-    }
-    setHasCheckedSession(true);
-  }, []);
-
-  const handleEnterSite = () => {
-    try {
-      sessionStorage.setItem('phbl_gateway_dismissed', 'true');
     } catch {
       // empty
     }
+
+    // Global listener so Footer button or navigation can reopen 3D Gateway anytime
+    const handleOpenGateway = () => {
+      setIsVisible(true);
+    };
+
+    window.addEventListener('open-phbl-gateway', handleOpenGateway);
+    return () => window.removeEventListener('open-phbl-gateway', handleOpenGateway);
+  }, []);
+
+  const handleEnterSite = () => {
     setIsVisible(false);
     if (onEnter) onEnter();
   };
@@ -67,8 +65,7 @@ export function TubesGateway({ onEnter }: TubesGatewayProps) {
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [isVisible]);
 
-  // Don't render until session check completes to avoid hydration flash
-  if (!hasCheckedSession) return null;
+  // Render immediately for zero hydration flash
 
   return (
     <AnimatePresence>

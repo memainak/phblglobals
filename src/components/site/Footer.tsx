@@ -181,8 +181,8 @@ export function Footer() {
               type="button"
               onClick={() => {
                 try {
-                  sessionStorage.removeItem('phbl_gateway_dismissed');
-                  window.location.reload();
+                  window.dispatchEvent(new CustomEvent('open-phbl-gateway'));
+                  window.scrollTo({ top: 0, behavior: 'smooth' });
                 } catch {
                   // empty
                 }

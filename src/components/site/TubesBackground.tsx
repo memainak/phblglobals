@@ -41,12 +41,20 @@ export function TubesBackground({
       if (!canvasRef.current) return;
 
       try {
-        // Evaluate dynamic import at client runtime to prevent server/bundler issues with CDN URLs
+        // Evaluate dynamic import at client runtime to prevent server/bundler issues
         const loadModule = new Function('url', 'return import(url)');
-        const module = await loadModule(
-          'https://cdn.jsdelivr.net/npm/threejs-components@0.0.19/build/cursors/tubes1.min.js'
-        );
-        const TubesCursor = module.default;
+        let module;
+        try {
+          // 1. First attempt: Self-hosted local vendor bundle (zero CDN latency/blocking)
+          module = await loadModule('/vendor/tubes1.min.js');
+        } catch (localErr) {
+          console.warn('Local tubes1.min.js load failed, falling back to CDN:', localErr);
+          // 2. Fallback: jsdelivr CDN
+          module = await loadModule(
+            'https://cdn.jsdelivr.net/npm/threejs-components@0.0.19/build/cursors/tubes1.min.js'
+          );
+        }
+        const TubesCursor = module?.default || module;
 
         if (!mounted || !canvasRef.current) return;
 
