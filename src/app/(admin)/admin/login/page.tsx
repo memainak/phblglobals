@@ -5,11 +5,13 @@ import { useRouter } from 'next/navigation';
 import { ShieldCheck, Lock, Mail, AlertCircle, ArrowRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { auth } from '@/lib/firebase/client';
+import { signInWithEmailAndPassword } from 'firebase/auth';
 
 export default function AdminLoginPage() {
   const router = useRouter();
-  const [email, setEmail] = useState('admin@phblglobals.com');
-  const [password, setPassword] = useState('phbl@2024');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -19,15 +21,45 @@ export default function AdminLoginPage() {
     setLoading(true);
 
     try {
+      const cleanEmail = email.trim();
+      if (!cleanEmail || !password) {
+        throw new Error('Please enter both email and password.');
+      }
+
+      let idToken: string | null = null;
+
+      // Authenticate against Firebase Client SDK
+      try {
+        const userCredential = await signInWithEmailAndPassword(auth, cleanEmail, password);
+        idToken = await userCredential.user.getIdToken();
+      } catch (fbErr: any) {
+        // Map Firebase Auth error codes to user-friendly messages
+        const code = fbErr?.code || '';
+        if (
+          code === 'auth/invalid-credential' ||
+          code === 'auth/user-not-found' ||
+          code === 'auth/wrong-password' ||
+          code === 'auth/invalid-email'
+        ) {
+          throw new Error('Invalid authorized email or password.');
+        } else if (code === 'auth/too-many-requests') {
+          throw new Error('Access temporarily blocked due to too many failed attempts. Please try again later.');
+        } else if (code === 'auth/network-request-failed') {
+          throw new Error('Network error connecting to Firebase Authentication.');
+        }
+        // If client SDK failed due to any other error, pass credentials to server endpoint
+      }
+
+      // Establish secure server-side session
       const res = await fetch('/api/auth/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password }),
+        body: JSON.stringify(idToken ? { idToken } : { email: cleanEmail, password }),
       });
 
       const json = await res.json();
       if (!res.ok) {
-        throw new Error(json.error || 'Authentication failed');
+        throw new Error(json.error || 'Authentication failed: Not an authorized Firebase account.');
       }
 
       router.push('/admin');
@@ -53,7 +85,7 @@ export default function AdminLoginPage() {
             PHBL Staff Authentication
           </h1>
           <p className="text-xs text-[#595C54]">
-            Access to statutory batch registers, formulary monographs, and distributor onboarding dossiers.
+            Sign in with your authorized Firebase administrator credentials to manage formulations, batches, and certificates.
           </p>
         </div>
 
@@ -74,7 +106,7 @@ export default function AdminLoginPage() {
               <Input
                 required
                 type="email"
-                placeholder="admin@phblglobals.com"
+                placeholder="name@phblglobals.com"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 className="pl-9"
@@ -91,16 +123,12 @@ export default function AdminLoginPage() {
               <Input
                 required
                 type="password"
-                placeholder="••••••••"
+                placeholder="Enter authorized password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 className="pl-9"
               />
             </div>
-          </div>
-
-          <div className="p-3 rounded bg-[#FAFAF8] border border-[rgba(18,21,15,0.06)] text-[11px] text-[#595C54]">
-            <strong>Dev Credentials:</strong> <code>admin@phblglobals.com</code> / <code>phbl@2024</code>
           </div>
 
           <Button
@@ -110,15 +138,17 @@ export default function AdminLoginPage() {
             size="lg"
             className="w-full gap-2 font-medium"
           >
-            <span>{loading ? 'Authenticating...' : 'Sign In to Operations Console'}</span>
+            <span>{loading ? 'Authenticating with Firebase...' : 'Sign In to Operations Console'}</span>
             <ArrowRight className="w-4 h-4" />
           </Button>
         </form>
 
-        <div className="pt-2 text-center text-[11px] text-[#595C54] border-t border-[rgba(18,21,15,0.06)]">
-          Purusottam Homoeo Bikash Laboratory (Bonded) · Mfg Lic: HL-792 M
+        <div className="pt-2 text-center text-[11px] text-[#595C54] border-t border-[rgba(18,21,15,0.06)] flex items-center justify-center gap-1">
+          <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" />
+          <span>Firebase Authenticated · Purusottam Homoeo Bikash Laboratory</span>
         </div>
       </div>
     </div>
   );
 }
+

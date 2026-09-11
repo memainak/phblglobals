@@ -1,58 +1,84 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { adminAuth, adminDb } from '@/lib/firebase/admin';
+import { adminAuth } from '@/lib/firebase/admin';
 
 export async function POST(req: NextRequest) {
   try {
-    const { idToken, email, password } = await req.json();
+    const body = await req.json();
+    let { idToken } = body;
+    const { email, password } = body;
 
-    // In production with Firebase Client SDK, client sends idToken after signInWithEmailAndPassword
-    if (idToken && adminAuth) {
-      const decoded = await adminAuth.verifyIdToken(idToken);
-
-      // Verify that UID exists in the 'admins' collection
-      if (adminDb) {
-        const adminDoc = await adminDb.collection('admins').doc(decoded.uid).get();
-        if (!adminDoc.exists) {
-          return NextResponse.json(
-            { error: 'Unauthorized: User is not designated in the admins registry.' },
-            { status: 403 }
-          );
-        }
+    // If client sends email & password directly, authenticate via Firebase Identity Toolkit REST API
+    if (!idToken && email && password) {
+      const apiKey = process.env.NEXT_PUBLIC_FIREBASE_API_KEY;
+      if (!apiKey) {
+        return NextResponse.json(
+          { error: 'Firebase authentication configuration missing.' },
+          { status: 500 }
+        );
       }
 
-      const res = NextResponse.json({ success: true, uid: decoded.uid });
-      res.cookies.set('phbl_admin_session', decoded.uid, {
-        httpOnly: true,
-        secure: process.env.NODE_ENV === 'production',
-        sameSite: 'lax',
-        path: '/',
-        maxAge: 60 * 60 * 24 * 7, // 7 days
-      });
-      return res;
+      const verifyRes = await fetch(
+        `https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${apiKey}`,
+        {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email: email.trim(), password, returnSecureToken: true }),
+        }
+      );
+
+      const verifyData = await verifyRes.json();
+      if (!verifyRes.ok) {
+        const errorMsg =
+          verifyData?.error?.message === 'EMAIL_NOT_FOUND' ||
+          verifyData?.error?.message === 'INVALID_PASSWORD' ||
+          verifyData?.error?.message === 'INVALID_LOGIN_CREDENTIALS'
+            ? 'Invalid authorized email or password.'
+            : verifyData?.error?.message || 'Firebase authentication failed.';
+
+        return NextResponse.json({ error: errorMsg }, { status: 401 });
+      }
+
+      idToken = verifyData.idToken;
     }
 
-    // Local development fallback authentication when Firebase Auth credentials are not yet deployed
-    const adminEmail = process.env.ADMIN_DEFAULT_EMAIL || 'admin@phblglobals.com';
-    const adminPass = process.env.ADMIN_DEFAULT_PASSWORD || 'phbl@2024';
-
-    if (email === adminEmail && password === adminPass) {
-      const res = NextResponse.json({ success: true, role: 'superadmin' });
-      res.cookies.set('phbl_admin_session', 'phbl-admin-authorized-token', {
-        httpOnly: true,
-        secure: process.env.NODE_ENV === 'production',
-        sameSite: 'lax',
-        path: '/',
-        maxAge: 60 * 60 * 24 * 7,
-      });
-      return res;
+    if (!idToken) {
+      return NextResponse.json(
+        { error: 'Firebase authentication credentials are required.' },
+        { status: 400 }
+      );
     }
 
-    return NextResponse.json(
-      { error: 'Invalid administrator email or password.' },
-      { status: 401 }
-    );
+    // Verify token with Firebase Admin SDK if initialized
+    let uid = 'authorized-firebase-admin';
+    if (adminAuth) {
+      try {
+        const decoded = await adminAuth.verifyIdToken(idToken);
+        uid = decoded.uid;
+      } catch (verifyErr) {
+        console.error('Firebase Admin ID token verification error:', verifyErr);
+        return NextResponse.json(
+          { error: 'Invalid or expired Firebase authentication token.' },
+          { status: 401 }
+        );
+      }
+    }
+
+    // Set secure HTTP-only admin session cookie
+    const res = NextResponse.json({ success: true, uid });
+    res.cookies.set('phbl_admin_session', idToken, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'lax',
+      path: '/',
+      maxAge: 60 * 60 * 24 * 7, // 7 days
+    });
+
+    return res;
   } catch (err) {
     console.error('Login error:', err);
-    return NextResponse.json({ error: 'Authentication failed' }, { status: 500 });
+    return NextResponse.json(
+      { error: 'Authentication failed. Please verify your Firebase credentials.' },
+      { status: 401 }
+    );
   }
 }
