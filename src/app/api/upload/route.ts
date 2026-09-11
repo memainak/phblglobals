@@ -1,3 +1,5 @@
+import fs from 'fs';
+import path from 'path';
 import { NextRequest, NextResponse } from 'next/server';
 import { adminStorage } from '@/lib/firebase/admin';
 
@@ -16,11 +18,12 @@ export async function POST(req: NextRequest) {
       'image/jpeg',
       'image/png',
       'image/webp',
+      'image/svg+xml',
       'application/pdf',
     ];
     if (!allowedTypes.includes(file.type)) {
       return NextResponse.json(
-        { error: 'Invalid file type. Only JPEG, PNG, WebP, and PDF allowed.' },
+        { error: 'Invalid file type. Only JPEG, PNG, WebP, SVG, and PDF allowed.' },
         { status: 400 }
       );
     }
@@ -37,36 +40,54 @@ export async function POST(req: NextRequest) {
     const sanitizedName = file.name.replace(/[^a-zA-Z0-9.-]/g, '_');
     const filename = `${folder}/${Date.now()}_${sanitizedName}`;
 
+    // 1. Try Firebase Storage if bucket is configured
     if (adminStorage) {
-      const bucket = adminStorage.bucket();
-      const storageFile = bucket.file(filename);
+      try {
+        const bucket = adminStorage.bucket();
+        const storageFile = bucket.file(filename);
 
-      await storageFile.save(buffer, {
-        contentType: file.type,
-        metadata: {
-          cacheControl: 'public, max-age=31536000',
-        },
-      });
+        await storageFile.save(buffer, {
+          contentType: file.type,
+          metadata: {
+            cacheControl: 'public, max-age=31536000',
+          },
+        });
 
-      await storageFile.makePublic().catch(() => {});
-      const publicUrl = `https://storage.googleapis.com/${bucket.name}/${filename}`;
+        await storageFile.makePublic().catch(() => {});
+        const publicUrl = `https://storage.googleapis.com/${bucket.name}/${filename}`;
 
-      return NextResponse.json({
-        success: true,
-        url: publicUrl,
-        filename,
-        size: file.size,
-      });
+        return NextResponse.json({
+          success: true,
+          url: publicUrl,
+          filename,
+          size: file.size,
+        });
+      } catch (storageErr) {
+        console.warn('Firebase Storage upload failed, writing to public directory:', storageErr);
+      }
     }
 
-    // Fallback response for local development when Firebase Storage credentials are not supplied
-    return NextResponse.json({
-      success: true,
-      url: `/mock-storage/${filename}`,
-      filename,
-      size: file.size,
-      note: 'Stored via mock handler. Connect Firebase service account in production.',
-    });
+    // 2. Local public storage fallback (Instant, zero-config image serving)
+    try {
+      const targetDir = path.join(process.cwd(), 'public', folder);
+      if (!fs.existsSync(targetDir)) {
+        fs.mkdirSync(targetDir, { recursive: true });
+      }
+      const diskFilename = `${Date.now()}_${sanitizedName}`;
+      const filePath = path.join(targetDir, diskFilename);
+      fs.writeFileSync(filePath, buffer);
+
+      const localUrl = `/${folder}/${diskFilename}`;
+      return NextResponse.json({
+        success: true,
+        url: localUrl,
+        filename: `${folder}/${diskFilename}`,
+        size: file.size,
+      });
+    } catch (fsErr) {
+      console.error('File system write error:', fsErr);
+      return NextResponse.json({ error: 'Failed to write file to disk' }, { status: 500 });
+    }
   } catch (err) {
     console.error('Upload handler error:', err);
     return NextResponse.json(

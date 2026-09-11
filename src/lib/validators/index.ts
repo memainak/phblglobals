@@ -107,6 +107,7 @@ export const productSchema = z.object({
   ).min(1, 'At least one pack size required'),
   storage: z.string().min(2, 'Storage instruction required'),
   caution: z.string().optional(),
+  images: z.array(z.string()).optional(),
   featured: z.boolean().default(false),
   order: z.number().default(0),
   published: z.boolean().default(true),

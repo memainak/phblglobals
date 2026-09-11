@@ -1,10 +1,12 @@
 import React from 'react';
 import type { Metadata } from 'next';
 import Link from 'next/link';
+import Image from 'next/image';
 import { notFound } from 'next/navigation';
 import { getProducts, getProductBySlug } from '@/lib/queries';
 import { ProductCard } from '@/components/site/ProductCard';
 import { ProductEnquiryModal } from '@/components/site/ProductEnquiryModal';
+import { ProductGallery } from '@/components/site/ProductGallery';
 import { Badge } from '@/components/ui/badge';
 import {
   ArrowLeft,
@@ -86,32 +88,11 @@ export default async function ProductDetailPage({ params }: ProductDetailProps) 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-start">
           {/* Product Packshot Visual (Clean Clinical Presentation) */}
           <div className="lg:col-span-5 bg-white p-8 rounded-lg border border-[rgba(18,21,15,0.08)] flex flex-col items-center justify-center space-y-6">
-            <div className="w-full aspect-square rounded-md bg-[#F7F7F4] border border-[rgba(18,21,15,0.06)] flex flex-col items-center justify-center relative p-8">
-              {/* Amber bottle representation */}
-              <div className="w-28 h-48 rounded-lg bg-gradient-to-b from-[#3D2614] via-[#2A180B] to-[#170C05] shadow-lg border border-amber-900/40 flex flex-col items-center justify-between p-3.5 text-white">
-                <div className="w-10 h-4 rounded-t-sm bg-neutral-300" />
-                <div className="w-full text-center space-y-1 my-auto">
-                  <span className="text-[9px] font-mono tracking-widest text-[#E3B83F] font-bold block">
-                    PHBL BONDED
-                  </span>
-                  <p className="font-serif text-xs font-bold leading-tight">
-                    {product.name}
-                  </p>
-                  <span className="text-[8px] font-mono text-emerald-400 block">
-                    {product.subCategory.toUpperCase()}
-                  </span>
-                </div>
-                <div className="w-full border-t border-white/20 pt-1 text-[7px] font-mono text-white/70 flex justify-between">
-                  <span>HL-792 M</span>
-                  <span>ENA BASE</span>
-                </div>
-              </div>
-
-              <div className="absolute bottom-3 left-3 flex items-center gap-1.5 px-2 py-1 rounded bg-white/90 backdrop-blur-xs text-[10px] font-mono text-[#1F4D3A] border border-[#1F4D3A]/20">
-                <ShieldCheck className="w-3.5 h-3.5 text-[#1F4D3A]" />
-                <span>Bonded Laboratory</span>
-              </div>
-            </div>
+            <ProductGallery
+              images={product.images}
+              name={product.name}
+              subCategory={product.subCategory}
+            />
 
             {/* Pack sizes badge strip */}
             <div className="w-full pt-2 flex items-center justify-between text-xs text-[#595C54]">

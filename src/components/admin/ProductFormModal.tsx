@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { Product, ProductCategory } from '@/types';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Plus, X, Edit2, AlertCircle } from 'lucide-react';
+import { Plus, X, Edit2, AlertCircle, Upload, Trash2, Image as ImageIcon, Star, Loader2 } from 'lucide-react';
 
 interface ProductFormModalProps {
   product?: Product | null;
@@ -16,6 +16,9 @@ export function ProductFormModal({ product, onSuccess, trigger }: ProductFormMod
   const [open, setOpen] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [newImageUrl, setNewImageUrl] = useState('');
+  const [uploadingImage, setUploadingImage] = useState(false);
+  const [uploadError, setUploadError] = useState<string | null>(null);
 
   const isEdit = Boolean(product);
 
@@ -31,6 +34,7 @@ export function ProductFormModal({ product, onSuccess, trigger }: ProductFormMod
     packSizesText: '30 ml, 100 ml, 450 ml',
     storage: 'Store in a cool and dry place protected from direct sunlight.',
     caution: 'To be sold by retail on the prescription of a Registered Homoeopathic Medical Practitioner only.',
+    images: [] as string[],
     featured: false,
     order: 10,
     published: true,
@@ -50,6 +54,7 @@ export function ProductFormModal({ product, onSuccess, trigger }: ProductFormMod
         packSizesText: product.packSizes?.map((p) => p.size).join(', ') || '30 ml, 100 ml',
         storage: product.storage || '',
         caution: product.caution || '',
+        images: product.images || [],
         featured: Boolean(product.featured),
         order: product.order ?? 10,
         published: product.published !== false,
@@ -67,11 +72,14 @@ export function ProductFormModal({ product, onSuccess, trigger }: ProductFormMod
         packSizesText: '30 ml, 100 ml, 450 ml',
         storage: 'Store in a cool and dry place protected from direct sunlight.',
         caution: 'To be sold by retail on the prescription of a Registered Homoeopathic Medical Practitioner only.',
+        images: [],
         featured: false,
         order: 10,
         published: true,
       });
     }
+    setNewImageUrl('');
+    setUploadError(null);
   }, [product, open]);
 
   // Auto-generate slug from name if not manually edited
@@ -83,6 +91,67 @@ export function ProductFormModal({ product, onSuccess, trigger }: ProductFormMod
     } else {
       setFormData((prev) => ({ ...prev, name }));
     }
+  };
+
+  const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    setUploadingImage(true);
+    setUploadError(null);
+
+    try {
+      const data = new FormData();
+      data.append('file', file);
+
+      const res = await fetch('/api/upload?folder=products', {
+        method: 'POST',
+        body: data,
+      });
+
+      const json = await res.json();
+      if (!res.ok || !json.url) {
+        throw new Error(json.error || 'Failed to upload image');
+      }
+
+      setFormData((prev) => ({
+        ...prev,
+        images: [...prev.images, json.url],
+      }));
+    } catch (err: unknown) {
+      setUploadError(err instanceof Error ? err.message : 'Upload failed');
+    } finally {
+      setUploadingImage(false);
+      e.target.value = '';
+    }
+  };
+
+  const handleAddImageUrl = () => {
+    const trimmed = newImageUrl.trim();
+    if (!trimmed) return;
+    setFormData((prev) => ({
+      ...prev,
+      images: [...prev.images, trimmed],
+    }));
+    setNewImageUrl('');
+  };
+
+  const handleRemoveImage = (indexToRemove: number) => {
+    setFormData((prev) => ({
+      ...prev,
+      images: prev.images.filter((_, idx) => idx !== indexToRemove),
+    }));
+  };
+
+  const handleSetPrimary = (indexToPromote: number) => {
+    setFormData((prev) => {
+      const copy = [...prev.images];
+      const [promoted] = copy.splice(indexToPromote, 1);
+      return {
+        ...prev,
+        images: [promoted, ...copy],
+      };
+    });
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -124,6 +193,7 @@ export function ProductFormModal({ product, onSuccess, trigger }: ProductFormMod
         packSizes: packSizes.length ? packSizes : [{ size: '30 ml' }],
         storage: formData.storage.trim(),
         caution: formData.caution.trim(),
+        images: formData.images,
         featured: formData.featured,
         order: Number(formData.order),
         published: formData.published,
@@ -272,6 +342,132 @@ export function ProductFormModal({ product, onSuccess, trigger }: ProductFormMod
                   onChange={(e) => setFormData({ ...formData, shortDescription: e.target.value })}
                   placeholder="Primary therapeutic description adhering to HPI..."
                 />
+              </div>
+
+              {/* Product Packshot Images Management */}
+              <div className="space-y-3 p-4 bg-[#F7F7F5] rounded-md border border-[rgba(18,21,15,0.08)]">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1">
+                  <div className="flex items-center gap-2">
+                    <ImageIcon className="w-4 h-4 text-[#1F4D3A]" />
+                    <span className="font-semibold text-[#12150F]">Product Packshot Images</span>
+                    <span className="text-[10px] text-[#595C54]">({formData.images.length} attached)</span>
+                  </div>
+                  <span className="text-[10px] text-[#595C54]">
+                    The first image is the primary packshot shown on cards & monograph.
+                  </span>
+                </div>
+
+                {uploadError && (
+                  <p className="text-rose-600 text-[11px] bg-rose-50 p-2 rounded border border-rose-200">
+                    {uploadError}
+                  </p>
+                )}
+
+                {/* Upload & Add URL controls */}
+                <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2">
+                  <label className="flex items-center justify-center gap-1.5 px-3 py-1.5 bg-white border border-neutral-300 rounded text-xs font-medium text-[#12150F] hover:bg-neutral-50 cursor-pointer transition-colors shrink-0 shadow-xs">
+                    {uploadingImage ? (
+                      <Loader2 className="w-3.5 h-3.5 animate-spin text-[#1F4D3A]" />
+                    ) : (
+                      <Upload className="w-3.5 h-3.5 text-[#1F4D3A]" />
+                    )}
+                    <span>{uploadingImage ? 'Uploading...' : 'Upload Image'}</span>
+                    <input
+                      type="file"
+                      accept="image/*"
+                      className="hidden"
+                      onChange={handleFileUpload}
+                      disabled={uploadingImage}
+                    />
+                  </label>
+
+                  <div className="flex items-center gap-1.5 flex-1">
+                    <Input
+                      placeholder="Or paste image URL (e.g. /images/products/arnica-q.webp)"
+                      value={newImageUrl}
+                      onChange={(e) => setNewImageUrl(e.target.value)}
+                      onKeyDown={(e) => {
+                        if (e.key === 'Enter') {
+                          e.preventDefault();
+                          handleAddImageUrl();
+                        }
+                      }}
+                      className="h-8 text-xs bg-white flex-1"
+                    />
+                    <Button
+                      type="button"
+                      variant="outline"
+                      size="sm"
+                      onClick={handleAddImageUrl}
+                      disabled={!newImageUrl.trim()}
+                      className="h-8 text-xs shrink-0"
+                    >
+                      Add URL
+                    </Button>
+                  </div>
+                </div>
+
+                {/* Gallery Thumbnails List */}
+                {formData.images.length > 0 ? (
+                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 pt-1">
+                    {formData.images.map((imgUrl, idx) => (
+                      <div
+                        key={idx}
+                        className={`relative group bg-white rounded border p-2 flex flex-col items-center justify-between gap-1.5 text-center transition-all ${
+                          idx === 0
+                            ? 'border-[#1F4D3A] ring-1 ring-[#1F4D3A]/30 shadow-xs'
+                            : 'border-neutral-200 hover:border-neutral-300'
+                        }`}
+                      >
+                        <div className="relative w-full aspect-square bg-[#FAFAFA] rounded flex items-center justify-center overflow-hidden">
+                          {/* eslint-disable-next-line @next/next/no-img-element */}
+                          <img
+                            src={imgUrl}
+                            alt={`Packshot ${idx + 1}`}
+                            className="max-h-full max-w-full object-contain p-1"
+                          />
+                          {idx === 0 && (
+                            <span className="absolute top-1 left-1 bg-[#1F4D3A] text-white text-[9px] font-mono px-1.5 py-0.5 rounded shadow-xs font-semibold">
+                              Primary
+                            </span>
+                          )}
+                        </div>
+
+                        <p className="text-[10px] font-mono text-neutral-500 truncate w-full text-center" title={imgUrl}>
+                          {imgUrl.split('/').pop() || imgUrl}
+                        </p>
+
+                        <div className="flex items-center justify-between w-full pt-1 border-t border-neutral-100 gap-1">
+                          {idx > 0 ? (
+                            <button
+                              type="button"
+                              onClick={() => handleSetPrimary(idx)}
+                              title="Make primary image"
+                              className="text-[10px] text-[#1F4D3A] hover:underline flex items-center gap-0.5"
+                            >
+                              <Star className="w-3 h-3 text-[#1F4D3A]" />
+                              <span>Set Primary</span>
+                            </button>
+                          ) : (
+                            <span className="text-[10px] text-[#1F4D3A] font-semibold">Main Cover</span>
+                          )}
+                          <button
+                            type="button"
+                            onClick={() => handleRemoveImage(idx)}
+                            title="Delete image"
+                            className="p-1 text-rose-500 hover:text-rose-700 hover:bg-rose-50 rounded transition-colors ml-auto"
+                          >
+                            <Trash2 className="w-3.5 h-3.5" />
+                          </button>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                ) : (
+                  <p className="text-[11px] text-neutral-400 italic py-2 text-center bg-white rounded border border-dashed border-neutral-200">
+                    No custom images attached yet. You can upload an image or paste a URL above.
+                  </p>
+                )}
               </div>
 
               <div className="space-y-1">
