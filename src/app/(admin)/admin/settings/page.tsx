@@ -1,6 +1,7 @@
 import React from 'react';
 import type { Metadata } from 'next';
 import { getSiteSettings } from '@/lib/queries';
+import { initialSiteSettings } from '@/lib/data/initialData';
 import { SettingsForm } from '@/components/admin/SettingsForm';
 
 export const metadata: Metadata = {
@@ -10,7 +11,7 @@ export const metadata: Metadata = {
 export const dynamic = 'force-dynamic';
 
 export default async function AdminSettingsPage() {
-  const settings = await getSiteSettings();
+  const settings = await getSiteSettings().catch(() => initialSiteSettings);
 
   return (
     <div className="space-y-8">

@@ -11,7 +11,8 @@ export const metadata: Metadata = {
 export const dynamic = 'force-dynamic';
 
 export default async function AdminBatchesPage() {
-  const { batches } = await getBatches({ page: 1, pageSize: 200 });
+  const batchRes = await getBatches({ page: 1, pageSize: 200 }).catch(() => ({ batches: [], total: 0 }));
+  const batches = batchRes.batches || [];
 
   return (
     <div className="space-y-8">

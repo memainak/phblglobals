@@ -27,13 +27,25 @@ export const metadata: Metadata = {
 export const dynamic = 'force-dynamic';
 
 export default async function AdminDashboardPage() {
-  const [{ batches }, products, enquiries, distributorEnquiries] =
-    await Promise.all([
-      getBatches({ page: 1, pageSize: 100 }),
-      getProducts(),
-      getEnquiriesList(),
-      getDistributorEnquiriesList(),
+  let batches: any[] = [];
+  let products: any[] = [];
+  let enquiries: any[] = [];
+  let distributorEnquiries: any[] = [];
+
+  try {
+    const res = await Promise.all([
+      getBatches({ page: 1, pageSize: 100 }).catch(() => ({ batches: [], total: 0 })),
+      getProducts().catch(() => []),
+      getEnquiriesList().catch(() => []),
+      getDistributorEnquiriesList().catch(() => []),
     ]);
+    batches = res[0]?.batches || [];
+    products = res[1] || [];
+    enquiries = res[2] || [];
+    distributorEnquiries = res[3] || [];
+  } catch (loadErr) {
+    console.warn('Dashboard data loading fallback:', loadErr);
+  }
 
   // Compute batches expiring in 90 days
   const expiringBatches = batches.filter((b) => {

@@ -11,8 +11,8 @@ export const dynamic = 'force-dynamic';
 
 export default async function AdminEnquiriesPage() {
   const [enquiries, distributorEnquiries] = await Promise.all([
-    getEnquiriesList(),
-    getDistributorEnquiriesList(),
+    getEnquiriesList().catch(() => []),
+    getDistributorEnquiriesList().catch(() => []),
   ]);
 
   return (

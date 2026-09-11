@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 export const dynamic = 'force-dynamic';
 
 export default async function AdminProductsPage() {
-  const products = await getProducts();
+  const products = await getProducts().catch(() => []);
 
   return (
     <div className="space-y-8">
