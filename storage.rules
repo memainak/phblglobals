@@ -1,0 +1,22 @@
+rules_version = '2';
+service firebase.storage {
+  match /b/{bucket}/o {
+    // Public read on published assets
+    match /products/{allPaths=**} {
+      allow read: if true;
+      allow write: if false; // All writes go via server Admin SDK
+    }
+    match /gallery/{allPaths=**} {
+      allow read: if true;
+      allow write: if false;
+    }
+    match /certificates/{allPaths=**} {
+      allow read: if true;
+      allow write: if false;
+    }
+    match /downloads/{allPaths=**} {
+      allow read: if true;
+      allow write: if false;
+    }
+  }
+}

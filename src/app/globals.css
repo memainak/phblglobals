@@ -1,0 +1,97 @@
+@import "tailwindcss";
+
+:root {
+  --background: #FAFAF8;
+  --foreground: #12150F;
+  --surface: #FFFFFF;
+  --surface-subtle: #F5F5F2;
+  --muted: #595C54;
+  --botanical: #1F4D3A;
+  --botanical-hover: #16382A;
+  --botanical-light: #F0F5F2;
+  --gold: #C9A227;
+  --gold-light: #FDFBF3;
+  --border-hairline: rgba(18, 21, 15, 0.08);
+  --border-hairline-strong: rgba(18, 21, 15, 0.16);
+  --border-focus: rgba(31, 77, 58, 0.4);
+  --radius-sm: 4px;
+  --radius-md: 6px;
+  --radius-lg: 8px;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-surface: var(--surface);
+  --color-surface-subtle: var(--surface-subtle);
+  --color-muted: var(--muted);
+  --color-botanical: var(--botanical);
+  --color-botanical-hover: var(--botanical-hover);
+  --color-botanical-light: var(--botanical-light);
+  --color-gold: var(--gold);
+  --color-gold-light: var(--gold-light);
+  --color-border-hairline: var(--border-hairline);
+  --font-serif: var(--font-source-serif), Georgia, Cambria, serif;
+  --font-sans: var(--font-inter), system-ui, -apple-system, sans-serif;
+}
+
+body {
+  background-color: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans);
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1, h2, h3, h4, .font-serif {
+  font-family: var(--font-serif);
+  letter-spacing: -0.015em;
+}
+
+/* Regulatory Card Style */
+.card-phbl {
+  background-color: var(--surface);
+  border: 1px solid var(--border-hairline);
+  border-radius: var(--radius-md);
+  transition: border-color 200ms ease, transform 200ms ease;
+}
+
+.card-phbl:hover {
+  border-color: var(--border-hairline-strong);
+}
+
+/* Hairline rule */
+.hairline-b {
+  border-bottom: 1px solid var(--border-hairline);
+}
+.hairline-t {
+  border-top: 1px solid var(--border-hairline);
+}
+.hairline-l {
+  border-left: 1px solid var(--border-hairline);
+}
+.hairline-r {
+  border-right: 1px solid var(--border-hairline);
+}
+.hairline-all {
+  border: 1px solid var(--border-hairline);
+}
+
+/* Print layout optimizations for regulatory batch verification */
+@media print {
+  body {
+    background: #ffffff !important;
+    color: #000000 !important;
+    font-size: 11pt;
+  }
+  .no-print {
+    display: none !important;
+  }
+  .print-only {
+    display: block !important;
+  }
+  .page-break {
+    page-break-inside: avoid;
+  }
+}
