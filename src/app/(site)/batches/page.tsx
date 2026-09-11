@@ -7,7 +7,7 @@ import { ShieldCheck, FileCheck, QrCode } from 'lucide-react';
 export const metadata: Metadata = {
   title: 'Public Batch Traceability Portal | PHBL Regulatory Records',
   description:
-    'Search and verify commercial homoeopathic pharmaceutical batches manufactured by Purusottam Homoeo Bikash Laboratory (Lic HL-792 M). Regulatory compliance portal.',
+    'Search and verify commercial homoeopathic pharmaceutical batches manufactured by Purusottam Homeo Bikash Lab(Bonded) (Lic HL-792 M). Regulatory compliance portal.',
 };
 
 export const revalidate = 3600;

@@ -7,7 +7,7 @@ import { ArrowLeft, Compass, Eye, ShieldCheck, HeartPulse, Scale, Microscope, Sp
 export const metadata: Metadata = {
   title: 'Vision, Mission & Core Values | PHBL',
   description:
-    'The guiding institutional mission and ethical values shaping Purusottam Homoeo Bikash Laboratory since 2003.',
+    'The guiding institutional mission and ethical values shaping Purusottam Homeo Bikash Lab(Bonded) since 2003.',
 };
 
 export const revalidate = 3600;
@@ -183,7 +183,7 @@ export default function VisionMissionPage() {
                 Dr. Tarak Prasad Chatterjee
               </div>
               <div className="text-xs text-[#595C54]">
-                Founder & Chairman · Purusottam Homoeo Bikash Laboratory (Bonded)
+                Founder & Chairman · Purusottam Homeo Bikash Lab(Bonded)
               </div>
             </div>
 

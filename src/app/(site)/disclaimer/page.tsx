@@ -74,7 +74,7 @@ export default function DisclaimerPage() {
           </section>
 
           <div className="p-4 rounded-md bg-[#FAFAF8] border border-[rgba(18,21,15,0.08)] font-mono text-xs text-[#12150F]">
-            Purusottam Homoeo Bikash Laboratory (Bonded) · Drug Mfg Lic: HL-792 M
+            Purusottam Homeo Bikash Lab(Bonded) · Drug Mfg Lic: HL-792 M
           </div>
         </div>
       </div>

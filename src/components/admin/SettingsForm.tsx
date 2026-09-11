@@ -18,7 +18,7 @@ export function SettingsForm({ initialSettings }: SettingsFormProps) {
   const [error, setError] = useState<string | null>(null);
 
   const [formData, setFormData] = useState({
-    name: initialSettings.name || 'Purusottam Homoeo Bikash Laboratory (Bonded)',
+    name: initialSettings.name || 'Purusottam Homeo Bikash Lab(Bonded)',
     shortName: initialSettings.shortName || 'PHBL',
     tagline: initialSettings.tagline || 'Every physician should prepare his own medicine',
     foundedYear: initialSettings.foundedYear || 2003,

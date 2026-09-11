@@ -104,7 +104,7 @@ export function TubesGateway({ onEnter }: TubesGatewayProps) {
                       PHBL (BONDED) · ESTD. 2003
                     </span>
                     <span className="text-xs text-white/80 font-medium">
-                      Purusottam Homoeo Bikash Laboratory
+                      Purusottam Homeo Bikash Lab(Bonded)
                     </span>
                   </div>
                 </div>
@@ -130,8 +130,8 @@ export function TubesGateway({ onEnter }: TubesGatewayProps) {
 
                   <h1 className="text-4xl sm:text-6xl md:text-7xl font-serif font-bold uppercase tracking-tight text-white drop-shadow-[0_4px_25px_rgba(0,0,0,0.85)] select-none">
                     Purusottam
-                    <span className="block text-emerald-400 text-3xl sm:text-5xl md:text-6xl font-sans font-light tracking-wide mt-1">
-                      Laboratory
+                    <span className="block text-emerald-400 text-2xl sm:text-4xl md:text-5xl font-sans font-light tracking-wide mt-1">
+                      Homeo Bikash Lab(Bonded)
                     </span>
                   </h1>
 

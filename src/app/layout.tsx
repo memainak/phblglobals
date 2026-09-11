@@ -18,8 +18,8 @@ const inter = Inter({
 
 export const metadata: Metadata = {
   title: {
-    template: '%s | PHBL — Purusottam Homoeo Bikash Laboratory',
-    default: 'PHBL | Purusottam Homoeo Bikash Laboratory (Bonded)',
+    template: '%s | Purusottam Homeo Bikash Lab(Bonded)',
+    default: 'Purusottam Homeo Bikash Lab(Bonded) | PHBL',
   },
   description:
     'Licensed Bonded Homoeopathic & Ayurvedic Pharmaceutical Manufacturer (Mfg Lic. HL-792 M) Estd. 2003. ISO 9001:2015, GMP, HACCP certified facility with public batch traceability.',

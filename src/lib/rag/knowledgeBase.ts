@@ -21,11 +21,11 @@ export interface KnowledgeChunk {
 const staticPagesKnowledge: KnowledgeChunk[] = [
   {
     id: 'page-about',
-    title: 'About Purusottam Homoeo Bikash Laboratory (Bonded)',
+    title: 'About Purusottam Homeo Bikash Lab(Bonded)',
     url: '/about',
     category: 'about',
     content:
-      'Purusottam Homoeo Bikash Laboratory (Bonded) was established in 2003 in Paschim Medinipur, West Bengal by Dr. Tarak Prasad Chatterjee. Manufacturing license HL-792 M. An ISO 9001:2015, GMP Schedule M-I, and HACCP certified homoeopathic pharmaceutical enterprise with in-house bonded excise manufacturing facilities. Philosophy: Every physician should prepare his own medicine.',
+      'Purusottam Homeo Bikash Lab(Bonded) was established in 2003 in Paschim Medinipur, West Bengal by Dr. Tarak Prasad Chatterjee. Manufacturing license HL-792 M. An ISO 9001:2015, GMP Schedule M-I, and HACCP certified homoeopathic pharmaceutical enterprise with in-house bonded excise manufacturing facilities. Philosophy: Every physician should prepare his own medicine.',
     keywords: ['about', 'phbl', 'history', 'founder', '2003', 'bonded', 'laboratory', 'paschim medinipur', 'chatterjee'],
     snippet: 'Estd. 2003 in Paschim Medinipur under Dr. Tarak Prasad Chatterjee. ISO 9001:2015 & GMP Schedule M-I bonded facility.',
     ctaText: 'Read Company Heritage →',
@@ -69,7 +69,7 @@ const staticPagesKnowledge: KnowledgeChunk[] = [
     url: '/contact',
     category: 'contact',
     content:
-      'Factory Address: Purusottam Homoeo Bikash Laboratory (Bonded), Paschim Medinipur, West Bengal - 721101. Helpline & Calls: 9800011545. WhatsApp Trade Desk: 9800011545 (+919800011545). Email: phblkn@gmail.com. Drug Manufacturing License: HL-792 M.',
+      'Factory Address: Purusottam Homeo Bikash Lab(Bonded), Paschim Medinipur, West Bengal - 721101. Helpline & Calls: 9800011545. WhatsApp Trade Desk: 9800011545 (+919800011545). Email: phblkn@gmail.com. Drug Manufacturing License: HL-792 M.',
     keywords: ['contact', 'phone', 'helpline', 'whatsapp', '9800011545', 'email', 'address', 'paschim medinipur', 'location'],
     snippet: 'Helpline: 9800011545. Official manufacturing facility in Paschim Medinipur, West Bengal.',
     ctaText: 'View Factory Coordinates & Inquire →',

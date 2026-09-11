@@ -58,7 +58,7 @@ export default async function AdminDashboardPage() {
             Administrative Operations Dashboard
           </h1>
           <p className="text-xs text-[#595C54]">
-            Purusottam Homoeo Bikash Laboratory (Bonded) · Drug Mfg Lic: HL-792 M
+            Purusottam Homeo Bikash Lab(Bonded) · Drug Mfg Lic: HL-792 M
           </p>
         </div>
 

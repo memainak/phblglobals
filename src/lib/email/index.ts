@@ -67,7 +67,7 @@ Received: ${enquiry.createdAt}
             ${enquiry.message}
           </blockquote>
           <p style="font-size: 11px; color: #777; margin-top: 20px;">
-            Purusottam Homoeo Bikash Laboratory (Bonded) — Drug Mfg Lic: HL-792 M
+            Purusottam Homeo Bikash Lab(Bonded) — Drug Mfg Lic: HL-792 M
           </p>
         </div>
       `,
@@ -78,7 +78,7 @@ Received: ${enquiry.createdAt}
       from: fromEmail,
       to: enquiry.email,
       subject: `Acknowledgement: Your enquiry to PHBL Laboratories`,
-      text: `Dear ${enquiry.name},\n\nThank you for reaching out to Purusottam Homoeo Bikash Laboratory (Bonded). We have received your ${enquiry.type} inquiry.\n\nOur technical or commercial desk will review your details and respond within 24 business hours.\n\nHelpline: 9800011545\nEmail: phblkn@gmail.com\n\nSincerely,\nPHBL Team`,
+      text: `Dear ${enquiry.name},\n\nThank you for reaching out to Purusottam Homeo Bikash Lab(Bonded). We have received your ${enquiry.type} inquiry.\n\nOur technical or commercial desk will review your details and respond within 24 business hours.\n\nHelpline: 9800011545\nEmail: phblkn@gmail.com\n\nSincerely,\nPHBL Team`,
     });
   } catch (err) {
     console.error('Error dispatching enquiry email notification:', err);
@@ -115,7 +115,7 @@ export async function sendDistributorNotification(dist: DistributorEnquiry) {
             <tr><td style="padding: 6px 0; font-weight: bold;">Years in Trade:</td><td>${dist.yearsInTrade}</td></tr>
           </table>
           <p style="font-size: 11px; color: #777; margin-top: 20px;">
-            Purusottam Homoeo Bikash Laboratory (Bonded) — Directorate of Commercial Operations
+            Purusottam Homeo Bikash Lab(Bonded) — Directorate of Commercial Operations
           </p>
         </div>
       `,

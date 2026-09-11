@@ -8,7 +8,7 @@ import { Button } from '@/components/ui/button';
 export const metadata: Metadata = {
   title: 'Company Profile & Story (Estd. 2003) | PHBL',
   description:
-    'The history, leadership, and bonded manufacturing footprint of Purusottam Homoeo Bikash Laboratory, founded by Dr. Tarak Prasad Chatterjee in Paschim Medinipur.',
+    'The history, leadership, and bonded manufacturing footprint of Purusottam Homeo Bikash Lab(Bonded), founded by Dr. Tarak Prasad Chatterjee in Paschim Medinipur.',
 };
 
 export const revalidate = 3600;
@@ -63,7 +63,7 @@ export default function AboutPage() {
             <span>Institutional Profile · Estd. 2003</span>
           </div>
           <h1 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold text-[#12150F]">
-            Purusottam Homoeo Bikash Laboratory
+            Purusottam Homeo Bikash Lab(Bonded)
           </h1>
           <p className="text-sm sm:text-base text-[#595C54] max-w-3xl leading-relaxed">
             A licensed bonded pharmaceutical manufacturing facility dedicated to standardisation, clinical integrity, and classical pharmacopoeial fidelity.

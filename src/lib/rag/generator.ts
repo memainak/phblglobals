@@ -123,7 +123,7 @@ function synthesizeGroundedAnswer(
   }
   // Case 5: Contact & Factory Coordinates
   else if (topResult.chunk.category === 'contact' || lowerQuery.includes('phone') || lowerQuery.includes('number') || lowerQuery.includes('helpline') || lowerQuery.includes('whatsapp')) {
-    answer = `### Purusottam Homoeo Bikash Laboratory (Bonded) — Coordinates\n\n` +
+    answer = `### Purusottam Homeo Bikash Lab(Bonded) — Coordinates\n\n` +
       `* **Helpline & Voice Calls**: **9800011545**\n` +
       `* **WhatsApp Trade Desk**: **+91 9800011545**\n` +
       `* **Plant Email**: **phblkn@gmail.com**\n` +
@@ -214,7 +214,7 @@ async function callGeminiApi(
     .join('\n\n');
 
   const systemInstruction =
-    `You are the official clinical & site navigator assistant for Purusottam Homoeo Bikash Laboratory (Bonded) (PHBL), established 2003 (Mfg Lic HL-792 M) in Paschim Medinipur, West Bengal.\n` +
+    `You are the official clinical & site navigator assistant for Purusottam Homeo Bikash Lab(Bonded) (PHBL), established 2003 (Mfg Lic HL-792 M) in Paschim Medinipur, West Bengal.\n` +
     `Strict compliance: Drugs & Magic Remedies Act 1954. Never claim "cures" or "miracle treatments". Use "indicated in" or "clinical indications".\n` +
     `Plant Helpline: 9800011545. WhatsApp: 9800011545. Email: phblkn@gmail.com.\n` +
     `Answer factually and concisely based strictly on the provided sources. Format with clean markdown headers and bullet points.`;

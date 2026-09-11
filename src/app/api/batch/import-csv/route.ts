@@ -36,7 +36,7 @@ export async function POST(req: NextRequest) {
           apiName: d.apiName,
           brandName: d.brandName,
           uniqueProductCode: d.uniqueProductCode,
-          manufacturerName: 'Purusottam Homoeo Bikash Laboratory (Bonded)',
+          manufacturerName: 'Purusottam Homeo Bikash Lab(Bonded)',
           manufacturerAddress: 'L/3, Saratpally, Paschim Medinipur, Pin 721101, West Bengal, India',
           batchSize: d.batchSize,
           mfgDate: d.mfgDate,

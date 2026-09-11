@@ -57,9 +57,16 @@ export default function AdminLoginPage() {
         body: JSON.stringify(idToken ? { idToken } : { email: cleanEmail, password }),
       });
 
-      const json = await res.json();
+      let json: any = {};
+      try {
+        const text = await res.text();
+        json = text ? JSON.parse(text) : {};
+      } catch {
+        json = {};
+      }
+
       if (!res.ok) {
-        throw new Error(json.error || 'Authentication failed: Not an authorized Firebase account.');
+        throw new Error(json.error || `Authentication failed (${res.status}). Please check your credentials.`);
       }
 
       router.push('/admin');
@@ -145,7 +152,7 @@ export default function AdminLoginPage() {
 
         <div className="pt-2 text-center text-[11px] text-[#595C54] border-t border-[rgba(18,21,15,0.06)] flex items-center justify-center gap-1">
           <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" />
-          <span>Firebase Authenticated · Purusottam Homoeo Bikash Laboratory</span>
+          <span>Firebase Authenticated · Purusottam Homeo Bikash Lab(Bonded)</span>
         </div>
       </div>
     </div>

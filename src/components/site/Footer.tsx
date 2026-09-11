@@ -15,7 +15,7 @@ export function Footer() {
             <Link href="/" className="inline-block bg-white px-3 py-1.5 rounded-sm border border-white/20 shadow-xs hover:opacity-95 transition-opacity">
               <Image
                 src="/images/phbl-logo.png"
-                alt="Purusottam Homoeo Bikash Laboratory (Bonded)"
+                alt="Purusottam Homeo Bikash Lab(Bonded)"
                 width={220}
                 height={38}
                 className="h-8 w-auto object-contain"
@@ -23,7 +23,7 @@ export function Footer() {
             </Link>
 
             <p className="text-sm text-neutral-400 max-w-sm leading-relaxed">
-              Purusottam Homoeo Bikash Laboratory (Bonded). Licensed manufacturer of homoeopathic, herbal, cosmetic, and veterinary pharmaceutical preparations since 2003.
+              Purusottam Homeo Bikash Lab(Bonded). Licensed manufacturer of homoeopathic, herbal, cosmetic, and veterinary pharmaceutical preparations since 2003.
             </p>
 
             <div className="pt-2 space-y-1.5 text-xs text-neutral-300 font-mono">
@@ -165,7 +165,7 @@ export function Footer() {
         {/* Bottom Bar: Copyright & Legal Links */}
         <div className="pt-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-neutral-500">
           <div>
-            © {new Date().getFullYear()} Purusottam Homoeo Bikash Laboratory (Bonded). All rights reserved.
+            © {new Date().getFullYear()} Purusottam Homeo Bikash Lab(Bonded). All rights reserved.
           </div>
           <div className="flex items-center gap-6">
             <Link href="/privacy" className="hover:text-neutral-300 transition-colors">

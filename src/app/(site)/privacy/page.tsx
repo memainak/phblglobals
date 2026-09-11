@@ -6,7 +6,7 @@ import { ArrowLeft, ShieldCheck } from 'lucide-react';
 export const metadata: Metadata = {
   title: 'Privacy Policy & Data Protection (DPDP Act 2023) | PHBL',
   description:
-    'Privacy Policy of Purusottam Homoeo Bikash Laboratory in accordance with India’s Digital Personal Data Protection Act 2023.',
+    'Privacy Policy of Purusottam Homeo Bikash Lab(Bonded) in accordance with India’s Digital Personal Data Protection Act 2023.',
 };
 
 export default function PrivacyPage() {
@@ -32,7 +32,7 @@ export default function PrivacyPage() {
             Privacy Policy & Data Stewardship
           </h1>
           <p className="text-xs text-[#595C54]">
-            Last Updated: September 2024 · Effective for Purusottam Homoeo Bikash Laboratory (Bonded)
+            Last Updated: September 2024 · Effective for Purusottam Homeo Bikash Lab(Bonded)
           </p>
         </div>
 
@@ -42,7 +42,7 @@ export default function PrivacyPage() {
               1. Overview & Data Fiduciary Details
             </h2>
             <p>
-              Purusottam Homoeo Bikash Laboratory (Bonded) (&ldquo;PHBL&rdquo;, &ldquo;we&rdquo;, &ldquo;us&rdquo;) operates this website in compliance with the Digital Personal Data Protection Act (DPDP), 2023. Our registered address is L/3, Saratpally, Paschim Medinipur, Pin 721101, West Bengal, India.
+              Purusottam Homeo Bikash Lab(Bonded) (&ldquo;PHBL&rdquo;, &ldquo;we&rdquo;, &ldquo;us&rdquo;) operates this website in compliance with the Digital Personal Data Protection Act (DPDP), 2023. Our registered address is L/3, Saratpally, Paschim Medinipur, Pin 721101, West Bengal, India.
             </p>
           </section>
 

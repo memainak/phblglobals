@@ -7,7 +7,7 @@ import { Award } from 'lucide-react';
 export const metadata: Metadata = {
   title: 'Accreditations & Certificates (ISO, GMP, HACCP) | PHBL',
   description:
-    'Statutory certifications held by Purusottam Homoeo Bikash Laboratory (Bonded): ISO 9001:2015, Good Manufacturing Practices (Schedule M), HACCP, and Drug Mfg Lic HL-792 M.',
+    'Statutory certifications held by Purusottam Homeo Bikash Lab(Bonded): ISO 9001:2015, Good Manufacturing Practices (Schedule M), HACCP, and Drug Mfg Lic HL-792 M.',
 };
 
 export const revalidate = 3600;

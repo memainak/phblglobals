@@ -6,7 +6,7 @@ import { ArrowLeft, Scale } from 'lucide-react';
 export const metadata: Metadata = {
   title: 'Terms of Supply & Commercial Distribution | PHBL',
   description:
-    'Commercial terms, drug licensing covenants, and trade conditions for Purusottam Homoeo Bikash Laboratory (Bonded).',
+    'Commercial terms, drug licensing covenants, and trade conditions for Purusottam Homeo Bikash Lab(Bonded).',
 };
 
 export default function TermsPage() {

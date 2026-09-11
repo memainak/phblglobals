@@ -60,7 +60,7 @@ export function Header() {
             <div className="relative py-0.5 flex items-center">
               <Image
                 src="/images/phbl-logo.png"
-                alt="Purusottam Homoeo Bikash Laboratory (Bonded)"
+                alt="Purusottam Homeo Bikash Lab(Bonded)"
                 width={240}
                 height={42}
                 className="h-9 sm:h-11 w-auto object-contain transition-transform group-hover:scale-[1.02]"

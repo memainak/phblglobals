@@ -82,7 +82,7 @@ export function AboutTeaser() {
 
             <div className="space-y-4 text-sm sm:text-base text-[#595C54] leading-relaxed">
               <p>
-                Established in 2003 in Paschim Medinipur, West Bengal, <strong>Purusottam Homoeo Bikash Laboratory (Bonded)</strong> was established to bridge a critical deficit: the availability of truly unadulterated, batch-standardised homoeopathic medicines crafted from pure Extra Neutral Alcohol (ENA).
+                Established in 2003 in Paschim Medinipur, West Bengal, <strong>Purusottam Homeo Bikash Lab(Bonded)</strong> was established to bridge a critical deficit: the availability of truly unadulterated, batch-standardised homoeopathic medicines crafted from pure Extra Neutral Alcohol (ENA).
               </p>
               <p>
                 Under the guidance of <strong>Dr. Tarak Prasad Chatterjee</strong>, former Head of Obstetrics & Gynaecology at Medinipur Homoeopathic Medical College, our facility transformed from a clinician’s research laboratory into a full-scale GMP-certified manufacturing plant holding Drug License <strong>HL-792 M</strong>.

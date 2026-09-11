@@ -131,7 +131,7 @@ export default async function BatchDetailPage({ params }: BatchPageProps) {
     },
     {
       label: 'Name & Address of the Manufacturer',
-      value: `${batch.manufacturerName || 'Purusottam Homoeo Bikash Laboratory (Bonded)'}, ${
+      value: `${batch.manufacturerName || 'Purusottam Homeo Bikash Lab(Bonded)'}, ${
         batch.manufacturerAddress || 'L/3, Saratpally, Paschim Medinipur, Pin 721101, WB, India'
       }`,
     },
@@ -197,7 +197,7 @@ export default async function BatchDetailPage({ params }: BatchPageProps) {
               <div className="p-2 rounded-sm border border-[rgba(18,21,15,0.1)] bg-[#FAFAF8] shrink-0 self-start sm:self-center">
                 <Image
                   src="/images/phbl-logo.png"
-                  alt="Purusottam Homoeo Bikash Laboratory"
+                  alt="Purusottam Homeo Bikash Lab(Bonded)"
                   width={200}
                   height={36}
                   className="h-9 w-auto object-contain"
@@ -328,7 +328,7 @@ export default async function BatchDetailPage({ params }: BatchPageProps) {
           <div className="pt-8 border-t border-dashed border-[rgba(18,21,15,0.15)] flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6 text-xs text-[#595C54]">
             <div className="space-y-0.5 font-mono text-[11px]">
               <div className="text-[#12150F] font-bold">
-                Purusottam Homoeo Bikash Laboratory (Bonded)
+                Purusottam Homeo Bikash Lab(Bonded)
               </div>
               <div>Quality Assurance & Analytical Testing Division</div>
               <div>License: HL-792 M | Schedule M-I Compliant</div>

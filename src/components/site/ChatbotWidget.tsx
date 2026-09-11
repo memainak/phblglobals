@@ -52,7 +52,7 @@ export function ChatbotWidget() {
       id: 'welcome-msg',
       role: 'assistant',
       content:
-        "Welcome to the **Purusottam Homoeo Bikash Laboratory (Bonded)** Clinical & Site Assistant.\n\nI can search our complete formulation monographs, verify batch analytical reports, explain statutory Schedule M-I quality standards, or take you directly to any page on our site.",
+        "Welcome to the **Purusottam Homeo Bikash Lab(Bonded)** Clinical & Site Assistant.\n\nI can search our complete formulation monographs, verify batch analytical reports, explain statutory Schedule M-I quality standards, or take you directly to any page on our site.",
       suggestedQuestions: INITIAL_SUGGESTIONS,
       timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
     },

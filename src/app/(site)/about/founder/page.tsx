@@ -15,7 +15,7 @@ export const revalidate = 3600;
 export default function FounderInterviewPage() {
   const interviewQuestions = [
     {
-      q: 'Doctor, what inspired you to establish Purusottam Homoeo Bikash Laboratory after decades of senior academic practice?',
+      q: 'Doctor, what inspired you to establish Purusottam Homeo Bikash Lab(Bonded) after decades of senior academic practice?',
       a: 'During my tenure as Head of Obstetrics & Gynaecology at Medinipur Homoeopathic Medical College, I repeatedly treated obstinate maternal and pediatric conditions. Frequently, two bottles of the same mother tincture purchased from different markets gave entirely disparate clinical results. When you diagnose correctly and choose the precise simillimum, an ineffective medicine breaks the physician’s heart and the patient’s trust. I realized that unless someone manufactured medicine with total reverence for purity—sacrificing commercial shortcutting—homoeopathy would suffer. PHBL was born from this moral necessity.',
     },
     {

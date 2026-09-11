@@ -7,7 +7,7 @@ import { MapPin, Phone, Mail, Printer, Clock, ShieldCheck, ExternalLink } from '
 export const metadata: Metadata = {
   title: 'Contact Corporate Office & Manufacturing Plant | PHBL',
   description:
-    'Contact Purusottam Homoeo Bikash Laboratory (Bonded) in Paschim Medinipur, West Bengal. Helpline: 9800011545. Official factory coordinates and inquiry desks.',
+    'Contact Purusottam Homeo Bikash Lab(Bonded) in Paschim Medinipur, West Bengal. Helpline: 9800011545. Official factory coordinates and inquiry desks.',
 };
 
 export const revalidate = 3600;

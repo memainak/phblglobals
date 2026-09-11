@@ -29,7 +29,7 @@ export default async function QualityHubPage() {
             Quality Architecture & Standardisation
           </h1>
           <p className="text-sm sm:text-base text-[#595C54] max-w-3xl leading-relaxed">
-            Standardisation is the cornerstone of clinical efficacy. At Purusottam Homoeo Bikash Laboratory, quality is designed into the plant architecture, air handling units, solvent rectifiers, and botanical validation protocols.
+            Standardisation is the cornerstone of clinical efficacy. At Purusottam Homeo Bikash Lab(Bonded), quality is designed into the plant architecture, air handling units, solvent rectifiers, and botanical validation protocols.
           </p>
         </div>
 
