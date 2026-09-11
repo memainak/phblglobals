@@ -69,8 +69,8 @@ export default function AdminLoginPage() {
         throw new Error(json.error || `Authentication failed (${res.status}). Please check your credentials.`);
       }
 
-      router.push('/admin');
-      router.refresh();
+      // Hard redirect to admin console so HTTP-only session cookie is guaranteed
+      window.location.href = '/admin';
     } catch (err: unknown) {
       setError(err instanceof Error ? err.message : 'Login failed');
     } finally {
