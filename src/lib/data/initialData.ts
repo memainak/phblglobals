@@ -1071,6 +1071,36 @@ export const initialGallery: GalleryItem[] = [
     order: 6,
     published: true,
   },
+  {
+    id: 'gal-07',
+    album: 'Products',
+    imageUrl: '/images/products/phbl-activated-charcoal-facewash.webp',
+    caption: "Dr. Trinath's PHBL Naturals Activated Charcoal Facewash - Bamboo Charcoal Purifying Complex.",
+    width: 853,
+    height: 1280,
+    order: 7,
+    published: true,
+  },
+  {
+    id: 'gal-08',
+    album: 'Products',
+    imageUrl: '/images/products/phbl-arnica-rosemary-hibiscus-oil.webp',
+    caption: "Dr. Trinath's PHBL Naturals Arnica with Rosemary & Hibiscus Hair Nourishment Formula.",
+    width: 853,
+    height: 1280,
+    order: 8,
+    published: true,
+  },
+  {
+    id: 'gal-09',
+    album: 'Products',
+    imageUrl: '/images/products/phbl-neem-tulsi-facewash.webp',
+    caption: "Dr. Trinath's PHBL Naturals Neem & Tulsi Face Wash - Pure Herbal Care for Healthy Glowing Skin.",
+    width: 904,
+    height: 1280,
+    order: 9,
+    published: true,
+  },
 ];
 
 export const initialDownloads: Download[] = [
