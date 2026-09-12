@@ -51,37 +51,41 @@ export async function getProducts(options?: {
   category?: string;
   featuredOnly?: boolean;
   limitCount?: number;
+  includeUnpublished?: boolean;
 }): Promise<Product[]> {
   if (adminDb) {
     try {
-      let query: Query<DocumentData> = adminDb.collection('products').where('published', '==', true);
-      if (options?.category && options.category !== 'all') {
-        query = query.where('category', '==', options.category);
-      }
-      if (options?.featuredOnly) {
-        query = query.where('featured', '==', true);
-      }
-      query = query.orderBy('order', 'asc');
-      if (options?.limitCount) {
-        query = query.limit(options.limitCount);
-      }
-      const snap = await query.get();
+      const snap = await adminDb.collection('products').get();
       if (!snap.empty) {
-        return snap.docs.map((doc: QueryDocumentSnapshot) => ({ id: doc.id, ...doc.data() } as Product));
+        let list = snap.docs.map((doc: QueryDocumentSnapshot) => ({ id: doc.id, ...doc.data() } as Product));
+        if (!options?.includeUnpublished) {
+          list = list.filter((p) => p.published !== false);
+        }
+        if (options?.category && options.category !== 'all') {
+          list = list.filter((p) => p.category === options.category);
+        }
+        if (options?.featuredOnly) {
+          list = list.filter((p) => p.featured);
+        }
+        list.sort((a, b) => (a.order ?? 99) - (b.order ?? 99));
+        if (options?.limitCount) {
+          list = list.slice(0, options.limitCount);
+        }
+        return list;
       }
     } catch (err) {
       console.warn('Error fetching products from Firestore, using fallback:', err);
     }
   }
 
-  let list = memoryProducts.filter((p) => p.published);
+  let list = options?.includeUnpublished ? [...memoryProducts] : memoryProducts.filter((p) => p.published);
   if (options?.category && options.category !== 'all') {
     list = list.filter((p) => p.category === options.category);
   }
   if (options?.featuredOnly) {
     list = list.filter((p) => p.featured);
   }
-  list.sort((a, b) => a.order - b.order);
+  list.sort((a, b) => (a.order ?? 99) - (b.order ?? 99));
   if (options?.limitCount) {
     list = list.slice(0, options.limitCount);
   }
@@ -217,13 +221,12 @@ export async function getAllBatchNumbers(): Promise<string[]> {
 export async function getQualityPillars(): Promise<QualityPillar[]> {
   if (adminDb) {
     try {
-      const snap = await adminDb
-        .collection('qualityPillars')
-        .where('published', '==', true)
-        .orderBy('order', 'asc')
-        .get();
+      const snap = await adminDb.collection('qualityPillars').get();
       if (!snap.empty) {
-        return snap.docs.map((doc: QueryDocumentSnapshot) => ({ id: doc.id, ...doc.data() } as QualityPillar));
+        let list = snap.docs.map((doc: QueryDocumentSnapshot) => ({ id: doc.id, ...doc.data() } as QualityPillar));
+        list = list.filter((p) => p.published !== false);
+        list.sort((a, b) => (a.order ?? 99) - (b.order ?? 99));
+        return list;
       }
     } catch (err) {
       console.warn('Error fetching quality pillars from Firestore, using fallback:', err);
@@ -272,14 +275,14 @@ export async function getCertifications(): Promise<Certification[]> {
 export async function getGalleryItems(album?: string): Promise<GalleryItem[]> {
   if (adminDb) {
     try {
-      let q: Query<DocumentData> = adminDb.collection('gallery');
-      if (album && album !== 'All') {
-        q = q.where('album', '==', album);
-      }
-      q = q.orderBy('order', 'asc');
-      const snap = await q.get();
+      const snap = await adminDb.collection('gallery').get();
       if (!snap.empty) {
-        return snap.docs.map((doc: QueryDocumentSnapshot) => ({ id: doc.id, ...doc.data() } as GalleryItem));
+        let items = snap.docs.map((doc: QueryDocumentSnapshot) => ({ id: doc.id, ...doc.data() } as GalleryItem));
+        if (album && album !== 'All') {
+          items = items.filter((g) => g.album === album);
+        }
+        items.sort((a, b) => (a.order ?? 99) - (b.order ?? 99));
+        return items;
       }
     } catch (err) {
       console.warn('Error fetching gallery from Firestore, using fallback:', err);
@@ -317,13 +320,12 @@ export async function getDownloads(category?: string): Promise<Download[]> {
 export async function getTestimonials(): Promise<Testimonial[]> {
   if (adminDb) {
     try {
-      const snap = await adminDb
-        .collection('testimonials')
-        .where('published', '==', true)
-        .orderBy('order', 'asc')
-        .get();
+      const snap = await adminDb.collection('testimonials').get();
       if (!snap.empty) {
-        return snap.docs.map((doc: QueryDocumentSnapshot) => ({ id: doc.id, ...doc.data() } as Testimonial));
+        let list = snap.docs.map((doc: QueryDocumentSnapshot) => ({ id: doc.id, ...doc.data() } as Testimonial));
+        list = list.filter((t) => t.published !== false);
+        list.sort((a, b) => (a.order ?? 99) - (b.order ?? 99));
+        return list;
       }
     } catch (err) {
       console.warn('Error fetching testimonials from Firestore, using fallback:', err);
@@ -436,7 +438,6 @@ export async function saveProduct(productData: Product): Promise<Product> {
   if (adminDb) {
     try {
       await adminDb.collection('products').doc(productData.id).set(productData, { merge: true });
-      return productData;
     } catch (err) {
       console.error('Firestore product write error:', err);
     }

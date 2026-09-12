@@ -55,7 +55,7 @@ export function ProductManagementTable({ initialProducts }: ProductManagementTab
 
   const reloadProducts = async () => {
     try {
-      const res = await fetch('/api/product');
+      const res = await fetch('/api/product?includeUnpublished=true');
       const json = await res.json();
       if (json.products) {
         setProducts(json.products);

@@ -14,9 +14,23 @@ function initFirebaseAdmin() {
   initialized = true;
 
   try {
-    const projectId = process.env.FIREBASE_PROJECT_ID || 'phblglobals';
+    let projectId = process.env.FIREBASE_PROJECT_ID || 'phblglobals';
     let clientEmail = process.env.FIREBASE_CLIENT_EMAIL;
     let privateKey = process.env.FIREBASE_PRIVATE_KEY;
+
+    // Check if full JSON service account is passed as an env var (e.g. on Vercel)
+    if (process.env.FIREBASE_SERVICE_ACCOUNT_KEY) {
+      try {
+        const parsed = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT_KEY);
+        if (parsed.client_email && parsed.private_key) {
+          clientEmail = parsed.client_email;
+          privateKey = parsed.private_key;
+          projectId = parsed.project_id || projectId;
+        }
+      } catch (e) {
+        console.warn('Failed to parse FIREBASE_SERVICE_ACCOUNT_KEY env var:', e);
+      }
+    }
 
     // Check for local service-account.json or GOOGLE_APPLICATION_CREDENTIALS if env vars are missing
     if (!clientEmail || !privateKey) {
@@ -31,6 +45,7 @@ function initFirebaseAdmin() {
           if (fileData.client_email && fileData.private_key) {
             clientEmail = fileData.client_email;
             privateKey = fileData.private_key;
+            projectId = fileData.project_id || projectId;
           }
         }
       } catch {

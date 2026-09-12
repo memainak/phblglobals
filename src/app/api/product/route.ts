@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { revalidatePath } from 'next/cache';
 import { productSchema } from '@/lib/validators';
 import { getProducts, saveProduct, deleteProduct } from '@/lib/queries';
 import { Product } from '@/types';
@@ -7,7 +8,8 @@ export async function GET(req: NextRequest) {
   try {
     const { searchParams } = new URL(req.url);
     const category = searchParams.get('category') || undefined;
-    const products = await getProducts({ category });
+    const includeUnpublished = searchParams.get('all') === 'true' || searchParams.get('includeUnpublished') === 'true';
+    const products = await getProducts({ category, includeUnpublished });
     return NextResponse.json({ success: true, products }, { status: 200 });
   } catch (err) {
     console.error('API /api/product GET error:', err);
@@ -56,6 +58,18 @@ export async function POST(req: NextRequest) {
     };
 
     const saved = await saveProduct(productData);
+
+    try {
+      revalidatePath('/products');
+      revalidatePath('/admin/products');
+      revalidatePath('/');
+      if (productData.category && productData.slug) {
+        revalidatePath(`/products/${productData.category}/${productData.slug}`);
+      }
+    } catch (e) {
+      console.warn('Revalidation warning:', e);
+    }
+
     return NextResponse.json({ success: true, product: saved }, { status: 200 });
   } catch (err) {
     console.error('API /api/product POST error:', err);
@@ -86,6 +100,15 @@ export async function DELETE(req: NextRequest) {
     }
 
     await deleteProduct(id);
+
+    try {
+      revalidatePath('/products');
+      revalidatePath('/admin/products');
+      revalidatePath('/');
+    } catch (e) {
+      console.warn('Revalidation warning:', e);
+    }
+
     return NextResponse.json({ success: true, deletedId: id }, { status: 200 });
   } catch (err) {
     console.error('API /api/product DELETE error:', err);
