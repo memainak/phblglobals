@@ -7,7 +7,6 @@ import { Capabilities } from '@/components/site/Capabilities';
 import { QualityPolicy } from '@/components/site/QualityPolicy';
 import { BatchVerificationCallout } from '@/components/site/BatchVerificationCallout';
 import { TestimonialsSection } from '@/components/site/TestimonialsSection';
-import { BookletCta } from '@/components/site/BookletCta';
 import { getSiteSettings, getProducts, getTestimonials } from '@/lib/queries';
 
 export const revalidate = 3600; // ISR 1 hour
@@ -49,9 +48,6 @@ export default async function HomePage() {
 
       {/* 8. Testimonials */}
       <TestimonialsSection testimonials={testimonials} />
-
-      {/* 9. Booklet CTA */}
-      <BookletCta />
     </>
   );
 }

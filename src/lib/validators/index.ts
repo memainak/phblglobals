@@ -113,3 +113,13 @@ export const productSchema = z.object({
   order: z.number().default(0),
   published: z.boolean().default(true),
 });
+
+export const testimonialSchema = z.object({
+  quote: z.string().min(10, 'Endorsement statement must be at least 10 characters'),
+  author: z.string().min(2, 'Practitioner or Partner name is required'),
+  role: z.string().min(2, 'Professional role / Designation is required'),
+  clinicOrInstitution: z.string().optional(),
+  location: z.string().optional(),
+  order: z.number().default(1),
+  published: z.boolean().default(true),
+});

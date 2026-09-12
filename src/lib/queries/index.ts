@@ -31,6 +31,7 @@ const memoryDownloads: Download[] = [...initialDownloads];
 const memoryGallery: GalleryItem[] = [...initialGallery];
 const memoryEnquiries: Enquiry[] = [];
 const memoryDistributorEnquiries: DistributorEnquiry[] = [];
+const memoryTestimonials: Testimonial[] = [...initialTestimonials];
 const memorySiteSettings: SiteSettings = { ...initialSiteSettings };
 
 export async function getSiteSettings(): Promise<SiteSettings> {
@@ -317,13 +318,17 @@ export async function getDownloads(category?: string): Promise<Download[]> {
   return list;
 }
 
-export async function getTestimonials(): Promise<Testimonial[]> {
+export async function getTestimonials(options?: {
+  includeUnpublished?: boolean;
+}): Promise<Testimonial[]> {
   if (adminDb) {
     try {
       const snap = await adminDb.collection('testimonials').get();
       if (!snap.empty) {
         let list = snap.docs.map((doc: QueryDocumentSnapshot) => ({ id: doc.id, ...doc.data() } as Testimonial));
-        list = list.filter((t) => t.published !== false);
+        if (!options?.includeUnpublished) {
+          list = list.filter((t) => t.published !== false);
+        }
         list.sort((a, b) => (a.order ?? 99) - (b.order ?? 99));
         return list;
       }
@@ -331,7 +336,10 @@ export async function getTestimonials(): Promise<Testimonial[]> {
       console.warn('Error fetching testimonials from Firestore, using fallback:', err);
     }
   }
-  return [...initialTestimonials].sort((a, b) => a.order - b.order);
+  let list = options?.includeUnpublished
+    ? [...memoryTestimonials]
+    : memoryTestimonials.filter((t) => t.published !== false);
+  return list.sort((a, b) => (a.order ?? 99) - (b.order ?? 99));
 }
 
 // Write Operations
@@ -696,6 +704,40 @@ export async function deleteGalleryItem(id: string): Promise<boolean> {
   const idx = memoryGallery.findIndex((g) => g.id === id);
   if (idx >= 0) {
     memoryGallery.splice(idx, 1);
+  }
+  return true;
+}
+
+export async function saveTestimonial(testimonialData: Testimonial): Promise<Testimonial> {
+  if (adminDb) {
+    try {
+      await adminDb.collection('testimonials').doc(testimonialData.id).set(testimonialData, { merge: true });
+    } catch (err) {
+      console.error('Firestore testimonial write error:', err);
+    }
+  }
+
+  const idx = memoryTestimonials.findIndex((t) => t.id === testimonialData.id);
+  if (idx >= 0) {
+    memoryTestimonials[idx] = testimonialData;
+  } else {
+    memoryTestimonials.push(testimonialData);
+  }
+  return testimonialData;
+}
+
+export async function deleteTestimonial(id: string): Promise<boolean> {
+  if (adminDb) {
+    try {
+      await adminDb.collection('testimonials').doc(id).delete();
+    } catch (err) {
+      console.error('Firestore testimonial delete error:', err);
+    }
+  }
+
+  const idx = memoryTestimonials.findIndex((t) => t.id === id);
+  if (idx >= 0) {
+    memoryTestimonials.splice(idx, 1);
   }
   return true;
 }

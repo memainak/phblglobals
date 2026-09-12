@@ -7,6 +7,10 @@ interface TestimonialsSectionProps {
 }
 
 export function TestimonialsSection({ testimonials }: TestimonialsSectionProps) {
+  if (!testimonials || testimonials.length === 0) {
+    return null;
+  }
+
   return (
     <section className="py-20 bg-white border-b border-[rgba(18,21,15,0.08)]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

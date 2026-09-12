@@ -19,6 +19,7 @@ import {
   CheckCircle2,
   FileDown,
   Camera,
+  Quote,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
@@ -275,6 +276,17 @@ export default async function AdminDashboardPage() {
                 <div className="flex items-center gap-2 font-medium text-[#12150F]">
                   <FileCheck2 className="w-4 h-4 text-[#1F4D3A]" />
                   <span>Manage Certificates & ISO</span>
+                </div>
+                <ArrowRight className="w-3.5 h-3.5 text-[#595C54]" />
+              </Link>
+
+              <Link
+                href="/admin/testimonials"
+                className="p-3 rounded-md bg-[#FAFAF8] border border-[rgba(18,21,15,0.08)] hover:bg-[#F0F5F2] flex items-center justify-between transition-colors block"
+              >
+                <div className="flex items-center gap-2 font-medium text-[#12150F]">
+                  <Quote className="w-4 h-4 text-[#1F4D3A]" />
+                  <span>Manage Clinical & Trade Endorsements</span>
                 </div>
                 <ArrowRight className="w-3.5 h-3.5 text-[#595C54]" />
               </Link>

@@ -16,6 +16,7 @@ import {
   Settings,
   FileDown,
   Camera,
+  Quote,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
@@ -52,6 +53,7 @@ export function AdminNav() {
     { href: '/admin/downloads', label: 'Downloads', icon: FileDown },
     { href: '/admin/gallery', label: 'Gallery', icon: Camera },
     { href: '/admin/certifications', label: 'Certificates', icon: Award },
+    { href: '/admin/testimonials', label: 'Endorsements', icon: Quote },
     { href: '/admin/enquiries', label: 'Inquiries Inbox', icon: Inbox },
     { href: '/admin/settings', label: 'Site & Contact', icon: Settings },
   ];
