@@ -146,8 +146,8 @@ export function ChatbotWidget() {
 
   return (
     <>
-      {/* Floating Trigger Button positioned above WhatsApp button */}
-      <aside aria-label="PHBL Clinical & Site AI Assistant" className="fixed bottom-22 right-6 z-[50] no-print">
+      {/* Floating Trigger Button */}
+      <aside aria-label="PHBL Clinical & Site AI Assistant" className="fixed bottom-6 right-4 sm:right-6 z-[50] no-print">
         <button
           id="phbl-ai-chat-trigger"
           type="button"
@@ -175,7 +175,7 @@ export function ChatbotWidget() {
           role="dialog"
           aria-modal="true"
           aria-label="PHBL Site Search & Navigator Assistant"
-          className="fixed bottom-24 right-4 sm:right-6 z-[60] w-[calc(100vw-32px)] sm:w-[410px] h-[580px] max-h-[82vh] bg-white rounded-2xl shadow-2xl border border-[rgba(18,21,15,0.14)] flex flex-col overflow-hidden animate-in fade-in slide-in-from-bottom-4 duration-200"
+          className="fixed bottom-20 right-4 sm:right-6 z-[60] w-[calc(100vw-32px)] sm:w-[410px] h-[580px] max-h-[82vh] bg-white rounded-2xl shadow-2xl border border-[rgba(18,21,15,0.14)] flex flex-col overflow-hidden animate-in fade-in slide-in-from-bottom-4 duration-200"
         >
           {/* Header */}
           <div className="bg-[#12150F] text-white px-4 py-3.5 flex items-center justify-between border-b border-white/10">

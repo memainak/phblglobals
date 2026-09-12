@@ -177,21 +177,6 @@ export function Footer() {
             <Link href="/disclaimer" className="hover:text-neutral-300 transition-colors">
               Legal Disclaimer
             </Link>
-            <button
-              type="button"
-              onClick={() => {
-                try {
-                  window.dispatchEvent(new CustomEvent('open-phbl-gateway'));
-                  window.scrollTo({ top: 0, behavior: 'smooth' });
-                } catch {
-                  // empty
-                }
-              }}
-              className="hover:text-emerald-400 transition-colors cursor-pointer flex items-center gap-1 text-emerald-500/80"
-              title="Experience 3D Interactive Neon Tubes Gateway"
-            >
-              <span>✨ 3D Gateway</span>
-            </button>
             <Link href="/admin" className="hover:text-neutral-300 transition-colors">
               Staff Portal
             </Link>
