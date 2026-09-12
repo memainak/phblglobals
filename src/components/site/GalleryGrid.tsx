@@ -12,7 +12,7 @@ export function GalleryGrid({ initialItems }: GalleryGridProps) {
   const [activeAlbum, setActiveAlbum] = useState<string>('All');
   const [lightboxItem, setLightboxItem] = useState<GalleryItem | null>(null);
 
-  const albums = ['All', 'Factory', 'Laboratory', 'Products', 'Exhibitions'];
+  const albums = ['All', 'Factory', 'Laboratory', 'Exhibitions'];
 
   const items = initialItems;
   const filteredItems =
