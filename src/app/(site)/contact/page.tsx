@@ -136,30 +136,32 @@ export default async function ContactPage() {
             <div className="bg-white p-6 rounded-lg border border-[rgba(18,21,15,0.08)] space-y-3 shadow-xs">
               <div className="flex items-center justify-between">
                 <span className="text-xs font-semibold uppercase text-[#12150F]">
-                  Geographic Location
+                  Geographic Plant Location
                 </span>
                 <a
-                  href="https://maps.google.com/?q=Paschim+Medinipur+West+Bengal"
+                  href="https://maps.google.com/?q=Purusottam+Homeo+Bikash+Laboratory"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-xs text-[#1F4D3A] hover:underline inline-flex items-center gap-1"
+                  className="text-xs text-[#1F4D3A] hover:underline inline-flex items-center gap-1 font-medium"
                 >
                   <span>Open in Google Maps</span>
                   <ExternalLink className="w-3 h-3" />
                 </a>
               </div>
 
-              {/* Styled map canvas mockup */}
-              <div className="w-full h-44 rounded bg-[#EAE8E1] border border-[rgba(18,21,15,0.08)] flex flex-col items-center justify-center p-4 text-center relative overflow-hidden">
-                <div className="w-10 h-10 rounded-full bg-[#1F4D3A] text-white flex items-center justify-center shadow-md animate-bounce">
-                  <MapPin className="w-5 h-5" />
-                </div>
-                <h4 className="font-serif font-bold text-sm text-[#12150F] mt-2">
-                  PHBL Plant Location
-                </h4>
-                <p className="text-[11px] text-[#595C54]">
-                  Saratpally, Paschim Medinipur · Pin 721101
-                </p>
+              {/* Official Google Maps Interactive Embed */}
+              <div className="w-full h-80 sm:h-96 rounded-lg overflow-hidden border border-[rgba(18,21,15,0.08)] shadow-xs relative">
+                <iframe
+                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3688.3685167239923!2d87.30426777529586!3d22.41515137960424!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3a1d5b50fb6632f5%3A0xe542e78a6fe75b3e!2sPurusottam%20Homeo%20Bikash%20Laboratory!5e0!3m2!1sen!2sin!4v1789199986414!5m2!1sen!2sin"
+                  width="100%"
+                  height="100%"
+                  style={{ border: 0 }}
+                  allowFullScreen
+                  loading="lazy"
+                  referrerPolicy="strict-origin-when-cross-origin"
+                  title="Purusottam Homeo Bikash Laboratory Location"
+                  className="w-full h-full"
+                />
               </div>
             </div>
           </div>

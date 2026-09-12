@@ -17,6 +17,8 @@ import {
   ShieldCheck,
   Activity,
   CheckCircle2,
+  FileDown,
+  Camera,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
@@ -240,6 +242,28 @@ export default async function AdminDashboardPage() {
                 <div className="flex items-center gap-2 font-medium text-[#12150F]">
                   <Inbox className="w-4 h-4 text-[#1F4D3A]" />
                   <span>Review Incoming Inquiries</span>
+                </div>
+                <ArrowRight className="w-3.5 h-3.5 text-[#595C54]" />
+              </Link>
+
+              <Link
+                href="/admin/downloads"
+                className="p-3 rounded-md bg-[#FAFAF8] border border-[rgba(18,21,15,0.08)] hover:bg-[#F0F5F2] flex items-center justify-between transition-colors block"
+              >
+                <div className="flex items-center gap-2 font-medium text-[#12150F]">
+                  <FileDown className="w-4 h-4 text-[#1F4D3A]" />
+                  <span>Manage Downloads & PDFs</span>
+                </div>
+                <ArrowRight className="w-3.5 h-3.5 text-[#595C54]" />
+              </Link>
+
+              <Link
+                href="/admin/gallery"
+                className="p-3 rounded-md bg-[#FAFAF8] border border-[rgba(18,21,15,0.08)] hover:bg-[#F0F5F2] flex items-center justify-between transition-colors block"
+              >
+                <div className="flex items-center gap-2 font-medium text-[#12150F]">
+                  <Camera className="w-4 h-4 text-[#1F4D3A]" />
+                  <span>Manage Plant & Lab Gallery</span>
                 </div>
                 <ArrowRight className="w-3.5 h-3.5 text-[#595C54]" />
               </Link>

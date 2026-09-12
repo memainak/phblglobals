@@ -63,8 +63,18 @@ export function DownloadManager({
       )
     );
 
-    // Trigger fake or direct download notification
-    alert(`Downloading "${item.title}". In production, this streams from Firebase Storage.`);
+    // Trigger actual file download
+    if (item.fileUrl) {
+      const link = document.createElement('a');
+      link.href = item.fileUrl;
+      const filename = item.fileUrl.split('/').pop() || `${item.title.replace(/[^a-zA-Z0-9_-]/g, '_')}.pdf`;
+      link.setAttribute('download', filename);
+      link.target = '_blank';
+      link.rel = 'noopener noreferrer';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }
   };
 
   const handleGatedSubmit = async (e: React.FormEvent) => {

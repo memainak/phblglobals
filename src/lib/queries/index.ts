@@ -27,6 +27,8 @@ import {
 const memoryProducts: Product[] = [...initialProducts];
 const memoryBatches: Batch[] = [...initialBatches];
 const memoryCertifications: Certification[] = [...initialCertifications];
+const memoryDownloads: Download[] = [...initialDownloads];
+const memoryGallery: GalleryItem[] = [...initialGallery];
 const memoryEnquiries: Enquiry[] = [];
 const memoryDistributorEnquiries: DistributorEnquiry[] = [];
 const memorySiteSettings: SiteSettings = { ...initialSiteSettings };
@@ -597,4 +599,102 @@ export async function saveSiteSettings(updates: Partial<SiteSettings>): Promise<
   }
   Object.assign(memorySiteSettings, updates);
   return memorySiteSettings;
+}
+
+// Downloads CRUD
+export async function getDownloadsList(): Promise<Download[]> {
+  if (adminDb) {
+    try {
+      const snap = await adminDb.collection('downloads').get();
+      if (!snap.empty) {
+        return snap.docs.map((doc: QueryDocumentSnapshot) => ({ id: doc.id, ...doc.data() } as Download));
+      }
+    } catch (err) {
+      console.warn('Firestore downloads read error:', err);
+    }
+  }
+  return memoryDownloads;
+}
+
+export async function saveDownload(downloadData: Download): Promise<Download> {
+  if (adminDb) {
+    try {
+      await adminDb.collection('downloads').doc(downloadData.id).set(downloadData, { merge: true });
+      return downloadData;
+    } catch (err) {
+      console.error('Firestore download write error:', err);
+    }
+  }
+
+  const idx = memoryDownloads.findIndex((d) => d.id === downloadData.id);
+  if (idx >= 0) {
+    memoryDownloads[idx] = downloadData;
+  } else {
+    memoryDownloads.unshift(downloadData);
+  }
+  return downloadData;
+}
+
+export async function deleteDownload(id: string): Promise<boolean> {
+  if (adminDb) {
+    try {
+      await adminDb.collection('downloads').doc(id).delete();
+    } catch (err) {
+      console.error('Firestore download delete error:', err);
+    }
+  }
+  const idx = memoryDownloads.findIndex((d) => d.id === id);
+  if (idx >= 0) {
+    memoryDownloads.splice(idx, 1);
+  }
+  return true;
+}
+
+// Gallery CRUD
+export async function getGalleryList(): Promise<GalleryItem[]> {
+  if (adminDb) {
+    try {
+      const snap = await adminDb.collection('gallery').orderBy('order', 'asc').get();
+      if (!snap.empty) {
+        return snap.docs.map((doc: QueryDocumentSnapshot) => ({ id: doc.id, ...doc.data() } as GalleryItem));
+      }
+    } catch (err) {
+      console.warn('Firestore gallery read error:', err);
+    }
+  }
+  return [...memoryGallery].sort((a, b) => a.order - b.order);
+}
+
+export async function saveGalleryItem(itemData: GalleryItem): Promise<GalleryItem> {
+  if (adminDb) {
+    try {
+      await adminDb.collection('gallery').doc(itemData.id).set(itemData, { merge: true });
+      return itemData;
+    } catch (err) {
+      console.error('Firestore gallery write error:', err);
+    }
+  }
+
+  const idx = memoryGallery.findIndex((g) => g.id === itemData.id);
+  if (idx >= 0) {
+    memoryGallery[idx] = itemData;
+  } else {
+    memoryGallery.push(itemData);
+  }
+  return itemData;
+}
+
+export async function deleteGalleryItem(id: string): Promise<boolean> {
+  if (adminDb) {
+    try {
+      await adminDb.collection('gallery').doc(id).delete();
+    } catch (err) {
+      console.error('Firestore gallery delete error:', err);
+    }
+  }
+  const idx = memoryGallery.findIndex((g) => g.id === id);
+  if (idx >= 0) {
+    memoryGallery.splice(idx, 1);
+  }
+  return true;
 }
