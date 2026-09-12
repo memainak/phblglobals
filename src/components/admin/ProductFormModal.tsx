@@ -8,7 +8,7 @@ import { Plus, X, Edit2, AlertCircle, Upload, Trash2, Image as ImageIcon, Star, 
 
 interface ProductFormModalProps {
   product?: Product | null;
-  onSuccess?: () => void;
+  onSuccess?: (savedProduct?: Product) => void;
   trigger?: React.ReactNode;
 }
 
@@ -195,6 +195,7 @@ export function ProductFormModal({ product, onSuccess, trigger }: ProductFormMod
         caution: formData.caution.trim(),
         images: formData.images,
         featured: formData.featured,
+        isNew: product?.isNew ?? false,
         order: Number(formData.order),
         published: formData.published,
       };
@@ -207,11 +208,18 @@ export function ProductFormModal({ product, onSuccess, trigger }: ProductFormMod
 
       const json = await res.json();
       if (!res.ok) {
-        throw new Error(json.error || 'Failed to save product');
+        let msg = json.error || 'Failed to save product';
+        if (json.details?.fieldErrors) {
+          const fields = Object.entries(json.details.fieldErrors)
+            .map(([field, errs]) => `${field}: ${(errs as string[]).join(', ')}`)
+            .join('; ');
+          msg = `Validation failed: ${fields}`;
+        }
+        throw new Error(msg);
       }
 
       setOpen(false);
-      if (onSuccess) onSuccess();
+      if (onSuccess) onSuccess(json.product);
     } catch (err: unknown) {
       setError(err instanceof Error ? err.message : 'Submission failed');
     } finally {

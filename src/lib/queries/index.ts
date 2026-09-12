@@ -94,27 +94,9 @@ export async function getProducts(options?: {
 }
 
 export async function getProductBySlug(category: string, slug: string): Promise<Product | null> {
-  if (adminDb) {
-    try {
-      const snap = await adminDb
-        .collection('products')
-        .where('category', '==', category)
-        .where('slug', '==', slug)
-        .where('published', '==', true)
-        .limit(1)
-        .get();
-      if (!snap.empty) {
-        const doc = snap.docs[0];
-        return { id: doc.id, ...doc.data() } as Product;
-      }
-    } catch (err) {
-      console.warn('Error fetching product by slug from Firestore, using fallback:', err);
-    }
-  }
-
-  const found = memoryProducts.find(
-    (p) => p.category === category && p.slug === slug && p.published
-  );
+  // Use index-free getProducts to guarantee consistent live updates without composite index requirement
+  const products = await getProducts({ category, includeUnpublished: true });
+  const found = products.find((p) => p.slug === slug && p.published !== false);
   return found || null;
 }
 
@@ -448,6 +430,7 @@ export async function saveProduct(productData: Product): Promise<Product> {
       await adminDb.collection('products').doc(productData.id).set(productData, { merge: true });
     } catch (err) {
       console.error('Firestore product write error:', err);
+      throw new Error(`Failed to save product in database: ${err instanceof Error ? err.message : String(err)}`);
     }
   }
 
@@ -466,6 +449,7 @@ export async function deleteProduct(id: string): Promise<boolean> {
       await adminDb.collection('products').doc(id).delete();
     } catch (err) {
       console.error('Firestore product delete error:', err);
+      throw new Error(`Failed to delete product from database: ${err instanceof Error ? err.message : String(err)}`);
     }
   }
   const idx = memoryProducts.findIndex((p) => p.id === id);

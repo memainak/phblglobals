@@ -89,28 +89,28 @@ export const productSchema = z.object({
   name: z.string().min(2, 'Product name is required'),
   slug: z.string().min(2, 'URL slug is required'),
   category: z.enum(['homoeopathy', 'cosmetics', 'homoeovet']),
-  subCategory: z.string().min(2, 'Subcategory is required'),
-  shortDescription: z.string().min(10, 'Short description is required'),
-  indications: z.string().min(10, 'Indications are required'),
-  dosage: z.string().min(2, 'Dosage instructions are required'),
+  subCategory: z.string().min(1, 'Subcategory is required'),
+  shortDescription: z.string().min(2, 'Short description is required'),
+  indications: z.string().min(2, 'Indications are required'),
+  dosage: z.string().optional().default('As directed by physician.'),
   composition: z.array(
     z.object({
       ingredient: z.string().min(1, 'Ingredient name required'),
-      strength: z.string().min(1, 'Strength required'),
+      strength: z.string().optional().default('Q'),
     })
   ).min(1, 'At least one composition entry is required'),
   packSizes: z.array(
     z.object({
       size: z.string().min(1, 'Pack size required'),
-      mrp: z.number().optional(),
+      mrp: z.coerce.number().optional(),
     })
   ).min(1, 'At least one pack size required'),
-  storage: z.string().min(2, 'Storage instruction required'),
-  caution: z.string().optional(),
+  storage: z.string().optional().default('Store in a cool and dry place.'),
+  caution: z.string().optional().default(''),
   images: z.array(z.string()).optional(),
   featured: z.boolean().default(false),
   isNew: z.boolean().default(false).optional(),
-  order: z.number().default(0),
+  order: z.coerce.number().default(0),
   published: z.boolean().default(true),
 });
 

@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { Product, ProductCategory } from '@/types';
@@ -19,6 +19,11 @@ export function ProductManagementTable({ initialProducts }: ProductManagementTab
   const [search, setSearch] = useState('');
   const [categoryFilter, setCategoryFilter] = useState<string>('all');
   const [deletingId, setDeletingId] = useState<string | null>(null);
+
+  // Keep state in sync whenever server component revalidates
+  useEffect(() => {
+    setProducts(initialProducts);
+  }, [initialProducts]);
 
   const filtered = products.filter((p) => {
     const matchesSearch =
@@ -53,9 +58,26 @@ export function ProductManagementTable({ initialProducts }: ProductManagementTab
     }
   };
 
+  const handleProductSaved = (savedProduct?: Product) => {
+    if (savedProduct) {
+      setProducts((prev) => {
+        const index = prev.findIndex((p) => p.id === savedProduct.id);
+        if (index >= 0) {
+          const copy = [...prev];
+          copy[index] = savedProduct;
+          return copy;
+        }
+        return [savedProduct, ...prev];
+      });
+    }
+    reloadProducts();
+  };
+
   const reloadProducts = async () => {
     try {
-      const res = await fetch('/api/product?includeUnpublished=true');
+      const res = await fetch(`/api/product?includeUnpublished=true&_t=${Date.now()}`, {
+        cache: 'no-store',
+      });
       const json = await res.json();
       if (json.products) {
         setProducts(json.products);
@@ -95,7 +117,7 @@ export function ProductManagementTable({ initialProducts }: ProductManagementTab
         </div>
 
         <div>
-          <ProductFormModal onSuccess={reloadProducts} />
+          <ProductFormModal onSuccess={handleProductSaved} />
         </div>
       </div>
 
@@ -173,7 +195,7 @@ export function ProductManagementTable({ initialProducts }: ProductManagementTab
 
                         <ProductFormModal
                           product={p}
-                          onSuccess={reloadProducts}
+                          onSuccess={handleProductSaved}
                           trigger={
                             <button
                               type="button"

@@ -4,13 +4,24 @@ import { productSchema } from '@/lib/validators';
 import { getProducts, saveProduct, deleteProduct } from '@/lib/queries';
 import { Product } from '@/types';
 
+export const dynamic = 'force-dynamic';
+
 export async function GET(req: NextRequest) {
   try {
     const { searchParams } = new URL(req.url);
     const category = searchParams.get('category') || undefined;
-    const includeUnpublished = searchParams.get('all') === 'true' || searchParams.get('includeUnpublished') === 'true';
+    const includeUnpublished =
+      searchParams.get('all') === 'true' || searchParams.get('includeUnpublished') === 'true';
     const products = await getProducts({ category, includeUnpublished });
-    return NextResponse.json({ success: true, products }, { status: 200 });
+    return NextResponse.json(
+      { success: true, products },
+      {
+        status: 200,
+        headers: {
+          'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate',
+        },
+      }
+    );
   } catch (err) {
     console.error('API /api/product GET error:', err);
     return NextResponse.json({ error: 'Failed to fetch products' }, { status: 500 });
@@ -23,8 +34,16 @@ export async function POST(req: NextRequest) {
     const parse = productSchema.safeParse(body);
 
     if (!parse.success) {
+      const fieldErrors = parse.error.flatten().fieldErrors;
+      const errorMsg = Object.entries(fieldErrors)
+        .map(([field, errs]) => `${field}: ${(errs as string[]).join(', ')}`)
+        .join('; ');
+
       return NextResponse.json(
-        { error: 'Validation failed', details: parse.error.flatten() },
+        {
+          error: `Validation failed: ${errorMsg}`,
+          details: parse.error.flatten(),
+        },
         { status: 422 }
       );
     }
@@ -63,6 +82,9 @@ export async function POST(req: NextRequest) {
       revalidatePath('/products');
       revalidatePath('/admin/products');
       revalidatePath('/');
+      if (productData.category) {
+        revalidatePath(`/products/${productData.category}`);
+      }
       if (productData.category && productData.slug) {
         revalidatePath(`/products/${productData.category}/${productData.slug}`);
       }
@@ -71,9 +93,10 @@ export async function POST(req: NextRequest) {
     }
 
     return NextResponse.json({ success: true, product: saved }, { status: 200 });
-  } catch (err) {
+  } catch (err: unknown) {
     console.error('API /api/product POST error:', err);
-    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
+    const msg = err instanceof Error ? err.message : 'Internal server error';
+    return NextResponse.json({ error: msg }, { status: 500 });
   }
 }
 
@@ -110,8 +133,9 @@ export async function DELETE(req: NextRequest) {
     }
 
     return NextResponse.json({ success: true, deletedId: id }, { status: 200 });
-  } catch (err) {
+  } catch (err: unknown) {
     console.error('API /api/product DELETE error:', err);
-    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
+    const msg = err instanceof Error ? err.message : 'Internal server error';
+    return NextResponse.json({ error: msg }, { status: 500 });
   }
 }
