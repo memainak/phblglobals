@@ -87,6 +87,14 @@ export default function AboutPage() {
         <div className="grid grid-cols-1 md:grid-cols-12 gap-8 items-start">
           <div className="md:col-span-4 space-y-4 sticky top-28">
             <div className="bg-white p-6 rounded-md border border-[rgba(18,21,15,0.08)] space-y-3">
+              <div className="relative rounded-sm overflow-hidden aspect-3/2 mb-3 border border-neutral-200">
+                <Image
+                  src="/images/gallery/factory-bottling-line.webp"
+                  alt="PHBL Bonded Manufacturing Plant & Cleanroom Bottling Line"
+                  fill
+                  className="object-cover"
+                />
+              </div>
               <span className="text-xs font-mono uppercase text-[#1F4D3A] font-semibold">
                 Facility Overview
               </span>
