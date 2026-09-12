@@ -179,7 +179,7 @@ export function Footer() {
           </div>
           <div className="flex items-center gap-6">
             <Link href="/privacy" className="hover:text-neutral-300 transition-colors">
-              Privacy Policy (DPDP Act)
+              Privacy Policy
             </Link>
             <Link href="/terms" className="hover:text-neutral-300 transition-colors">
               Terms of Supply
