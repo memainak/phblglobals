@@ -1,6 +1,5 @@
 'use client';
-
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import {
@@ -28,7 +27,9 @@ export function Hero({ newProducts = [] }: HeroProps) {
   const [activeCardIndex, setActiveCardIndex] = useState(0);
 
   // Curate products to display in the card stack (prioritize new & patents)
-  const displayProducts = newProducts.length > 0 ? newProducts.slice(0, 6) : [];
+  const displayProducts = useMemo(() => {
+    return newProducts.length > 0 ? newProducts.slice(0, 6) : [];
+  }, [newProducts]);
 
   // If no new products or fallback, provide rich pharmaceutical showcase cards
   const fallbackCards = [
@@ -100,8 +101,8 @@ export function Hero({ newProducts = [] }: HeroProps) {
     },
   ];
 
-  const cardsData =
-    displayProducts.length > 0
+  const cardsData = useMemo(() => {
+    return displayProducts.length > 0
       ? displayProducts.map((p) => ({
           id: p.id,
           name: p.name,
@@ -120,64 +121,68 @@ export function Hero({ newProducts = [] }: HeroProps) {
           image: p.images?.[0] || '/images/products/bottle-default.webp',
         }))
       : fallbackCards;
+  }, [displayProducts]);
 
-  const stackCards = cardsData.map((item) => (
-    <div
-      key={item.id}
-      className="w-full h-full flex flex-col justify-between bg-white p-5 sm:p-6 select-none relative overflow-hidden group"
-    >
-      {/* Top Header: Badge + MRP */}
-      <div className="flex items-center justify-between gap-2 pb-3 border-b border-[rgba(18,21,15,0.08)]">
-        <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-[#EBF5EE] border border-[#1F4D3A]/20 text-[#1F4D3A] text-[10px] sm:text-[11px] font-mono font-semibold tracking-wide">
-          <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
-          <Sparkles className="w-3 h-3 text-[#1F4D3A]" />
-          <span>{item.badge}</span>
-        </span>
-        <span className="font-mono text-xs font-semibold text-[#1F4D3A] px-2 py-0.5 rounded bg-[#FAFAF8] border border-[rgba(18,21,15,0.08)]">
-          {item.packSize} · {item.mrp}
-        </span>
-      </div>
-
-      {/* Center: Image Stage */}
-      <div className="relative my-auto py-3 w-full flex items-center justify-center">
-        <div className="relative w-full aspect-4/3 max-h-56 rounded-2xl bg-gradient-to-b from-[#F7F9F7] to-[#EEF4F0] border border-[rgba(18,21,15,0.06)] flex items-center justify-center p-4 overflow-hidden shadow-inner group-hover:scale-102 transition-transform duration-500">
-          <Image
-            src={item.image}
-            alt={item.name}
-            fill
-            sizes="(max-width: 640px) 280px, 360px"
-            className="object-contain p-2 drop-shadow-md"
-            priority
-          />
-        </div>
-      </div>
-
-      {/* Bottom: Details & Monograph Link */}
-      <div className="pt-3 border-t border-[rgba(18,21,15,0.08)] space-y-2">
-        <div>
-          <h3 className="font-serif text-base sm:text-lg font-bold text-[#12150F] leading-snug line-clamp-1 group-hover:text-[#1F4D3A] transition-colors">
-            {item.name}
-          </h3>
-          <p className="text-xs text-[#595C54] line-clamp-2 mt-1 leading-relaxed">
-            {item.indications}
-          </p>
-        </div>
-
-        <div className="flex items-center justify-between pt-1">
-          <Link
-            href={`/products/${item.category}/${item.slug}`}
-            className="inline-flex items-center gap-1.5 text-xs font-semibold text-[#1F4D3A] hover:underline"
-          >
-            <span>Read Monograph</span>
-            <ExternalLink className="w-3 h-3" />
-          </Link>
-          <span className="text-[10px] font-mono text-neutral-400">
-            Swipe or click to cycle →
+  const stackCards = useMemo(() => {
+    return cardsData.map((item) => (
+      <div
+        key={item.id}
+        className="w-full h-full flex flex-col justify-between bg-white p-5 sm:p-6 select-none relative overflow-hidden group"
+      >
+        {/* Top Header: Badge + MRP */}
+        <div className="flex items-center justify-between gap-2 pb-3 border-b border-[rgba(18,21,15,0.08)]">
+          <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-[#EBF5EE] border border-[#1F4D3A]/20 text-[#1F4D3A] text-[10px] sm:text-[11px] font-mono font-semibold tracking-wide">
+            <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+            <Sparkles className="w-3 h-3 text-[#1F4D3A]" />
+            <span>{item.badge}</span>
+          </span>
+          <span className="font-mono text-xs font-semibold text-[#1F4D3A] px-2 py-0.5 rounded bg-[#FAFAF8] border border-[rgba(18,21,15,0.08)]">
+            {item.packSize} · {item.mrp}
           </span>
         </div>
+
+        {/* Center: Image Stage */}
+        <div className="relative my-auto py-3 w-full flex items-center justify-center">
+          <div className="relative w-full aspect-4/3 max-h-56 rounded-2xl bg-gradient-to-b from-[#F7F9F7] to-[#EEF4F0] border border-[rgba(18,21,15,0.06)] flex items-center justify-center p-4 overflow-hidden shadow-inner group-hover:scale-102 transition-transform duration-500">
+            <Image
+              src={item.image}
+              alt={item.name}
+              fill
+              sizes="(max-width: 640px) 280px, 360px"
+              className="object-contain p-2 drop-shadow-md"
+              priority
+            />
+          </div>
+        </div>
+
+        {/* Bottom: Details & Monograph Link */}
+        <div className="pt-3 border-t border-[rgba(18,21,15,0.08)] space-y-2">
+          <div>
+            <h3 className="font-serif text-base sm:text-lg font-bold text-[#12150F] leading-snug line-clamp-1 group-hover:text-[#1F4D3A] transition-colors">
+              {item.name}
+            </h3>
+            <p className="text-xs text-[#595C54] line-clamp-2 mt-1 leading-relaxed">
+              {item.indications}
+            </p>
+          </div>
+
+          <div className="flex items-center justify-between pt-1">
+            <Link
+              href={`/products/${item.category}/${item.slug}`}
+              onClick={(e) => e.stopPropagation()}
+              className="inline-flex items-center gap-1.5 text-xs font-semibold text-[#1F4D3A] hover:underline cursor-pointer"
+            >
+              <span>Read Monograph</span>
+              <ExternalLink className="w-3 h-3" />
+            </Link>
+            <span className="text-[10px] font-mono text-neutral-400">
+              Swipe or use arrows to cycle
+            </span>
+          </div>
+        </div>
       </div>
-    </div>
-  ));
+    ));
+  }, [cardsData]);
 
   return (
     <section className="relative overflow-hidden pt-16 sm:pt-20 lg:pt-28 pb-24 sm:pb-28 lg:pb-36 border-b border-[rgba(18,21,15,0.08)] bg-[#FAFAF8]">
@@ -292,12 +297,13 @@ export function Hero({ newProducts = [] }: HeroProps) {
                 key={stackKey}
                 cards={stackCards}
                 randomRotation={true}
-                sendToBackOnClick={true}
-                sensitivity={150}
+                sendToBackOnClick={false}
+                sensitivity={110}
                 autoplay={true}
-                autoplayDelay={3800}
+                autoplayDelay={3600}
                 pauseOnHover={true}
                 mobileClickOnly={false}
+                showArrows={true}
                 onCycle={(idx) => setActiveCardIndex(idx)}
               />
             </div>
