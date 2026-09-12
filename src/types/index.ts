@@ -166,7 +166,7 @@ export interface SiteSettings {
   mfgLicenseNo: string;
   phones: string[];
   tollFreePhone: string;
-  fax: string[];
+  fax?: string[];
   email: string;
   address: string;
   certifications: string[];

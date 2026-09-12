@@ -26,7 +26,6 @@ export function SettingsForm({ initialSettings }: SettingsFormProps) {
     primaryPhone: initialSettings.phones?.[0] || '9800011545',
     secondaryPhone: initialSettings.phones?.[1] || '9933301021',
     tollFreePhone: initialSettings.tollFreePhone || '9800011545',
-    fax: initialSettings.fax?.join(', ') || '8250461569',
     email: initialSettings.email || 'phblkn@gmail.com',
     address: initialSettings.address || 'L/3, Saratpally, Paschim Medinipur, Pin 721101, West Bengal, India',
     announcementEnabled: initialSettings.announcementBar?.enabled ?? true,
@@ -42,7 +41,6 @@ export function SettingsForm({ initialSettings }: SettingsFormProps) {
 
     try {
       const phones = [formData.primaryPhone.trim(), formData.secondaryPhone.trim()].filter(Boolean);
-      const fax = formData.fax.split(',').map((s) => s.trim()).filter(Boolean);
 
       const payload: Partial<SiteSettings> = {
         name: formData.name.trim(),
@@ -52,7 +50,6 @@ export function SettingsForm({ initialSettings }: SettingsFormProps) {
         mfgLicenseNo: formData.mfgLicenseNo.trim(),
         phones,
         tollFreePhone: formData.tollFreePhone.trim(),
-        fax,
         email: formData.email.trim(),
         address: formData.address.trim(),
         announcementBar: {
@@ -144,15 +141,6 @@ export function SettingsForm({ initialSettings }: SettingsFormProps) {
               value={formData.secondaryPhone}
               onChange={(e) => setFormData({ ...formData, secondaryPhone: e.target.value })}
               placeholder="e.g. 9933301021"
-            />
-          </div>
-
-          <div className="space-y-1">
-            <label className="font-semibold text-[#12150F]">Facsimile (Fax)</label>
-            <Input
-              value={formData.fax}
-              onChange={(e) => setFormData({ ...formData, fax: e.target.value })}
-              placeholder="e.g. 8250461569"
             />
           </div>
         </div>

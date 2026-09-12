@@ -3,7 +3,7 @@
 import React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { ShieldCheck, Phone, Mail, MapPin, Printer } from 'lucide-react';
+import { ShieldCheck, Phone, Mail, MapPin } from 'lucide-react';
 
 export function Footer() {
   return (
@@ -146,10 +146,6 @@ export function Footer() {
                 </div>
               </div>
               <div className="flex items-center gap-2">
-                <Printer className="w-4 h-4 text-emerald-400 shrink-0" />
-                <span className="text-xs text-neutral-400">Fax: 8250461569</span>
-              </div>
-              <div className="flex items-center gap-2">
                 <Mail className="w-4 h-4 text-emerald-400 shrink-0" />
                 <a href="mailto:phblkn@gmail.com" className="text-xs text-neutral-300 hover:text-white">
                   phblkn@gmail.com
@@ -172,12 +168,24 @@ export function Footer() {
           </p>
         </div>
 
-        {/* Bottom Bar: Copyright & Legal Links */}
+        {/* Bottom Bar: Copyright, Attribution & Legal Links */}
         <div className="pt-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-neutral-500">
-          <div>
-            © {new Date().getFullYear()} Purusottam Homeo Bikash Lab(Bonded). All rights reserved.
+          <div className="flex flex-wrap items-center justify-center sm:justify-start gap-x-2 gap-y-1">
+            <span>© {new Date().getFullYear()} Purusottam Homeo Bikash Lab(Bonded). All rights reserved.</span>
+            <span className="hidden sm:inline text-neutral-700">|</span>
+            <span>
+              Developed by{' '}
+              <a
+                href="https://ad-venture.in"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-neutral-400 hover:text-emerald-400 font-medium transition-colors underline-offset-2 hover:underline"
+              >
+                ad-venture.in
+              </a>
+            </span>
           </div>
-          <div className="flex items-center gap-6">
+          <div className="flex flex-wrap items-center justify-center sm:justify-end gap-x-6 gap-y-2">
             <Link href="/privacy" className="hover:text-neutral-300 transition-colors">
               Privacy Policy
             </Link>

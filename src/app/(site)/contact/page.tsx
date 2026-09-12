@@ -2,7 +2,7 @@ import React from 'react';
 import type { Metadata } from 'next';
 import { getSiteSettings, getProducts } from '@/lib/queries';
 import { ContactForm } from '@/components/site/ContactForm';
-import { MapPin, Phone, Mail, Printer, Clock, ShieldCheck, ExternalLink } from 'lucide-react';
+import { MapPin, Phone, Mail, Clock, ShieldCheck, ExternalLink } from 'lucide-react';
 
 export const metadata: Metadata = {
   title: 'Contact Corporate Office & Manufacturing Plant | PHBL',
@@ -88,13 +88,6 @@ export default async function ContactPage() {
                   </div>
                 </div>
 
-                <div className="flex items-start gap-3">
-                  <Printer className="w-5 h-5 text-[#1F4D3A] shrink-0 mt-0.5" />
-                  <div>
-                    <strong className="text-[#12150F] block">Facsimile (Fax)</strong>
-                    <span className="font-mono">{settings.fax.join(' / ')}</span>
-                  </div>
-                </div>
 
                 <div className="flex items-start gap-3">
                   <Mail className="w-5 h-5 text-[#1F4D3A] shrink-0 mt-0.5" />
