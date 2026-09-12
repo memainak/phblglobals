@@ -22,6 +22,7 @@ import {
   initialDownloads,
   initialTestimonials,
 } from '@/lib/data/initialData';
+import { unstable_noStore as noStore } from 'next/cache';
 
 // In-memory runtime cache / mock fallback for development without live Firestore
 const memoryProducts: Product[] = [...initialProducts];
@@ -54,6 +55,7 @@ export async function getProducts(options?: {
   limitCount?: number;
   includeUnpublished?: boolean;
 }): Promise<Product[]> {
+  noStore();
   if (adminDb) {
     try {
       const snap = await adminDb.collection('products').get();
@@ -94,6 +96,7 @@ export async function getProducts(options?: {
 }
 
 export async function getProductBySlug(category: string, slug: string): Promise<Product | null> {
+  noStore();
   // Use index-free getProducts to guarantee consistent live updates without composite index requirement
   const products = await getProducts({ category, includeUnpublished: true });
   const found = products.find((p) => p.slug === slug && p.published !== false);

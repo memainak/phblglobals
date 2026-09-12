@@ -10,7 +10,7 @@ export const metadata: Metadata = {
     'Comprehensive catalogue of homoeopathic mother tinctures, patent tonics, clinical drops, biochemic salts, cosmetics, and veterinary medicines. Mfg Lic. HL-792 M.',
 };
 
-export const revalidate = 3600;
+export const dynamic = 'force-dynamic';
 
 export default async function ProductsIndexPage() {
   const products = await getProducts();

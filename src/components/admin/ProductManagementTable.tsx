@@ -20,11 +20,8 @@ export function ProductManagementTable({ initialProducts }: ProductManagementTab
   const [categoryFilter, setCategoryFilter] = useState<string>('all');
   const [deletingId, setDeletingId] = useState<string | null>(null);
 
-  // Keep state in sync whenever server component revalidates
-  useEffect(() => {
-    setProducts(initialProducts);
-  }, [initialProducts]);
-
+  // Remove the useEffect that blindly overwrites state on router.refresh()
+  // to prevent race conditions with optimistic updates
   const filtered = products.filter((p) => {
     const matchesSearch =
       p.name.toLowerCase().includes(search.toLowerCase()) ||

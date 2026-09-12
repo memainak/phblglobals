@@ -13,8 +13,9 @@ export async function GET(req: NextRequest) {
     const includeUnpublished =
       searchParams.get('all') === 'true' || searchParams.get('includeUnpublished') === 'true';
     const products = await getProducts({ category, includeUnpublished });
+    const { adminDb } = require('@/lib/firebase/admin');
     return NextResponse.json(
-      { success: true, products },
+      { success: true, products, debug: { adminDbInitialized: !!adminDb } },
       {
         status: 200,
         headers: {
