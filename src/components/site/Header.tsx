@@ -15,6 +15,8 @@ import {
   Boxes,
   ArrowRight,
   ShieldAlert,
+  Sparkles,
+  PawPrint,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
@@ -180,7 +182,8 @@ export function Header() {
         >
           <div className="max-w-7xl mx-auto p-8">
             {activeMegaMenu === 'products' && (
-              <div className="grid grid-cols-4 gap-8">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6 xl:gap-8">
+                {/* 1: Homoeopathy */}
                 <div>
                   <div className="flex items-center gap-2 pb-3 mb-3 border-b border-[rgba(18,21,15,0.08)]">
                     <Boxes className="w-4 h-4 text-[#1F4D3A]" />
@@ -229,14 +232,23 @@ export function Header() {
                         Dilutions & Potencies
                       </Link>
                     </li>
+                    <li className="pt-1">
+                      <Link
+                        href="/products/homoeopathy"
+                        className="text-xs font-semibold text-[#1F4D3A] hover:underline inline-flex items-center gap-1"
+                      >
+                        View Homoeopathy Range <ArrowRight className="w-3 h-3" />
+                      </Link>
+                    </li>
                   </ul>
                 </div>
 
+                {/* 2: Cosmetics & Care */}
                 <div>
                   <div className="flex items-center gap-2 pb-3 mb-3 border-b border-[rgba(18,21,15,0.08)]">
-                    <FlaskConical className="w-4 h-4 text-[#1F4D3A]" />
+                    <Sparkles className="w-4 h-4 text-[#1F4D3A]" />
                     <span className="font-serif font-semibold text-base text-[#12150F]">
-                      Cosmetics & Vet Care
+                      Cosmetics & Care
                     </span>
                   </div>
                   <ul className="space-y-2 text-sm">
@@ -245,7 +257,7 @@ export function Header() {
                         href="/products/cosmetics"
                         className="text-[#595C54] hover:text-[#1F4D3A] block transition-colors"
                       >
-                        Protectin Hand Sanitizer Rub
+                        PHBL Naturals Face Wash
                       </Link>
                     </li>
                     <li>
@@ -253,33 +265,102 @@ export function Header() {
                         href="/products/cosmetics"
                         className="text-[#595C54] hover:text-[#1F4D3A] block transition-colors"
                       >
-                        Puro Herbal Therapeutic Body Oil
+                        Arnica & Rosemary Hair Care
                       </Link>
                     </li>
                     <li>
                       <Link
-                        href="/products/homoeovet"
+                        href="/products/cosmetics"
                         className="text-[#595C54] hover:text-[#1F4D3A] block transition-colors"
                       >
-                        Homoeo Vet Animal Health Range
+                        Aloe Vera Creams & Gels
                       </Link>
                     </li>
                     <li>
                       <Link
-                        href="/products/homoeovet"
+                        href="/products/cosmetics"
                         className="text-[#595C54] hover:text-[#1F4D3A] block transition-colors"
                       >
-                        Bovine Mastitis & Lactation Care
+                        Protectin Hand Care Lotion
+                      </Link>
+                    </li>
+                    <li>
+                      <Link
+                        href="/products/cosmetics"
+                        className="text-[#595C54] hover:text-[#1F4D3A] block transition-colors"
+                      >
+                        Puro Herbal Body Oil
+                      </Link>
+                    </li>
+                    <li className="pt-1">
+                      <Link
+                        href="/products/cosmetics"
+                        className="text-xs font-semibold text-[#1F4D3A] hover:underline inline-flex items-center gap-1"
+                      >
+                        View Cosmetics Range <ArrowRight className="w-3 h-3" />
                       </Link>
                     </li>
                   </ul>
                 </div>
 
+                {/* 3: Vet Care (Homoeo Vet) */}
+                <div>
+                  <div className="flex items-center gap-2 pb-3 mb-3 border-b border-[rgba(18,21,15,0.08)]">
+                    <PawPrint className="w-4 h-4 text-[#1F4D3A]" />
+                    <span className="font-serif font-semibold text-base text-[#12150F]">
+                      Veterinary Care
+                    </span>
+                  </div>
+                  <ul className="space-y-2 text-sm">
+                    <li>
+                      <Link
+                        href="/products/homoeovet"
+                        className="text-[#595C54] hover:text-[#1F4D3A] block transition-colors"
+                      >
+                        Mastitis-Care Vet Liquid
+                      </Link>
+                    </li>
+                    <li>
+                      <Link
+                        href="/products/homoeovet"
+                        className="text-[#595C54] hover:text-[#1F4D3A] block transition-colors"
+                      >
+                        Bovine Lacto-Booster
+                      </Link>
+                    </li>
+                    <li>
+                      <Link
+                        href="/products/homoeovet"
+                        className="text-[#595C54] hover:text-[#1F4D3A] block transition-colors"
+                      >
+                        Livestock & Dairy Health
+                      </Link>
+                    </li>
+                    <li>
+                      <Link
+                        href="/products/homoeovet"
+                        className="text-[#595C54] hover:text-[#1F4D3A] block transition-colors"
+                      >
+                        Animal Vitality & Immunity
+                      </Link>
+                    </li>
+                    <li className="pt-1">
+                      <Link
+                        href="/products/homoeovet"
+                        className="text-xs font-semibold text-[#1F4D3A] hover:underline inline-flex items-center gap-1"
+                      >
+                        View Homoeo Vet Range <ArrowRight className="w-3 h-3" />
+                      </Link>
+                    </li>
+                  </ul>
+                </div>
+
+                {/* 4: Trade & Monograph */}
                 <div>
                   <div className="flex items-center gap-2 pb-3 mb-3 border-b border-[rgba(18,21,15,0.08)]">
                     <FileCheck2 className="w-4 h-4 text-[#1F4D3A]" />
                     <span className="font-serif font-semibold text-base text-[#12150F]">
-                      Trade & Monograph
+                      Trade & Formulary
                     </span>
                   </div>
                   <ul className="space-y-2 text-sm">
@@ -301,6 +382,14 @@ export function Header() {
                     </li>
                     <li>
                       <Link
+                        href="/batches"
+                        className="text-[#595C54] hover:text-[#1F4D3A] block transition-colors"
+                      >
+                        Public Batch Verification
+                      </Link>
+                    </li>
+                    <li>
+                      <Link
                         href="/distributor-enquiry"
                         className="text-[#595C54] hover:text-[#1F4D3A] block transition-colors"
                       >
@@ -310,6 +399,7 @@ export function Header() {
                   </ul>
                 </div>
 
+                {/* 5: Regulatory Card */}
                 <div className="bg-[#F0F5F2] p-5 rounded-md border border-[#1F4D3A]/20 flex flex-col justify-between">
                   <div>
                     <span className="text-xs uppercase font-semibold text-[#1F4D3A] tracking-wider">
@@ -573,17 +663,20 @@ export function Header() {
               </button>
               {mobileAccordion === 'products' && (
                 <div className="mt-3 pl-2 space-y-2 text-sm text-[#595C54]">
-                  <Link href="/products" className="block py-1 hover:text-[#1F4D3A]">
-                    All Products (350+ SKUs)
+                  <Link href="/products" className="block py-1 hover:text-[#1F4D3A] font-medium text-[#12150F]">
+                    All Formulations (350+ SKUs)
                   </Link>
                   <Link href="/products/homoeopathy" className="block py-1 hover:text-[#1F4D3A]">
                     Homoeopathy (Tinctures, Tonics, Drops)
                   </Link>
                   <Link href="/products/cosmetics" className="block py-1 hover:text-[#1F4D3A]">
-                    Cosmetics & Protectin
+                    Cosmetics & Personal Care (PHBL Naturals)
                   </Link>
                   <Link href="/products/homoeovet" className="block py-1 hover:text-[#1F4D3A]">
-                    Homoeo Vet Animal Care
+                    Veterinary Care (Homoeo Vet)
+                  </Link>
+                  <Link href="/downloads" className="block py-1 hover:text-[#1F4D3A]">
+                    Therapeutic Index (PDF Edition)
                   </Link>
                 </div>
               )}

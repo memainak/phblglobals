@@ -50,7 +50,17 @@ export function Footer() {
               </li>
               <li>
                 <Link href="/products/homoeopathy" className="hover:text-white transition-colors">
-                  Mother Tinctures & Tonics
+                  Homoeopathic Formulations
+                </Link>
+              </li>
+              <li>
+                <Link href="/products/cosmetics" className="hover:text-white transition-colors">
+                  Cosmetics & Care (PHBL Naturals)
+                </Link>
+              </li>
+              <li>
+                <Link href="/products/homoeovet" className="hover:text-white transition-colors">
+                  Veterinary Care (Homoeo Vet)
                 </Link>
               </li>
               <li>

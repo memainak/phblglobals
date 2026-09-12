@@ -128,8 +128,8 @@ export function ProductCatalogFilter({
             {[
               { id: 'all', label: 'All Ranges' },
               { id: 'homoeopathy', label: 'Homoeopathic Formulations' },
-              { id: 'cosmetics', label: 'Cosmetics & Sanitizers' },
-              { id: 'homoeovet', label: 'Homoeo Vet Animal Care' },
+              { id: 'cosmetics', label: 'Cosmetics & Personal Care' },
+              { id: 'homoeovet', label: 'Veterinary Care (Homoeo Vet)' },
             ].map((cat) => (
               <label
                 key={cat.id}
