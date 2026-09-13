@@ -4,6 +4,8 @@ import { getTestimonials, saveTestimonial, deleteTestimonial } from '@/lib/queri
 import { testimonialSchema } from '@/lib/validators';
 import { Testimonial } from '@/types';
 
+export const dynamic = 'force-dynamic';
+
 export async function GET(req: NextRequest) {
   try {
     const { searchParams } = new URL(req.url);
@@ -11,7 +13,15 @@ export async function GET(req: NextRequest) {
       searchParams.get('all') === 'true' || searchParams.get('includeUnpublished') === 'true';
 
     const testimonials = await getTestimonials({ includeUnpublished });
-    return NextResponse.json({ success: true, testimonials }, { status: 200 });
+    return NextResponse.json(
+      { success: true, testimonials },
+      {
+        status: 200,
+        headers: {
+          'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate',
+        },
+      }
+    );
   } catch (err) {
     console.error('API /api/testimonials GET error:', err);
     return NextResponse.json({ error: 'Failed to fetch testimonials' }, { status: 500 });

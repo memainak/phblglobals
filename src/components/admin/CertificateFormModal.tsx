@@ -100,7 +100,16 @@ export function CertificateFormModal({ certification, onSuccess, trigger }: Cert
   return (
     <>
       {trigger ? (
-        <div onClick={() => setOpen(true)}>{trigger}</div>
+        React.isValidElement(trigger) ? (
+          React.cloneElement(trigger as React.ReactElement<{ onClick?: React.MouseEventHandler }>, {
+            onClick: (e: React.MouseEvent) => {
+              e.stopPropagation();
+              setOpen(true);
+            },
+          })
+        ) : (
+          <div onClick={() => setOpen(true)}>{trigger}</div>
+        )
       ) : isEdit ? (
         <Button
           onClick={() => setOpen(true)}

@@ -20,8 +20,10 @@ export function ProductManagementTable({ initialProducts }: ProductManagementTab
   const [categoryFilter, setCategoryFilter] = useState<string>('all');
   const [deletingId, setDeletingId] = useState<string | null>(null);
 
-  // Remove the useEffect that blindly overwrites state on router.refresh()
-  // to prevent race conditions with optimistic updates
+  useEffect(() => {
+    setProducts(initialProducts);
+  }, [initialProducts]);
+
   const filtered = products.filter((p) => {
     const matchesSearch =
       p.name.toLowerCase().includes(search.toLowerCase()) ||
@@ -46,10 +48,11 @@ export function ProductManagementTable({ initialProducts }: ProductManagementTab
         setProducts((prev) => prev.filter((p) => p.id !== id));
         router.refresh();
       } else {
-        alert('Failed to delete formulation. Please check server logs.');
+        const errJson = await res.json().catch(() => ({}));
+        alert(`Failed to delete formulation: ${errJson.error || 'Server error'}`);
       }
-    } catch {
-      alert('Error occurred while deleting formulation.');
+    } catch (err) {
+      alert(`Error occurred while deleting formulation: ${err instanceof Error ? err.message : String(err)}`);
     } finally {
       setDeletingId(null);
     }

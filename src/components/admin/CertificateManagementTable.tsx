@@ -17,6 +17,10 @@ export function CertificateManagementTable({ initialCertifications }: Certificat
   const [certs, setCerts] = useState<Certification[]>(initialCertifications);
   const [deletingId, setDeletingId] = useState<string | null>(null);
 
+  React.useEffect(() => {
+    setCerts(initialCertifications);
+  }, [initialCertifications]);
+
   const handleDelete = async (id: string, title: string) => {
     if (!confirm(`Are you sure you want to permanently delete certificate "${title}"?`)) {
       return;
@@ -31,10 +35,11 @@ export function CertificateManagementTable({ initialCertifications }: Certificat
         setCerts((prev) => prev.filter((c) => c.id !== id));
         router.refresh();
       } else {
-        alert('Failed to delete certificate.');
+        const errJson = await res.json().catch(() => ({}));
+        alert(`Failed to delete certificate: ${errJson.error || 'Server error'}`);
       }
-    } catch {
-      alert('Error occurred while deleting certificate.');
+    } catch (err) {
+      alert(`Error occurred while deleting certificate: ${err instanceof Error ? err.message : String(err)}`);
     } finally {
       setDeletingId(null);
     }
@@ -42,7 +47,7 @@ export function CertificateManagementTable({ initialCertifications }: Certificat
 
   const reloadCerts = async () => {
     try {
-      const res = await fetch('/api/certifications');
+      const res = await fetch('/api/certifications?_t=' + Date.now());
       const json = await res.json();
       if (json.certifications) {
         setCerts(json.certifications);

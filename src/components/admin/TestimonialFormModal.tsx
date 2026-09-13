@@ -98,9 +98,18 @@ export function TestimonialFormModal({
   return (
     <>
       {trigger ? (
-        <div onClick={() => setOpen(true)} className="inline-block">
-          {trigger}
-        </div>
+        React.isValidElement(trigger) ? (
+          React.cloneElement(trigger as React.ReactElement<{ onClick?: React.MouseEventHandler }>, {
+            onClick: (e: React.MouseEvent) => {
+              e.stopPropagation();
+              setOpen(true);
+            },
+          })
+        ) : (
+          <div onClick={() => setOpen(true)} className="inline-block">
+            {trigger}
+          </div>
+        )
       ) : (
         <Button
           onClick={() => setOpen(true)}

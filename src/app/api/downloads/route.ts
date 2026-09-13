@@ -1,11 +1,22 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { revalidatePath } from 'next/cache';
 import { getDownloadsList, saveDownload, deleteDownload } from '@/lib/queries';
 import { Download } from '@/types';
+
+export const dynamic = 'force-dynamic';
 
 export async function GET() {
   try {
     const downloads = await getDownloadsList();
-    return NextResponse.json({ success: true, downloads }, { status: 200 });
+    return NextResponse.json(
+      { success: true, downloads },
+      {
+        status: 200,
+        headers: {
+          'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate',
+        },
+      }
+    );
   } catch (err) {
     console.error('API /api/downloads GET error:', err);
     return NextResponse.json({ error: 'Failed to fetch downloads' }, { status: 500 });
@@ -36,10 +47,20 @@ export async function POST(req: NextRequest) {
     };
 
     const saved = await saveDownload(downloadData);
+
+    try {
+      revalidatePath('/downloads');
+      revalidatePath('/admin/downloads');
+      revalidatePath('/');
+    } catch (e) {
+      console.warn('Revalidation warning:', e);
+    }
+
     return NextResponse.json({ success: true, download: saved }, { status: 200 });
   } catch (err) {
     console.error('API /api/downloads POST error:', err);
-    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
+    const msg = err instanceof Error ? err.message : 'Internal server error';
+    return NextResponse.json({ error: msg }, { status: 500 });
   }
 }
 
@@ -66,9 +87,19 @@ export async function DELETE(req: NextRequest) {
     }
 
     await deleteDownload(id);
+
+    try {
+      revalidatePath('/downloads');
+      revalidatePath('/admin/downloads');
+      revalidatePath('/');
+    } catch (e) {
+      console.warn('Revalidation warning:', e);
+    }
+
     return NextResponse.json({ success: true, deletedId: id }, { status: 200 });
   } catch (err) {
     console.error('API /api/downloads DELETE error:', err);
-    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
+    const msg = err instanceof Error ? err.message : 'Internal server error';
+    return NextResponse.json({ error: msg }, { status: 500 });
   }
 }

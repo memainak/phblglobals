@@ -1,11 +1,22 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { revalidatePath } from 'next/cache';
 import { getGalleryList, saveGalleryItem, deleteGalleryItem } from '@/lib/queries';
 import { GalleryItem } from '@/types';
+
+export const dynamic = 'force-dynamic';
 
 export async function GET() {
   try {
     const gallery = await getGalleryList();
-    return NextResponse.json({ success: true, gallery }, { status: 200 });
+    return NextResponse.json(
+      { success: true, gallery },
+      {
+        status: 200,
+        headers: {
+          'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate',
+        },
+      }
+    );
   } catch (err) {
     console.error('API /api/gallery GET error:', err);
     return NextResponse.json({ error: 'Failed to fetch gallery items' }, { status: 500 });
@@ -35,10 +46,20 @@ export async function POST(req: NextRequest) {
     };
 
     const saved = await saveGalleryItem(itemData);
+
+    try {
+      revalidatePath('/gallery');
+      revalidatePath('/admin/gallery');
+      revalidatePath('/');
+    } catch (e) {
+      console.warn('Revalidation warning:', e);
+    }
+
     return NextResponse.json({ success: true, item: saved }, { status: 200 });
   } catch (err) {
     console.error('API /api/gallery POST error:', err);
-    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
+    const msg = err instanceof Error ? err.message : 'Internal server error';
+    return NextResponse.json({ error: msg }, { status: 500 });
   }
 }
 
@@ -65,9 +86,19 @@ export async function DELETE(req: NextRequest) {
     }
 
     await deleteGalleryItem(id);
+
+    try {
+      revalidatePath('/gallery');
+      revalidatePath('/admin/gallery');
+      revalidatePath('/');
+    } catch (e) {
+      console.warn('Revalidation warning:', e);
+    }
+
     return NextResponse.json({ success: true, deletedId: id }, { status: 200 });
   } catch (err) {
     console.error('API /api/gallery DELETE error:', err);
-    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
+    const msg = err instanceof Error ? err.message : 'Internal server error';
+    return NextResponse.json({ error: msg }, { status: 500 });
   }
 }

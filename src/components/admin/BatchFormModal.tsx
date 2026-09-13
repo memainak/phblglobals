@@ -12,6 +12,20 @@ interface BatchFormModalProps {
   trigger?: React.ReactNode;
 }
 
+function safeDateSlice(dateStr?: string | null): string {
+  if (!dateStr) return '';
+  const d = new Date(dateStr);
+  if (isNaN(d.getTime())) {
+    if (/^\d{4}-\d{2}-\d{2}$/.test(dateStr)) return dateStr;
+    return '';
+  }
+  try {
+    return d.toISOString().slice(0, 10);
+  } catch {
+    return '';
+  }
+}
+
 export function BatchFormModal({ batch, onSuccess, trigger }: BatchFormModalProps) {
   const [open, setOpen] = useState(false);
   const [submitting, setSubmitting] = useState(false);
@@ -23,6 +37,8 @@ export function BatchFormModal({ batch, onSuccess, trigger }: BatchFormModalProp
     apiName: '',
     brandName: '',
     uniqueProductCode: '',
+    manufacturerName: 'Purusottam Homoeo Bikash Laboratory (Bonded)',
+    manufacturerAddress: 'L/3, Saratpally, Paschim Medinipur, Pin 721101, West Bengal, India',
     batchSize: '450 Litres',
     mfgDate: new Date().toISOString().slice(0, 10),
     expDate: '',
@@ -41,9 +57,13 @@ export function BatchFormModal({ batch, onSuccess, trigger }: BatchFormModalProp
         apiName: batch.apiName || '',
         brandName: batch.brandName || '',
         uniqueProductCode: batch.uniqueProductCode || '',
+        manufacturerName: batch.manufacturerName || 'Purusottam Homoeo Bikash Laboratory (Bonded)',
+        manufacturerAddress:
+          batch.manufacturerAddress ||
+          'L/3, Saratpally, Paschim Medinipur, Pin 721101, West Bengal, India',
         batchSize: batch.batchSize || '450 Litres',
-        mfgDate: batch.mfgDate ? new Date(batch.mfgDate).toISOString().slice(0, 10) : '',
-        expDate: batch.expDate ? new Date(batch.expDate).toISOString().slice(0, 10) : '',
+        mfgDate: safeDateSlice(batch.mfgDate),
+        expDate: safeDateSlice(batch.expDate),
         expiryNote: batch.expiryNote || '',
         shippingContainerCode: batch.shippingContainerCode || '',
         mfgLicenseNo: batch.mfgLicenseNo || 'HL-792 M',
@@ -57,6 +77,9 @@ export function BatchFormModal({ batch, onSuccess, trigger }: BatchFormModalProp
         apiName: '',
         brandName: '',
         uniqueProductCode: '',
+        manufacturerName: 'Purusottam Homoeo Bikash Laboratory (Bonded)',
+        manufacturerAddress:
+          'L/3, Saratpally, Paschim Medinipur, Pin 721101, West Bengal, India',
         batchSize: '450 Litres',
         mfgDate: new Date().toISOString().slice(0, 10),
         expDate: '',
@@ -77,12 +100,13 @@ export function BatchFormModal({ batch, onSuccess, trigger }: BatchFormModalProp
 
     try {
       const res = await fetch('/api/batch', {
-        method: 'POST',
+        method: isEdit ? 'PUT' : 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           ...formData,
           batchNo: formData.batchNo.trim().toUpperCase(),
           expDate: formData.expDate || null,
+          originalBatchNo: batch?.batchNo,
         }),
       });
 
@@ -103,7 +127,16 @@ export function BatchFormModal({ batch, onSuccess, trigger }: BatchFormModalProp
   return (
     <>
       {trigger ? (
-        <div onClick={() => setOpen(true)}>{trigger}</div>
+        React.isValidElement(trigger) ? (
+          React.cloneElement(trigger as React.ReactElement<{ onClick?: React.MouseEventHandler }>, {
+            onClick: (e: React.MouseEvent) => {
+              e.stopPropagation();
+              setOpen(true);
+            },
+          })
+        ) : (
+          <div onClick={() => setOpen(true)}>{trigger}</div>
+        )
       ) : isEdit ? (
         <Button
           onClick={() => setOpen(true)}
@@ -259,6 +292,46 @@ export function BatchFormModal({ batch, onSuccess, trigger }: BatchFormModalProp
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
                   <label className="block font-semibold text-[#12150F] mb-1">
+                    Manufacturer Name *
+                  </label>
+                  <Input
+                    required
+                    value={formData.manufacturerName}
+                    onChange={(e) =>
+                      setFormData({ ...formData, manufacturerName: e.target.value })
+                    }
+                  />
+                </div>
+                <div>
+                  <label className="block font-semibold text-[#12150F] mb-1">
+                    Manufacturing License No *
+                  </label>
+                  <Input
+                    required
+                    value={formData.mfgLicenseNo}
+                    onChange={(e) =>
+                      setFormData({ ...formData, mfgLicenseNo: e.target.value })
+                    }
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label className="block font-semibold text-[#12150F] mb-1">
+                  Manufacturer Address *
+                </label>
+                <Input
+                  required
+                  value={formData.manufacturerAddress}
+                  onChange={(e) =>
+                    setFormData({ ...formData, manufacturerAddress: e.target.value })
+                  }
+                />
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <label className="block font-semibold text-[#12150F] mb-1">
                     Expiry Pharmacopoeial Rule / Note
                   </label>
                   <Input
@@ -316,7 +389,23 @@ export function BatchFormModal({ batch, onSuccess, trigger }: BatchFormModalProp
                 />
               </div>
 
-              <div className="pt-2 flex justify-end gap-3">
+              <div className="pt-2">
+                <label className="flex items-center gap-2 cursor-pointer">
+                  <input
+                    type="checkbox"
+                    checked={formData.published}
+                    onChange={(e) =>
+                      setFormData({ ...formData, published: e.target.checked })
+                    }
+                    className="rounded text-[#1F4D3A]"
+                  />
+                  <span className="font-semibold text-[#12150F]">
+                    Published in Public Master Index (Searchable via QR / COA)
+                  </span>
+                </label>
+              </div>
+
+              <div className="pt-2 flex justify-end gap-3 border-t border-[rgba(18,21,15,0.08)]">
                 <Button
                   type="button"
                   onClick={() => setOpen(false)}
@@ -331,7 +420,7 @@ export function BatchFormModal({ batch, onSuccess, trigger }: BatchFormModalProp
                   variant="primary"
                   size="md"
                 >
-                  {submitting ? 'Saving Monograph...' : 'Save & Publish Batch'}
+                  {submitting ? 'Saving Monograph...' : isEdit ? 'Update Batch Record' : 'Save & Publish Batch'}
                 </Button>
               </div>
             </form>

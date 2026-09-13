@@ -18,6 +18,10 @@ export function BatchManagementTable({ initialBatches }: BatchManagementTablePro
   const [search, setSearch] = useState('');
   const [deletingBatchNo, setDeletingBatchNo] = useState<string | null>(null);
 
+  React.useEffect(() => {
+    setBatches(initialBatches);
+  }, [initialBatches]);
+
   const filtered = batches.filter((b) => {
     return (
       b.batchNo.toLowerCase().includes(search.toLowerCase()) ||
@@ -41,10 +45,11 @@ export function BatchManagementTable({ initialBatches }: BatchManagementTablePro
         setBatches((prev) => prev.filter((b) => b.batchNo !== batchNo));
         router.refresh();
       } else {
-        alert('Failed to delete batch record.');
+        const errJson = await res.json().catch(() => ({}));
+        alert(`Failed to delete batch record: ${errJson.error || 'Server error'}`);
       }
-    } catch {
-      alert('Error occurred while deleting batch.');
+    } catch (err) {
+      alert(`Error occurred while deleting batch: ${err instanceof Error ? err.message : String(err)}`);
     } finally {
       setDeletingBatchNo(null);
     }
@@ -52,10 +57,15 @@ export function BatchManagementTable({ initialBatches }: BatchManagementTablePro
 
   const reloadBatches = async () => {
     try {
-      const res = await fetch('/api/batch');
+      const res = await fetch('/api/batch?includeUnpublished=true&_t=' + Date.now());
       const json = await res.json();
-      if (json.batches) {
-        setBatches(json.batches);
+      const list = Array.isArray(json.batches)
+        ? json.batches
+        : Array.isArray(json.batches?.batches)
+        ? json.batches.batches
+        : [];
+      if (list.length > 0 || json.success) {
+        setBatches(list);
       }
       router.refresh();
     } catch {

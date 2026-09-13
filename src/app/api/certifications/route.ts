@@ -1,11 +1,22 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { revalidatePath } from 'next/cache';
 import { getCertificationsList, saveCertification, deleteCertification } from '@/lib/queries';
 import { Certification } from '@/types';
+
+export const dynamic = 'force-dynamic';
 
 export async function GET() {
   try {
     const certifications = await getCertificationsList();
-    return NextResponse.json({ success: true, certifications }, { status: 200 });
+    return NextResponse.json(
+      { success: true, certifications },
+      {
+        status: 200,
+        headers: {
+          'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate',
+        },
+      }
+    );
   } catch (err) {
     console.error('API /api/certifications GET error:', err);
     return NextResponse.json({ error: 'Failed to fetch certifications' }, { status: 500 });
@@ -37,10 +48,21 @@ export async function POST(req: NextRequest) {
     };
 
     const saved = await saveCertification(certData);
+
+    try {
+      revalidatePath('/certifications');
+      revalidatePath('/admin/certifications');
+      revalidatePath('/quality');
+      revalidatePath('/');
+    } catch (e) {
+      console.warn('Revalidation warning:', e);
+    }
+
     return NextResponse.json({ success: true, certification: saved }, { status: 200 });
   } catch (err) {
     console.error('API /api/certifications POST error:', err);
-    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
+    const msg = err instanceof Error ? err.message : 'Internal server error';
+    return NextResponse.json({ error: msg }, { status: 500 });
   }
 }
 
@@ -67,9 +89,20 @@ export async function DELETE(req: NextRequest) {
     }
 
     await deleteCertification(id);
+
+    try {
+      revalidatePath('/certifications');
+      revalidatePath('/admin/certifications');
+      revalidatePath('/quality');
+      revalidatePath('/');
+    } catch (e) {
+      console.warn('Revalidation warning:', e);
+    }
+
     return NextResponse.json({ success: true, deletedId: id }, { status: 200 });
   } catch (err) {
     console.error('API /api/certifications DELETE error:', err);
-    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
+    const msg = err instanceof Error ? err.message : 'Internal server error';
+    return NextResponse.json({ error: msg }, { status: 500 });
   }
 }

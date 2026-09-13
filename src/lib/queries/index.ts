@@ -109,10 +109,15 @@ export async function getBatches(options?: {
   productId?: string;
   page?: number;
   pageSize?: number;
+  includeUnpublished?: boolean;
 }): Promise<{ batches: Batch[]; total: number }> {
+  noStore();
   if (adminDb) {
     try {
-      let q: Query<DocumentData> = adminDb.collection('batches').where('published', '==', true);
+      let q: Query<DocumentData> = adminDb.collection('batches');
+      if (!options?.includeUnpublished) {
+        q = q.where('published', '==', true);
+      }
       if (options?.authority && options.authority !== 'all') {
         q = q.where('authority', '==', options.authority);
       }
@@ -121,6 +126,9 @@ export async function getBatches(options?: {
       }
       const snap = await q.get();
       let allBatches = snap.docs.map((doc: QueryDocumentSnapshot) => ({ id: doc.id, ...doc.data() } as Batch));
+      if (!options?.includeUnpublished) {
+        allBatches = allBatches.filter((b) => b.published !== false);
+      }
       if (options?.query) {
         const searchLower = options.query.toLowerCase().trim();
         allBatches = allBatches.filter(
@@ -128,7 +136,7 @@ export async function getBatches(options?: {
             b.batchNo.toLowerCase().includes(searchLower) ||
             b.brandName.toLowerCase().includes(searchLower) ||
             b.apiName.toLowerCase().includes(searchLower) ||
-            b.uniqueProductCode.toLowerCase().includes(searchLower)
+            (b.uniqueProductCode && b.uniqueProductCode.toLowerCase().includes(searchLower))
         );
       }
       const page = options?.page || 1;
@@ -141,7 +149,7 @@ export async function getBatches(options?: {
     }
   }
 
-  let list = memoryBatches.filter((b) => b.published);
+  let list = options?.includeUnpublished ? [...memoryBatches] : memoryBatches.filter((b) => b.published);
   if (options?.authority && options.authority !== 'all') {
     list = list.filter((b) => b.authority.toLowerCase().includes(options.authority!.toLowerCase()));
   }
@@ -155,7 +163,7 @@ export async function getBatches(options?: {
         b.batchNo.toLowerCase().includes(searchLower) ||
         b.brandName.toLowerCase().includes(searchLower) ||
         b.apiName.toLowerCase().includes(searchLower) ||
-        b.uniqueProductCode.toLowerCase().includes(searchLower)
+        (b.uniqueProductCode && b.uniqueProductCode.toLowerCase().includes(searchLower))
     );
   }
   const page = options?.page || 1;
@@ -249,7 +257,7 @@ export async function getCertifications(): Promise<Certification[]> {
         .orderBy('order', 'asc')
         .get();
       if (!snap.empty) {
-        return snap.docs.map((doc: QueryDocumentSnapshot) => ({ id: doc.id, ...doc.data() } as Certification));
+        return snap.docs.map((d: QueryDocumentSnapshot) => ({ id: d.id, ...d.data() } as Certification));
       }
     } catch (err) {
       console.warn('Error fetching certifications from Firestore, using fallback:', err);
@@ -404,6 +412,7 @@ export async function saveBatchBulk(batches: Batch[]): Promise<{ added: number; 
 }
 
 export async function getEnquiriesList(): Promise<Enquiry[]> {
+  noStore();
   if (adminDb) {
     try {
       const snap = await adminDb.collection('enquiries').orderBy('createdAt', 'desc').get();
@@ -416,6 +425,7 @@ export async function getEnquiriesList(): Promise<Enquiry[]> {
 }
 
 export async function getDistributorEnquiriesList(): Promise<DistributorEnquiry[]> {
+  noStore();
   if (adminDb) {
     try {
       const snap = await adminDb.collection('distributorEnquiries').orderBy('createdAt', 'desc').get();
@@ -478,6 +488,7 @@ export async function deleteBatch(batchNo: string): Promise<boolean> {
 }
 
 export async function getCertificationsList(): Promise<Certification[]> {
+  noStore();
   if (adminDb) {
     try {
       const snap = await adminDb.collection('certifications').orderBy('order', 'asc').get();
@@ -599,6 +610,7 @@ export async function saveSiteSettings(updates: Partial<SiteSettings>): Promise<
 
 // Downloads CRUD
 export async function getDownloadsList(): Promise<Download[]> {
+  noStore();
   if (adminDb) {
     try {
       const snap = await adminDb.collection('downloads').get();
@@ -648,6 +660,7 @@ export async function deleteDownload(id: string): Promise<boolean> {
 
 // Gallery CRUD
 export async function getGalleryList(): Promise<GalleryItem[]> {
+  noStore();
   if (adminDb) {
     try {
       const snap = await adminDb.collection('gallery').orderBy('order', 'asc').get();

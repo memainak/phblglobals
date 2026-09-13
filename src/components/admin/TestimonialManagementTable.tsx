@@ -17,6 +17,10 @@ export function TestimonialManagementTable({ initialTestimonials }: TestimonialM
   const [searchTerm, setSearchTerm] = useState('');
   const [deletingId, setDeletingId] = useState<string | null>(null);
 
+  React.useEffect(() => {
+    setTestimonials(initialTestimonials);
+  }, [initialTestimonials]);
+
   const handleDelete = async (id: string, author: string) => {
     if (!confirm(`Are you sure you want to delete the endorsement by "${author}"?`)) {
       return;
@@ -31,10 +35,11 @@ export function TestimonialManagementTable({ initialTestimonials }: TestimonialM
         setTestimonials((prev) => prev.filter((t) => t.id !== id));
         router.refresh();
       } else {
-        alert('Failed to delete endorsement.');
+        const errJson = await res.json().catch(() => ({}));
+        alert(`Failed to delete endorsement: ${errJson.error || 'Server error'}`);
       }
-    } catch {
-      alert('Error occurred while deleting endorsement.');
+    } catch (err) {
+      alert(`Error occurred while deleting endorsement: ${err instanceof Error ? err.message : String(err)}`);
     } finally {
       setDeletingId(null);
     }
@@ -42,7 +47,7 @@ export function TestimonialManagementTable({ initialTestimonials }: TestimonialM
 
   const reloadTestimonials = async () => {
     try {
-      const res = await fetch('/api/testimonials?includeUnpublished=true');
+      const res = await fetch('/api/testimonials?includeUnpublished=true&_t=' + Date.now());
       const json = await res.json();
       if (json.testimonials) {
         setTestimonials(json.testimonials);

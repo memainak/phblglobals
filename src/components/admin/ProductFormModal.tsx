@@ -51,7 +51,7 @@ export function ProductFormModal({ product, onSuccess, trigger }: ProductFormMod
         indications: product.indications || '',
         compositionText: product.composition?.map((c) => `${c.ingredient}: ${c.strength || ''}`).join('\n') || '',
         dosage: product.dosage || '',
-        packSizesText: product.packSizes?.map((p) => p.size).join(', ') || '30 ml, 100 ml',
+        packSizesText: product.packSizes?.map((p) => p.mrp ? `${p.size}: ${p.mrp}` : p.size).join(', ') || '30 ml, 100 ml',
         storage: product.storage || '',
         caution: product.caution || '',
         images: product.images || [],
@@ -178,7 +178,13 @@ export function ProductFormModal({ product, onSuccess, trigger }: ProductFormMod
         .split(',')
         .map((s) => s.trim())
         .filter(Boolean)
-        .map((size) => ({ size }));
+        .map((sizeStr) => {
+          const parts = sizeStr.split(/[:\-]/);
+          const size = parts[0]?.trim() || sizeStr;
+          const mrpRaw = parts[1]?.trim();
+          const mrp = mrpRaw ? Number(mrpRaw.replace(/[^0-9.]/g, '')) : undefined;
+          return { size, ...(mrp !== undefined && !isNaN(mrp) ? { mrp } : {}) };
+        });
 
       const payload = {
         id: product?.id,
@@ -230,7 +236,16 @@ export function ProductFormModal({ product, onSuccess, trigger }: ProductFormMod
   return (
     <>
       {trigger ? (
-        <div onClick={() => setOpen(true)}>{trigger}</div>
+        React.isValidElement(trigger) ? (
+          React.cloneElement(trigger as React.ReactElement<{ onClick?: React.MouseEventHandler }>, {
+            onClick: (e: React.MouseEvent) => {
+              e.stopPropagation();
+              setOpen(true);
+            },
+          })
+        ) : (
+          <div onClick={() => setOpen(true)}>{trigger}</div>
+        )
       ) : isEdit ? (
         <Button
           onClick={() => setOpen(true)}

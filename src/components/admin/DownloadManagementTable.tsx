@@ -18,6 +18,10 @@ export function DownloadManagementTable({ initialDownloads }: DownloadManagement
   const [deletingId, setDeletingId] = useState<string | null>(null);
   const [filterCategory, setFilterCategory] = useState<string>('All');
 
+  React.useEffect(() => {
+    setDownloads(initialDownloads);
+  }, [initialDownloads]);
+
   const categories = [
     'All',
     'Therapeutic Index',
@@ -46,10 +50,11 @@ export function DownloadManagementTable({ initialDownloads }: DownloadManagement
         setDownloads((prev) => prev.filter((d) => d.id !== id));
         router.refresh();
       } else {
-        alert('Failed to delete download document.');
+        const errJson = await res.json().catch(() => ({}));
+        alert(`Failed to delete download document: ${errJson.error || 'Server error'}`);
       }
-    } catch {
-      alert('Error occurred while deleting document.');
+    } catch (err) {
+      alert(`Error occurred while deleting document: ${err instanceof Error ? err.message : String(err)}`);
     } finally {
       setDeletingId(null);
     }
@@ -57,7 +62,7 @@ export function DownloadManagementTable({ initialDownloads }: DownloadManagement
 
   const reloadDownloads = async () => {
     try {
-      const res = await fetch('/api/downloads');
+      const res = await fetch('/api/downloads?_t=' + Date.now());
       const json = await res.json();
       if (json.downloads) {
         setDownloads(json.downloads);

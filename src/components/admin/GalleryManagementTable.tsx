@@ -17,6 +17,10 @@ export function GalleryManagementTable({ initialGallery }: GalleryManagementTabl
   const [deletingId, setDeletingId] = useState<string | null>(null);
   const [filterAlbum, setFilterAlbum] = useState<string>('All');
 
+  React.useEffect(() => {
+    setGallery(initialGallery);
+  }, [initialGallery]);
+
   const albums = ['All', 'Factory', 'Laboratory', 'Products', 'Exhibitions', 'Events'];
 
   const filtered =
@@ -38,10 +42,11 @@ export function GalleryManagementTable({ initialGallery }: GalleryManagementTabl
         setGallery((prev) => prev.filter((g) => g.id !== id));
         router.refresh();
       } else {
-        alert('Failed to delete gallery photo.');
+        const errJson = await res.json().catch(() => ({}));
+        alert(`Failed to delete gallery photo: ${errJson.error || 'Server error'}`);
       }
-    } catch {
-      alert('Error occurred while deleting photo.');
+    } catch (err) {
+      alert(`Error occurred while deleting photo: ${err instanceof Error ? err.message : String(err)}`);
     } finally {
       setDeletingId(null);
     }
@@ -49,7 +54,7 @@ export function GalleryManagementTable({ initialGallery }: GalleryManagementTabl
 
   const reloadGallery = async () => {
     try {
-      const res = await fetch('/api/gallery');
+      const res = await fetch('/api/gallery?_t=' + Date.now());
       const json = await res.json();
       if (json.gallery) {
         setGallery(json.gallery);
