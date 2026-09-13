@@ -12,16 +12,16 @@ interface ProductShowcaseProps {
 }
 
 export function ProductShowcase({ products }: ProductShowcaseProps) {
-  const [activeTab, setActiveTab] = useState<'all' | ProductCategory>('all');
+  const [activeTab, setActiveTab] = useState<'all' | ProductCategory>('cosmetics');
 
   const filteredProducts =
     activeTab === 'all'
-      ? products
+      ? [...products].sort((a, b) => (a.category === 'cosmetics' ? -1 : b.category === 'cosmetics' ? 1 : 0))
       : products.filter((p) => p.category === activeTab);
 
   const tabs: { id: 'all' | ProductCategory; label: string }[] = [
-    { id: 'all', label: 'All Formulations' },
     { id: 'cosmetics', label: 'PHBL Naturals Cosmetics (New Launch)' },
+    { id: 'all', label: 'All Formulations' },
     { id: 'homoeopathy', label: 'Homoeopathy (Tinctures & Tonics)' },
     { id: 'homoeovet', label: 'Homoeo Vet Care' },
   ];
