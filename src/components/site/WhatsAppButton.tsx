@@ -3,8 +3,13 @@
 import React from 'react';
 import { MessageSquare } from 'lucide-react';
 
-export function WhatsAppButton() {
-  const phoneNumber = '919800011545';
+interface WhatsAppButtonProps {
+  phone?: string;
+}
+
+export function WhatsAppButton({ phone }: WhatsAppButtonProps) {
+  const digitsOnly = (phone || '9800011545').replace(/\D/g, '');
+  const phoneNumber = digitsOnly.startsWith('91') ? digitsOnly : `91${digitsOnly}`;
   const prefilledMessage = encodeURIComponent(
     'Hello PHBL Team, I am inquiring regarding pharmaceutical product availability, batch verification, or distributorship.'
   );

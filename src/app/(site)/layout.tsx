@@ -31,7 +31,7 @@ export default async function SiteLayout({
 
       {/* Floating Interactive Assistants */}
       <ChatbotWidget />
-      <WhatsAppButton />
+      <WhatsAppButton phone={settings.phones?.[0] || settings.tollFreePhone} />
     </div>
   );
 }

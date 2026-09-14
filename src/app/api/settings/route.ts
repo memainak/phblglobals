@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { revalidatePath } from 'next/cache';
 import { getSiteSettings, saveSiteSettings } from '@/lib/queries';
 import { SiteSettings } from '@/types';
 
@@ -21,6 +22,7 @@ export async function POST(req: NextRequest) {
     }
 
     const updated = await saveSiteSettings(updates);
+    revalidatePath('/', 'layout');
     return NextResponse.json({ success: true, settings: updated }, { status: 200 });
   } catch (err) {
     console.error('API /api/settings POST error:', err);
