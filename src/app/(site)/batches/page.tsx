@@ -39,23 +39,7 @@ export default async function BatchesIndexPage() {
           </p>
         </div>
 
-        {/* Informational callout grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs text-[#595C54]">
-          <div className="p-3.5 bg-white rounded-md border border-[rgba(18,21,15,0.08)] flex items-center gap-2.5">
-            <FileCheck className="w-4 h-4 text-[#1F4D3A] shrink-0" />
-            <span>Every batch has a full traceability record</span>
-          </div>
 
-          <div className="p-3.5 bg-white rounded-md border border-[rgba(18,21,15,0.08)] flex items-center gap-2.5">
-            <QrCode className="w-4 h-4 text-[#1F4D3A] shrink-0" />
-            <span>Scan the QR code on your carton to jump here directly</span>
-          </div>
-
-          <div className="p-3.5 bg-white rounded-md border border-[rgba(18,21,15,0.08)] flex items-center gap-2.5">
-            <ShieldCheck className="w-4 h-4 text-[#1F4D3A] shrink-0" />
-            <span>Licensed under Drug Mfg. License HL-792 M</span>
-          </div>
-        </div>
 
         {/* Interactive Filterable Table */}
         <BatchTableFilter

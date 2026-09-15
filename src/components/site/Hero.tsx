@@ -142,14 +142,14 @@ export function Hero({ newProducts = [] }: HeroProps) {
         </div>
 
         {/* Center: Image Stage */}
-        <div className="relative my-auto py-3 w-full flex items-center justify-center">
-          <div className="relative w-full aspect-4/3 max-h-72 rounded-2xl bg-gradient-to-b from-[#F7F9F7] to-[#EEF4F0] border border-[rgba(18,21,15,0.06)] flex items-center justify-center p-4 overflow-hidden shadow-inner group-hover:scale-102 transition-transform duration-500">
+        <div className="relative my-auto py-4 w-full flex items-center justify-center">
+          <div className="relative w-full aspect-square max-h-96 rounded-2xl bg-gradient-to-b from-[#F7F9F7] to-[#EEF4F0] border border-[rgba(18,21,15,0.06)] flex items-center justify-center p-2 overflow-hidden shadow-inner group-hover:scale-105 transition-transform duration-500">
             <Image
               src={item.image}
               alt={item.name}
               fill
-              sizes="(max-width: 640px) 280px, 360px"
-              className="object-contain p-2 drop-shadow-md"
+              sizes="(max-width: 640px) 320px, 420px"
+              className="object-contain p-1 drop-shadow-lg"
               priority
             />
           </div>
@@ -210,8 +210,8 @@ export function Hero({ newProducts = [] }: HeroProps) {
               <span>ESTD. 2003 · BONDED PHARMACEUTICAL MFG LIC: HL-792 M</span>
             </div>
 
-            {/* Expansive H1 Headline */}
-            <h1 className="font-serif text-4xl sm:text-6xl lg:text-[4.25rem] xl:text-[4.75rem] font-bold text-[#12150F] leading-[1.05] tracking-tight">
+            {/* Refined H1 Headline */}
+            <h1 className="font-serif text-3xl sm:text-5xl lg:text-[3.5rem] xl:text-[4rem] font-bold text-[#12150F] leading-[1.1] tracking-tight">
               Precision Homoeopathy. <br />
               <span className="text-[#1F4D3A] font-normal italic font-serif">
                 Rooted in Classical Science,
@@ -292,7 +292,7 @@ export function Hero({ newProducts = [] }: HeroProps) {
             </div>
 
             {/* The InteractiveCardStack Container */}
-            <div className="w-full max-w-[400px] sm:max-w-[460px] lg:max-w-[520px] h-[520px] sm:h-[580px] lg:h-[620px] relative">
+            <div className="w-full max-w-[400px] sm:max-w-[500px] lg:max-w-[580px] h-[580px] sm:h-[640px] lg:h-[700px] relative">
               <InteractiveCardStack
                 key={stackKey}
                 cards={stackCards}

@@ -98,7 +98,7 @@ export function ProductCard({ product }: ProductCardProps) {
               </Link>
             </h3>
             {priceDisplay && (
-              <span className="shrink-0 text-sm font-mono font-bold text-[#1F4D3A] bg-[#F0F5F2] px-2 py-0.5 rounded-sm border border-[#1F4D3A]/10">
+              <span className="shrink-0 text-base font-mono font-bold text-[#1F4D3A] bg-[#F0F5F2] px-2.5 py-0.5 rounded-sm border border-[#1F4D3A]/20">
                 ₹{priceDisplay}
               </span>
             )}
@@ -115,7 +115,7 @@ export function ProductCard({ product }: ProductCardProps) {
           </div>
 
           {/* Active Composition Monograph */}
-          <div className="text-[11px] text-[#1F4D3A] font-medium bg-[#F0F5F2] px-2.5 py-1.5 rounded-sm line-clamp-1 border border-[#1F4D3A]/10">
+          <div className="text-[11px] text-[#1F4D3A] font-medium bg-[#F0F5F2] px-2.5 py-1.5 rounded-sm border border-[#1F4D3A]/10 leading-relaxed">
             <span className="font-semibold">Actives:</span> {activeComposition}
           </div>
         </div>
