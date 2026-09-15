@@ -26,6 +26,8 @@ export function ProductCard({ product }: ProductCardProps) {
 
   const primaryImage = product.images?.[0];
 
+  const priceDisplay = product.packSizes.find((p) => p.mrp)?.mrp;
+
   return (
     <article className="group bg-white rounded-md border border-[rgba(18,21,15,0.08)] hover:border-[#1F4D3A]/40 transition-all duration-200 flex flex-col justify-between overflow-hidden hover:-translate-y-1">
       <div>
@@ -89,11 +91,18 @@ export function ProductCard({ product }: ProductCardProps) {
 
         {/* Content Details */}
         <div className="px-5 pb-4 space-y-2.5">
-          <h3 className="font-serif font-bold text-lg text-[#12150F] group-hover:text-[#1F4D3A] transition-colors leading-tight">
-            <Link href={`/products/${product.category}/${product.slug}`}>
-              {product.name}
-            </Link>
-          </h3>
+          <div className="flex items-start justify-between gap-2">
+            <h3 className="font-serif font-bold text-lg text-[#12150F] group-hover:text-[#1F4D3A] transition-colors leading-tight">
+              <Link href={`/products/${product.category}/${product.slug}`}>
+                {product.name}
+              </Link>
+            </h3>
+            {priceDisplay && (
+              <span className="shrink-0 text-sm font-mono font-bold text-[#1F4D3A] bg-[#F0F5F2] px-2 py-0.5 rounded-sm border border-[#1F4D3A]/10">
+                ₹{priceDisplay}
+              </span>
+            )}
+          </div>
 
           {/* Legal Wording: Indications (Not Cures) */}
           <div className="space-y-1">

@@ -32,37 +32,28 @@ export default async function BatchesIndexPage() {
             <span>Statutory Drug Record Repository</span>
           </div>
           <h1 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold text-[#12150F]">
-            Public Batch Traceability Index
+            Batch Verification
           </h1>
           <p className="text-sm sm:text-base text-[#595C54] max-w-3xl leading-relaxed">
-            In compliance with drug regulatory norms and Good Manufacturing Practice guidelines, every finished pharmaceutical container produced at our bonded plant features an immutable batch monograph accessible to medical practitioners, distributors, and statutory inspectors.
+            Enter a batch number below to confirm it was manufactured at our licensed facility, or browse the full list of verified batches.
           </p>
         </div>
 
         {/* Informational callout grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs text-[#595C54]">
-          <div className="p-4 bg-white rounded-md border border-[rgba(18,21,15,0.08)] flex items-start gap-3">
-            <FileCheck className="w-5 h-5 text-[#1F4D3A] shrink-0 mt-0.5" />
-            <div>
-              <strong className="text-[#12150F] block">Regulatory Monograph Format</strong>
-              11 statutory points including Active API, SSCC container code, and storage conditions.
-            </div>
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs text-[#595C54]">
+          <div className="p-3.5 bg-white rounded-md border border-[rgba(18,21,15,0.08)] flex items-center gap-2.5">
+            <FileCheck className="w-4 h-4 text-[#1F4D3A] shrink-0" />
+            <span>Every batch has a full traceability record</span>
           </div>
 
-          <div className="p-4 bg-white rounded-md border border-[rgba(18,21,15,0.08)] flex items-start gap-3">
-            <QrCode className="w-5 h-5 text-[#1F4D3A] shrink-0 mt-0.5" />
-            <div>
-              <strong className="text-[#12150F] block">Direct Carton QR Verification</strong>
-              Outer shipper cartons carry high-density QR links encoding this direct repository.
-            </div>
+          <div className="p-3.5 bg-white rounded-md border border-[rgba(18,21,15,0.08)] flex items-center gap-2.5">
+            <QrCode className="w-4 h-4 text-[#1F4D3A] shrink-0" />
+            <span>Scan the QR code on your carton to jump here directly</span>
           </div>
 
-          <div className="p-4 bg-white rounded-md border border-[rgba(18,21,15,0.08)] flex items-start gap-3">
-            <ShieldCheck className="w-5 h-5 text-[#1F4D3A] shrink-0 mt-0.5" />
-            <div>
-              <strong className="text-[#12150F] block">Central Licensing Authority</strong>
-              Records audited under Drug Manufacturing License HL-792 M (Bonded).
-            </div>
+          <div className="p-3.5 bg-white rounded-md border border-[rgba(18,21,15,0.08)] flex items-center gap-2.5">
+            <ShieldCheck className="w-4 h-4 text-[#1F4D3A] shrink-0" />
+            <span>Licensed under Drug Mfg. License HL-792 M</span>
           </div>
         </div>
 

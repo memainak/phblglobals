@@ -143,7 +143,7 @@ export function Hero({ newProducts = [] }: HeroProps) {
 
         {/* Center: Image Stage */}
         <div className="relative my-auto py-3 w-full flex items-center justify-center">
-          <div className="relative w-full aspect-4/3 max-h-56 rounded-2xl bg-gradient-to-b from-[#F7F9F7] to-[#EEF4F0] border border-[rgba(18,21,15,0.06)] flex items-center justify-center p-4 overflow-hidden shadow-inner group-hover:scale-102 transition-transform duration-500">
+          <div className="relative w-full aspect-4/3 max-h-72 rounded-2xl bg-gradient-to-b from-[#F7F9F7] to-[#EEF4F0] border border-[rgba(18,21,15,0.06)] flex items-center justify-center p-4 overflow-hidden shadow-inner group-hover:scale-102 transition-transform duration-500">
             <Image
               src={item.image}
               alt={item.name}
@@ -203,7 +203,7 @@ export function Hero({ newProducts = [] }: HeroProps) {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-14 lg:gap-10 items-center">
           {/* Left Column: Editorial & Authoritative Positioning */}
-          <div className="lg:col-span-7 space-y-7">
+          <div className="order-2 lg:order-1 lg:col-span-6 space-y-7">
             {/* Regulatory Eyebrow */}
             <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white border border-[#1F4D3A]/25 text-[#1F4D3A] text-xs font-mono tracking-wide shadow-2xs">
               <span className="w-2 h-2 rounded-full bg-emerald-600 animate-pulse" />
@@ -274,12 +274,12 @@ export function Hero({ newProducts = [] }: HeroProps) {
           </div>
 
           {/* Right Column: InteractiveCardStack Showcase */}
-          <div className="lg:col-span-5 flex flex-col items-center justify-center relative">
+          <div className="order-1 lg:order-2 lg:col-span-6 flex flex-col items-center justify-center relative">
             {/* Ambient Stack Backdrop Glow */}
             <div className="absolute -inset-4 bg-gradient-to-r from-emerald-100/40 via-emerald-50/20 to-transparent rounded-[2.5rem] blur-2xl pointer-events-none -z-10" />
 
             {/* Section Tag */}
-            <div className="w-full max-w-[360px] sm:max-w-[400px] lg:max-w-[430px] flex items-center justify-between mb-4 px-2">
+            <div className="w-full max-w-[400px] sm:max-w-[460px] lg:max-w-[520px] flex items-center justify-between mb-4 px-2">
               <div className="flex items-center gap-2">
                 <Layers className="w-4 h-4 text-[#1F4D3A]" />
                 <span className="text-xs font-mono uppercase font-bold text-[#1F4D3A] tracking-wider">
@@ -292,7 +292,7 @@ export function Hero({ newProducts = [] }: HeroProps) {
             </div>
 
             {/* The InteractiveCardStack Container */}
-            <div className="w-full max-w-[360px] sm:max-w-[400px] lg:max-w-[430px] h-[480px] sm:h-[520px] lg:h-[550px] relative">
+            <div className="w-full max-w-[400px] sm:max-w-[460px] lg:max-w-[520px] h-[520px] sm:h-[580px] lg:h-[620px] relative">
               <InteractiveCardStack
                 key={stackKey}
                 cards={stackCards}
@@ -309,7 +309,7 @@ export function Hero({ newProducts = [] }: HeroProps) {
             </div>
 
             {/* Stack Micro-Controls & Interaction Hint */}
-            <div className="w-full max-w-[360px] sm:max-w-[400px] lg:max-w-[430px] mt-6 flex items-center justify-between px-3 text-xs text-[#595C54]">
+            <div className="w-full max-w-[400px] sm:max-w-[460px] lg:max-w-[520px] mt-6 flex items-center justify-between px-3 text-xs text-[#595C54]">
               <div className="flex items-center gap-2">
                 {stackCards.map((_, idx) => (
                   <span

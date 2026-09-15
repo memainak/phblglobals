@@ -78,12 +78,10 @@ export function BatchTableFilter({
             <thead className="bg-[#FAFAF8] border-b border-[rgba(18,21,15,0.08)] text-[#595C54] uppercase text-[11px] font-mono tracking-wider">
               <tr>
                 <th className="py-3.5 px-4 font-semibold">Batch No.</th>
-                <th className="py-3.5 px-4 font-semibold">Brand / Formulation</th>
-                <th className="py-3.5 px-4 font-semibold hidden md:table-cell">API Active</th>
-                <th className="py-3.5 px-4 font-semibold hidden lg:table-cell">Batch Size</th>
-                <th className="py-3.5 px-4 font-semibold">Mfg / Exp Date</th>
-                <th className="py-3.5 px-4 font-semibold hidden sm:table-cell">Regulatory Status</th>
-                <th className="py-3.5 px-4 font-semibold text-right">Monograph</th>
+                <th className="py-3.5 px-4 font-semibold">Product</th>
+                <th className="py-3.5 px-4 font-semibold hidden sm:table-cell">Expiry</th>
+                <th className="py-3.5 px-4 font-semibold">Status</th>
+                <th className="py-3.5 px-4 font-semibold text-right">Details</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-[rgba(18,21,15,0.06)] text-[#12150F]">
@@ -106,25 +104,14 @@ export function BatchTableFilter({
                       </td>
                       <td className="py-4 px-4">
                         <div className="font-medium text-[#12150F]">{batch.brandName}</div>
-                        <div className="text-[11px] font-mono text-[#595C54]">
-                          {batch.uniqueProductCode}
+                        <div className="text-[11px] text-[#595C54] hidden md:block truncate max-w-xs">
+                          {batch.apiName}
                         </div>
                       </td>
-                      <td className="py-4 px-4 hidden md:table-cell text-xs text-[#595C54] max-w-xs truncate">
-                        {batch.apiName}
-                      </td>
-                      <td className="py-4 px-4 hidden lg:table-cell font-mono text-xs text-[#595C54] whitespace-nowrap">
-                        {batch.batchSize}
+                      <td className="py-4 px-4 hidden sm:table-cell whitespace-nowrap text-xs text-[#595C54]">
+                        {formatDate(batch.expDate)}
                       </td>
                       <td className="py-4 px-4 whitespace-nowrap">
-                        <div className="text-xs">
-                          <span className="text-[#595C54]">Mfg:</span> {formatDate(batch.mfgDate)}
-                        </div>
-                        <div className="text-xs">
-                          <span className="text-[#595C54]">Exp:</span> {formatDate(batch.expDate)}
-                        </div>
-                      </td>
-                      <td className="py-4 px-4 hidden sm:table-cell whitespace-nowrap">
                         <span
                           className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-xs text-[11px] font-medium border ${expiry.badgeClass}`}
                         >
@@ -139,16 +126,13 @@ export function BatchTableFilter({
                           )}
                           <span>{expiry.label}</span>
                         </span>
-                        <div className="text-[10px] text-[#595C54] font-mono mt-0.5">
-                          Auth: {batch.authority}
-                        </div>
                       </td>
                       <td className="py-4 px-4 text-right whitespace-nowrap">
                         <Link
                           href={`/batches/${batch.batchNo}`}
                           className="inline-flex items-center gap-1 text-xs font-semibold text-[#1F4D3A] hover:underline"
                         >
-                          <span>Inspect</span>
+                          <span>View</span>
                           <ArrowRight className="w-3 h-3" />
                         </Link>
                       </td>
@@ -157,8 +141,8 @@ export function BatchTableFilter({
                 })
               ) : (
                 <tr>
-                  <td colSpan={7} className="py-12 text-center text-[#595C54]">
-                    No batches match the specified criteria. Try another Batch No or Authority.
+                  <td colSpan={5} className="py-12 text-center text-[#595C54]">
+                    No batches match your search. Try a different batch number.
                   </td>
                 </tr>
               )}
