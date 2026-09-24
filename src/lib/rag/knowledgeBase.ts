@@ -113,8 +113,8 @@ const staticPagesKnowledge: KnowledgeChunk[] = [
     url: '/batches',
     category: 'batch',
     content:
-      'Enter any batch number from your carton or carton QR code (e.g. BL-2024-0101, BL-2023-0089) to view the 11 statutory points of compliance, in-house analytical testing, finished release status, and download the printable Certificate of Analysis.',
-    keywords: ['batch', 'verify', 'traceability', 'coa', 'certificate of analysis', 'qr code', 'testing', 'bl-2024'],
+      'Enter any batch number printed on your carton (e.g. BL-2024-0101, BL-2023-0089) to view the 11 statutory points of compliance, in-house analytical testing, finished release status, and download the printable Certificate of Analysis.',
+    keywords: ['batch', 'verify', 'traceability', 'coa', 'certificate of analysis', 'testing', 'bl-2024'],
     snippet: 'Verify carton batch numbers, analytical laboratory tests, and statutory Certificate of Analysis.',
     ctaText: 'Open Batch Traceability Portal →',
   },

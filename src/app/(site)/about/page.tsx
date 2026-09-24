@@ -49,7 +49,7 @@ export default function AboutPage() {
       year: '2024',
       title: 'Public Batch Traceability Portal',
       description:
-        'Launched direct QR-linked public regulatory batch repository, bringing complete verification transparency to clinicians and drug controllers.',
+        'Launched the public regulatory batch repository, bringing complete verification transparency to clinicians and drug controllers.',
     },
   ];
 

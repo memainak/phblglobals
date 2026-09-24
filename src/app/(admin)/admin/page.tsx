@@ -138,7 +138,7 @@ export default async function AdminDashboardPage() {
             {batches.length}
           </div>
           <p className="text-[11px] text-[#595C54]">
-            Publicly traceable with QR serialization
+            Publicly traceable by batch number
           </p>
         </div>
       </div>

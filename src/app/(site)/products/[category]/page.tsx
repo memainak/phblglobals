@@ -2,11 +2,12 @@ import React from 'react';
 import type { Metadata } from 'next';
 import Image from 'next/image';
 import { notFound } from 'next/navigation';
-import { getProducts, getReferenceItems, getReferenceSchedule } from '@/lib/queries';
+import { getBatches, getProducts, getReferenceItems, getReferenceSchedule } from '@/lib/queries';
 import { ProductCatalogFilter } from '@/components/site/ProductCatalogFilter';
 import { ProductCard } from '@/components/site/ProductCard';
 import { DilutionReference } from '@/components/site/DilutionReference';
 import { MotherTinctureReference } from '@/components/site/MotherTinctureReference';
+import { GnctDelhiRange, buildGnctRows } from '@/components/site/GnctDelhiRange';
 
 import { ProductCategory } from '@/types';
 import Link from 'next/link';
@@ -24,7 +25,7 @@ const categoryMeta: Record<
 > = {
   homoeopathy: {
     title: 'Homoeopathy Products',
-    subtitle: 'Patent Tonics · Drops · Mother Tinctures · Dilutions · Biochemics · Tablets · Ointments',
+    subtitle: 'Patent Tonics · Drops · Mother Tinctures · Dilutions · Biochemics · Tablets · Ointments · GNCT Delhi',
     description:
       'Classical and patent homoeopathic medicines prepared in strict accordance with the Homoeopathic Pharmacopoeia of India (HPI) using 100% pure Extra Neutral Alcohol (ENA).',
   },
@@ -86,6 +87,12 @@ const HOMOEOPATHY_RANGES: {
     label: 'Ointment',
     blurb: 'External applications prepared on a bonded ointment base.',
   },
+  {
+    subCategory: 'gnct-delhi',
+    label: 'GNCT Delhi',
+    blurb:
+      'Batches notified to the Government of NCT of Delhi licensing authority, with the current status of each.',
+  },
 ];
 
 export async function generateStaticParams() {
@@ -127,15 +134,16 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
   const allProducts = await getProducts();
 
   const isHomoeopathy = validCategory === 'homoeopathy';
-  const [mtItems, dilItems, bioItems, mtSchedule, dilSchedule] = isHomoeopathy
+  const [mtItems, dilItems, bioItems, mtSchedule, dilSchedule, gnctBatches] = isHomoeopathy
     ? await Promise.all([
         getReferenceItems('mother-tincture'),
         getReferenceItems('dilution'),
         getReferenceItems('biochemic'),
         getReferenceSchedule('mother-tincture'),
         getReferenceSchedule('dilution'),
+        getBatches({ authority: 'GNCT DELHI', pageSize: 500 }),
       ])
-    : [[], [], [], null, null];
+    : [[], [], [], null, null, { batches: [], total: 0 }];
 
   const mtRemedies = mtItems.map((i) => ({ sl: i.sl, name: i.name, cat: i.cat ?? '' }));
   const dilRemedies = dilItems.map((i) => i.name);
@@ -143,6 +151,18 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
     name: i.name,
     potencies: i.potencies ?? null,
   }));
+
+  // The GNCT Delhi register covers the externally-applied ointment batches; the
+  // same authority also appears on other batch records, so narrow to those.
+  const slugByBrand = new Map(
+    allProducts
+      .filter((p) => p.category === 'homoeopathy')
+      .map((p) => [p.name.trim().toLowerCase(), p.slug] as const)
+  );
+  const gnctRows = buildGnctRows(
+    gnctBatches.batches.filter((b) => /^ointment\b/i.test(b.apiName ?? '')),
+    slugByBrand
+  );
 
   return (
     <div className="py-12 bg-[#FAFAF8] min-h-screen">
@@ -271,9 +291,12 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
             {/* Jump nav across the seven sub-ranges */}
             <nav className="flex flex-wrap gap-2">
               {HOMOEOPATHY_RANGES.map((range) => {
-                const count = allProducts.filter(
-                  (p) => p.category === 'homoeopathy' && p.subCategory === range.subCategory
-                ).length;
+                const count =
+                  range.subCategory === 'gnct-delhi'
+                    ? gnctRows.length
+                    : allProducts.filter(
+                        (p) => p.category === 'homoeopathy' && p.subCategory === range.subCategory
+                      ).length;
                 return (
                   <a
                     key={range.subCategory}
@@ -303,11 +326,15 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
                       </h2>
                       <p className="text-xs text-[#595C54]">{range.blurb}</p>
                     </div>
-                    {range.subCategory !== 'dilution' && (
+                    {range.subCategory === 'gnct-delhi' ? (
+                      <span className="text-xs font-mono text-[#595C54] shrink-0">
+                        {gnctRows.length} {gnctRows.length === 1 ? 'notified batch' : 'notified batches'}
+                      </span>
+                    ) : range.subCategory !== 'dilution' ? (
                       <span className="text-xs font-mono text-[#595C54] shrink-0">
                         {rangeProducts.length} {rangeProducts.length === 1 ? 'formulation' : 'formulations'}
                       </span>
-                    )}
+                    ) : null}
                   </div>
 
                   {range.subCategory === 'mother-tincture' && <MotherTinctureReference remedies={mtRemedies} schedule={mtSchedule} />}
@@ -344,6 +371,8 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
 
                   {range.subCategory === 'dilution' ? (
                     <DilutionReference remedies={dilRemedies} schedule={dilSchedule} />
+                  ) : range.subCategory === 'gnct-delhi' ? (
+                    <GnctDelhiRange rows={gnctRows} />
                   ) : rangeProducts.length > 0 ? (
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
                       {rangeProducts.map((product) => (

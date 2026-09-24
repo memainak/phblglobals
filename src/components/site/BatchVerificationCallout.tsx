@@ -1,6 +1,6 @@
 import React from 'react';
 import Link from 'next/link';
-import { ShieldCheck, QrCode, ArrowRight, CheckCircle2 } from 'lucide-react';
+import { ShieldCheck, FileCheck2, ArrowRight, CheckCircle2 } from 'lucide-react';
 import { BatchSearchWidget } from '@/components/site/BatchSearchWidget';
 
 export function BatchVerificationCallout() {
@@ -33,7 +33,7 @@ export function BatchVerificationCallout() {
                   href="/batches/BL-2024-0101"
                   className="font-mono text-[#1F4D3A] hover:underline bg-[#F5F5F2] px-2 py-1 rounded-xs"
                 >
-                  BL-2024-0101 (Arnica Q)
+                  BL-2024-0101 (Arnica Ø)
                 </Link>
                 <Link
                   href="/batches/BL-2024-0102"
@@ -53,14 +53,14 @@ export function BatchVerificationCallout() {
             <div className="lg:col-span-5 bg-[#FAFAF8] rounded-md border border-[rgba(18,21,15,0.08)] p-6 space-y-4">
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 rounded-sm bg-[#1F4D3A] text-white flex items-center justify-center">
-                  <QrCode className="w-5 h-5" />
+                  <FileCheck2 className="w-5 h-5" />
                 </div>
                 <div>
                   <h4 className="font-serif font-bold text-base text-[#12150F]">
-                    Carton QR Traceability
+                    Carton Traceability
                   </h4>
                   <p className="text-xs text-[#595C54]">
-                    Printed directly on outer shipping cartons & labels
+                    Batch numbers printed on outer shipping cartons & labels
                   </p>
                 </div>
               </div>

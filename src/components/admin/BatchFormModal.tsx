@@ -400,7 +400,7 @@ export function BatchFormModal({ batch, onSuccess, trigger }: BatchFormModalProp
                     className="rounded text-[#1F4D3A]"
                   />
                   <span className="font-semibold text-[#12150F]">
-                    Published in Public Master Index (Searchable via QR / COA)
+                    Published in Public Master Index (Searchable by batch number / COA)
                   </span>
                 </label>
               </div>

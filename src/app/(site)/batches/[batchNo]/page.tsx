@@ -12,7 +12,6 @@ import {
 import {
   analyzeBatchExpiry,
   formatDate,
-  generateQrCodeSvg,
 } from '@/lib/utils';
 import {
   ShieldCheck,
@@ -21,7 +20,6 @@ import {
   AlertTriangle,
   XCircle,
   ExternalLink,
-  QrCode as QrIcon,
   Building,
 } from 'lucide-react';
 import { BatchRecordActions } from '@/components/site/BatchRecordActions';
@@ -107,10 +105,6 @@ export default async function BatchDetailPage({ params }: BatchPageProps) {
 
   // Auto-computed expiry status analysis
   const expiryAnalysis = analyzeBatchExpiry(batch.expDate, batch.expiryNote);
-
-  // Generate vector QR code encoding the current public URL
-  const batchUrl = `https://phblglobals.com/batches/${encodeURIComponent(batch.batchNo)}`;
-  const qrSvg = await generateQrCodeSvg(batchUrl);
 
   // Regulatory 11-point data structure (with 'N.A.' fallback per regulatory mandate)
   const regulatoryFields = [
@@ -266,43 +260,6 @@ export default async function BatchDetailPage({ params }: BatchPageProps) {
             </div>
           </div>
 
-          {/* QR Code & Carton Verification Block */}
-          <div className="pt-4 border-t border-[rgba(18,21,15,0.1)] grid grid-cols-1 md:grid-cols-12 gap-6 items-center">
-            <div className="md:col-span-8 space-y-2">
-              <div className="flex items-center gap-2 text-xs font-mono font-semibold uppercase text-[#1F4D3A]">
-                <QrIcon className="w-4 h-4" />
-                <span>Carton Verification QR Matrix</span>
-              </div>
-              <h3 className="font-serif font-bold text-lg text-[#12150F]">
-                Tamper-Resistant Regulatory Encoding
-              </h3>
-              <p className="text-xs text-[#595C54] leading-relaxed">
-                This vector QR code encodes the verified canonical URL for this batch. Scan with any handheld scanner or smartphone camera to confirm manufacturing legitimacy against the state drug control registry.
-              </p>
-              <div className="pt-2 font-mono text-[11px] text-[#595C54] break-all">
-                URL: {batchUrl}
-              </div>
-            </div>
-
-            <div className="md:col-span-4 flex justify-center md:justify-end">
-              <div className="p-3 bg-white rounded-md border border-[rgba(18,21,15,0.12)] text-center shadow-xs">
-                {qrSvg ? (
-                  <div
-                    className="w-32 h-32 mx-auto"
-                    dangerouslySetInnerHTML={{ __html: qrSvg }}
-                  />
-                ) : (
-                  <div className="w-32 h-32 bg-[#F5F5F2] flex items-center justify-center text-xs text-[#595C54]">
-                    QR Code Active
-                  </div>
-                )}
-                <span className="text-[10px] font-mono text-[#595C54] block mt-1">
-                  Batch: {batch.batchNo}
-                </span>
-              </div>
-            </div>
-          </div>
-
           {/* Linked Product Reference */}
           {linkedProduct && (
             <div className="pt-4 border-t border-[rgba(18,21,15,0.1)] flex items-center justify-between no-print">
@@ -324,37 +281,6 @@ export default async function BatchDetailPage({ params }: BatchPageProps) {
             </div>
           )}
 
-          {/* Official Seal and Sign-off for Regulatory Inspection */}
-          <div className="pt-8 border-t border-dashed border-[rgba(18,21,15,0.15)] flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6 text-xs text-[#595C54]">
-            <div className="space-y-0.5 font-mono text-[11px]">
-              <div className="text-[#12150F] font-bold">
-                Purusottam Homeo Bikash Lab(Bonded)
-              </div>
-              <div>Quality Assurance & Analytical Testing Division</div>
-              <div>License: HL-792 M | Schedule M-I Compliant</div>
-              <div className="text-[10px] text-[#595C54] mt-1">
-                Estd. 2003 · Paschim Medinipur, WB · Digitally Verified Monograph
-              </div>
-            </div>
-
-            <div className="flex items-center gap-6">
-              <div className="text-right space-y-1">
-                <Image
-                  src="/images/founder-signature.jpg"
-                  alt="Authorized Signature of Dr. Tarak Prasad Chatterjee"
-                  width={150}
-                  height={32}
-                  className="h-8 w-auto mix-blend-multiply ml-auto"
-                />
-                <div className="text-[10px] font-mono text-[#12150F] font-bold border-t border-gray-300 pt-1">
-                  Dr. Tarak Prasad Chatterjee
-                </div>
-                <div className="text-[9px] font-mono text-[#595C54]">
-                  Authorized Release Signatory / Chairman
-                </div>
-              </div>
-            </div>
-          </div>
         </div>
       </div>
     </div>

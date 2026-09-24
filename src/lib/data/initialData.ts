@@ -43,7 +43,7 @@ export const initialProducts: Product[] = [
   {
     id: 'prod-01',
     slug: 'arnica-montana-q',
-    name: 'Arnica Montana Mother Tincture (Q)',
+    name: 'Arnica Montana Mother Tincture (Ø)',
     category: 'homoeopathy',
     subCategory: 'mother-tincture',
     shortDescription: 'Standardised botanical tincture derived from fresh organically cultivated mountain arnica blossoms.',
@@ -75,7 +75,7 @@ export const initialProducts: Product[] = [
   {
     id: 'prod-02',
     slug: 'berberis-aquifolium-q',
-    name: 'Berberis Aquifolium Mother Tincture (Q)',
+    name: 'Berberis Aquifolium Mother Tincture (Ø)',
     category: 'homoeopathy',
     subCategory: 'mother-tincture',
     shortDescription: 'High-purity extract of mountain grape root for dermatological and glandular support.',

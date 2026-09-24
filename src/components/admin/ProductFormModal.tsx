@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { Product, ProductCategory } from '@/types';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { subCategoriesFor, defaultSubCategoryFor } from '@/lib/data/subCategories';
 import { Plus, X, Edit2, AlertCircle, Upload, Trash2, Image as ImageIcon, Star, Loader2 } from 'lucide-react';
 
 interface ProductFormModalProps {
@@ -26,7 +27,7 @@ export function ProductFormModal({ product, onSuccess, trigger }: ProductFormMod
     name: '',
     slug: '',
     category: 'homoeopathy' as ProductCategory,
-    subCategory: 'Mother Tincture',
+    subCategory: defaultSubCategoryFor('homoeopathy'),
     shortDescription: '',
     indications: '',
     compositionText: '',
@@ -64,7 +65,7 @@ export function ProductFormModal({ product, onSuccess, trigger }: ProductFormMod
         name: '',
         slug: '',
         category: 'homoeopathy',
-        subCategory: 'Mother Tincture',
+        subCategory: defaultSubCategoryFor('homoeopathy'),
         shortDescription: '',
         indications: '',
         compositionText: '',
@@ -327,7 +328,16 @@ export function ProductFormModal({ product, onSuccess, trigger }: ProductFormMod
                   <select
                     className="w-full h-9 rounded-md border border-neutral-300 px-3 py-1 text-xs bg-white focus:outline-hidden focus:ring-1 focus:ring-[#1F4D3A]"
                     value={formData.category}
-                    onChange={(e) => setFormData({ ...formData, category: e.target.value as ProductCategory })}
+                    onChange={(e) => {
+                      const category = e.target.value as ProductCategory;
+                      const options = subCategoriesFor(category);
+                      const keep = options.some((o) => o.value === formData.subCategory);
+                      setFormData({
+                        ...formData,
+                        category,
+                        subCategory: keep ? formData.subCategory : defaultSubCategoryFor(category),
+                      });
+                    }}
                   >
                     <option value="homoeopathy">Homoeopathy</option>
                     <option value="cosmetics">Cosmetics & Herbal Care</option>
@@ -337,12 +347,26 @@ export function ProductFormModal({ product, onSuccess, trigger }: ProductFormMod
 
                 <div className="space-y-1">
                   <label className="font-semibold text-[#12150F]">Sub-Category *</label>
-                  <Input
+                  <select
                     required
+                    className="w-full h-9 rounded-md border border-neutral-300 px-3 py-1 text-xs bg-white focus:outline-hidden focus:ring-1 focus:ring-[#1F4D3A]"
                     value={formData.subCategory}
                     onChange={(e) => setFormData({ ...formData, subCategory: e.target.value })}
-                    placeholder="e.g. Mother Tincture, Dilution, Tonic"
-                  />
+                  >
+                    {subCategoriesFor(formData.category).map((option) => (
+                      <option key={option.value} value={option.value}>
+                        {option.label}
+                      </option>
+                    ))}
+                    {formData.subCategory &&
+                      !subCategoriesFor(formData.category).some(
+                        (o) => o.value === formData.subCategory
+                      ) && (
+                        <option value={formData.subCategory}>
+                          {formData.subCategory} (not a standard form)
+                        </option>
+                      )}
+                  </select>
                 </div>
 
                 <div className="space-y-1">

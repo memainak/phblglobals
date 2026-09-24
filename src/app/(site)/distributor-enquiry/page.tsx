@@ -63,7 +63,7 @@ export default function DistributorEnquiryPage() {
               Full Traceability
             </h4>
             <p className="text-xs text-[#595C54] leading-relaxed">
-              Instant QR-enabled batch records ensuring zero friction during state drug inspector audits.
+              Instant online batch records ensuring zero friction during state drug inspector audits.
             </p>
           </div>
         </div>

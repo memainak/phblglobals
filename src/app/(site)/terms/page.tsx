@@ -51,7 +51,7 @@ export default function TermsPage() {
               2. Batch Traceability & Packaging Integrity
             </h2>
             <p>
-              All shipments dispatched from our Paschim Medinipur bonded unit are sealed with tamper-evident holograms and labeled with batch numbers verifiable in our online public repository. Distributors must verify outer carton QR seals upon receipt.
+              All shipments dispatched from our Paschim Medinipur bonded unit are sealed with tamper-evident holograms and labeled with batch numbers verifiable in our online public repository. Distributors must verify outer carton batch seals upon receipt.
             </p>
           </section>
 
