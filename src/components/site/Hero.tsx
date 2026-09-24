@@ -14,7 +14,7 @@ import {
   Layers,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { BatchSearchWidget } from '@/components/site/BatchSearchWidget';
+
 import { InteractiveCardStack } from '@/components/ui/InteractiveCardStack';
 import { Product } from '@/types';
 
@@ -232,29 +232,10 @@ export function Hero({ newProducts = [] }: HeroProps) {
                   <ArrowRight className="w-4 h-4" />
                 </Button>
               </Link>
-              <Link href="/batches">
-                <Button variant="outline" size="lg" className="gap-2 text-base px-6 py-3.5 bg-white">
-                  <ShieldCheck className="w-4 h-4 text-[#1F4D3A]" />
-                  <span>Verify Batch Record</span>
-                </Button>
-              </Link>
+
             </div>
 
-            {/* Direct Inline Batch Verification Bar */}
-            <div className="pt-2 max-w-xl">
-              <div className="p-3.5 bg-white rounded-xl border border-[rgba(18,21,15,0.12)] shadow-xs">
-                <div className="flex items-center justify-between mb-2">
-                  <span className="text-xs font-semibold text-[#12150F] flex items-center gap-1.5">
-                    <ShieldCheck className="w-4 h-4 text-[#1F4D3A]" />
-                    Instant Public Batch Verification Portal:
-                  </span>
-                  <span className="text-[10px] uppercase font-mono text-[#595C54] bg-[#F5F5F2] px-2 py-0.5 rounded">
-                    Regulatory Mandate
-                  </span>
-                </div>
-                <BatchSearchWidget />
-              </div>
-            </div>
+
 
             {/* Regulatory Strip */}
             <div className="pt-4 border-t border-[rgba(18,21,15,0.08)] flex flex-wrap items-center gap-6 text-xs text-[#595C54] font-medium">

@@ -5,7 +5,7 @@ import { AboutTeaser } from '@/components/site/AboutTeaser';
 import { ProductShowcase } from '@/components/site/ProductShowcase';
 import { Capabilities } from '@/components/site/Capabilities';
 import { QualityPolicy } from '@/components/site/QualityPolicy';
-import { BatchVerificationCallout } from '@/components/site/BatchVerificationCallout';
+
 import { TestimonialsSection } from '@/components/site/TestimonialsSection';
 import { getSiteSettings, getProducts, getTestimonials } from '@/lib/queries';
 
@@ -43,8 +43,7 @@ export default async function HomePage() {
       {/* 6. Quality Policy */}
       <QualityPolicy />
 
-      {/* 7. Batch Verification Widget */}
-      <BatchVerificationCallout />
+
 
       {/* 8. Testimonials */}
       <TestimonialsSection testimonials={testimonials} />

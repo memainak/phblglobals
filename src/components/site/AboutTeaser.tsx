@@ -101,10 +101,7 @@ export function AboutTeaser() {
                 <CheckCircle2 className="w-4 h-4 text-[#1F4D3A]" />
                 <span>Microbial Limit Tested (MLT)</span>
               </div>
-              <div className="flex items-center gap-2">
-                <CheckCircle2 className="w-4 h-4 text-[#1F4D3A]" />
-                <span>Public Batch Traceability</span>
-              </div>
+
             </div>
 
             <div className="pt-4">

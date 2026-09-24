@@ -63,11 +63,7 @@ export function Footer() {
                   Veterinary Care (Homoeo Vet)
                 </Link>
               </li>
-              <li>
-                <Link href="/batches" className="hover:text-white transition-colors flex items-center gap-1.5 text-emerald-300 font-medium">
-                  Public Batch Verification
-                </Link>
-              </li>
+
               <li>
                 <Link href="/downloads" className="hover:text-white transition-colors">
                   Therapeutic Index (PDF)

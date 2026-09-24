@@ -115,18 +115,7 @@ export function Header() {
               <ChevronDown className="w-3.5 h-3.5 opacity-60" />
             </button>
 
-            <Link
-              href="/batches"
-              className={cn(
-                'flex items-center gap-1.5 px-3.5 py-2 text-sm font-medium rounded-md transition-colors',
-                pathname.startsWith('/batches')
-                  ? 'text-[#1F4D3A] bg-[#F0F5F2]'
-                  : 'text-[#12150F] hover:text-[#1F4D3A]'
-              )}
-            >
-              <FileCheck2 className="w-4 h-4 text-[#1F4D3A]" />
-              <span>Batch Traceability</span>
-            </Link>
+
 
             <Link
               href="/downloads"
@@ -138,13 +127,7 @@ export function Header() {
 
           {/* Desktop Right CTAs */}
           <div className="hidden lg:flex items-center gap-3">
-            <Link
-              href="/batches"
-              className="p-2 text-[#595C54] hover:text-[#12150F] hover:bg-[#F5F5F2] rounded-md transition-colors"
-              title="Search Batch No."
-            >
-              <Search className="w-4 h-4" />
-            </Link>
+
 
             <Link href="/contact">
               <Button variant="primary" size="md" className="gap-1.5">
@@ -156,13 +139,7 @@ export function Header() {
 
           {/* Mobile Menu Trigger */}
           <div className="flex lg:hidden items-center gap-2">
-            <Link
-              href="/batches"
-              className="p-2 text-[#12150F] hover:bg-[#F5F5F2] rounded-md"
-              aria-label="Batch verification"
-            >
-              <Search className="w-5 h-5" />
-            </Link>
+
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               className="p-2 text-[#12150F] hover:bg-[#F5F5F2] rounded-md"
@@ -380,14 +357,7 @@ export function Header() {
                         Therapeutic Index (PDF Edition)
                       </Link>
                     </li>
-                    <li>
-                      <Link
-                        href="/batches"
-                        className="text-[#595C54] hover:text-[#1F4D3A] block transition-colors"
-                      >
-                        Public Batch Verification
-                      </Link>
-                    </li>
+
                     <li>
                       <Link
                         href="/distributor-enquiry"
@@ -513,14 +483,7 @@ export function Header() {
                         HACCP Assurance
                       </Link>
                     </li>
-                    <li>
-                      <Link
-                        href="/batches"
-                        className="text-[#595C54] hover:text-[#1F4D3A] block transition-colors"
-                      >
-                        Public Batch Traceability Portal
-                      </Link>
-                    </li>
+
                   </ul>
                 </div>
 
@@ -758,13 +721,7 @@ export function Header() {
 
             {/* Direct Links */}
             <div className="pt-1 space-y-3">
-              <Link
-                href="/batches"
-                className="flex items-center justify-between font-serif text-lg font-semibold text-[#1F4D3A]"
-              >
-                <span>Public Batch Traceability</span>
-                <ArrowRight className="w-4 h-4" />
-              </Link>
+
               <Link
                 href="/downloads"
                 className="flex items-center justify-between font-serif text-lg font-semibold text-[#12150F]"
