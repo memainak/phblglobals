@@ -2,7 +2,7 @@ import React from 'react';
 import type { Metadata } from 'next';
 import { getBatches } from '@/lib/queries';
 import { BatchTableFilter } from '@/components/site/BatchTableFilter';
-import { ShieldCheck, FileCheck, QrCode } from 'lucide-react';
+import { ShieldCheck } from 'lucide-react';
 
 export const metadata: Metadata = {
   title: 'Public Batch Traceability Portal | PHBL Regulatory Records',

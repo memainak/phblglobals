@@ -6,7 +6,7 @@
  * Features fluid Framer Motion animations, autoplay, responsive touch, and navigation controls.
  */
 
-import React, { useState, useEffect, useCallback, useRef } from 'react';
+import React, { useState, useEffect, useCallback, useMemo, useRef } from 'react';
 import { motion, useMotionValue, useTransform, AnimatePresence, type PanInfo } from 'framer-motion';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 
@@ -150,10 +150,15 @@ export function InteractiveCardStack({
   const [isTransitioning, setIsTransitioning] = useState(false);
   const [exitDirection, setExitDirection] = useState(1);
 
-  // Stack state holding items with their original index
-  const [stack, setStack] = useState<
-    { id: string; content: React.ReactNode; originalIndex: number; rot: number }[]
-  >([]);
+  // Only the cycle order is local state; card contents are derived from `cards`
+  // so prop updates flow through without wiping the user's current position.
+  const [order, setOrder] = useState<number[]>(() => cards.map((_, i) => i));
+  const [syncedCount, setSyncedCount] = useState(cards.length);
+
+  if (syncedCount !== cards.length) {
+    setSyncedCount(cards.length);
+    setOrder(cards.map((_, i) => i));
+  }
 
   // Track mobile screen
   useEffect(() => {
@@ -165,106 +170,97 @@ export function InteractiveCardStack({
     return () => window.removeEventListener('resize', checkMobile);
   }, [mobileBreakpoint]);
 
-  // Sync cards into stack without resetting user's current progress if length matches
-  useEffect(() => {
-    if (cards.length > 0) {
-      setStack((prev) => {
-        if (prev.length === cards.length) {
-          // Update contents in place without wiping current cycle order
-          return prev.map((item) => ({
-            ...item,
-            content: cards[item.originalIndex] ?? item.content,
-          }));
-        }
-
-        // Initialize fresh stack
-        return cards.map((content, index) => {
-          // Stable organic rotation between -3.5 and 3.5 deg
-          const rot = randomRotation ? ((index % 3) - 1) * 2.5 : 0;
-          return {
-            id: `card-${index}`,
-            content,
-            originalIndex: index,
-            rot,
-          };
-        });
-      });
-    }
-  }, [cards, randomRotation]);
+  const stack = useMemo(
+    () =>
+      order.map((index) => ({
+        id: `card-${index}`,
+        content: cards[index],
+        originalIndex: index,
+        // Stable organic rotation between -2.5 and 2.5 deg
+        rot: randomRotation ? ((index % 3) - 1) * 2.5 : 0,
+      })),
+    [order, cards, randomRotation]
+  );
 
   // Send top card to the back with smooth exit slide
   const sendToBack = useCallback(
     (direction = 1) => {
-      if (isTransitioning || stack.length <= 1) return;
+      if (isTransitioning || order.length <= 1) return;
 
       setIsTransitioning(true);
       setExitDirection(direction);
 
       // Allow 240ms for the slide animation to execute before rearranging the stack
       setTimeout(() => {
-        setStack((prev) => {
+        setOrder((prev) => {
           if (prev.length <= 1) return prev;
 
-          const newStack = [...prev];
-          const topCard = newStack.pop();
+          const next = [...prev];
+          const top = next.pop();
 
-          if (topCard) {
-            newStack.unshift(topCard);
+          if (top !== undefined) {
+            next.unshift(top);
           }
 
-          if (onCycle && newStack.length > 0) {
-            const nextTop = newStack[newStack.length - 1];
-            onCycle(nextTop.originalIndex);
-          }
-
-          return newStack;
+          return next;
         });
 
         setIsTransitioning(false);
       }, 240);
     },
-    [isTransitioning, stack.length, onCycle]
+    [isTransitioning, order.length]
   );
 
   // Cycle backwards (brings back the previous card from the bottom of stack to the top)
   const cyclePrev = useCallback(() => {
-    if (isTransitioning || stack.length <= 1) return;
+    if (isTransitioning || order.length <= 1) return;
 
     setIsTransitioning(true);
     setExitDirection(-1);
 
     setTimeout(() => {
-      setStack((prev) => {
+      setOrder((prev) => {
         if (prev.length <= 1) return prev;
 
-        const newStack = [...prev];
-        const bottomCard = newStack.shift();
+        const next = [...prev];
+        const bottom = next.shift();
 
-        if (bottomCard) {
-          newStack.push(bottomCard);
+        if (bottom !== undefined) {
+          next.push(bottom);
         }
 
-        if (onCycle && newStack.length > 0) {
-          const nextTop = newStack[newStack.length - 1];
-          onCycle(nextTop.originalIndex);
-        }
-
-        return newStack;
+        return next;
       });
 
       setIsTransitioning(false);
     }, 200);
-  }, [isTransitioning, stack.length, onCycle]);
+  }, [isTransitioning, order.length]);
+
+  // Report the visible top card after commit, never from inside a state updater
+  const topIndex = order.length > 0 ? order[order.length - 1] : -1;
+  const onCycleRef = useRef(onCycle);
+  const reportedTopRef = useRef(-1);
+
+  useEffect(() => {
+    onCycleRef.current = onCycle;
+  }, [onCycle]);
+
+  useEffect(() => {
+    if (topIndex !== -1 && topIndex !== reportedTopRef.current) {
+      reportedTopRef.current = topIndex;
+      onCycleRef.current?.(topIndex);
+    }
+  }, [topIndex]);
 
   // Autoplay timer
   useEffect(() => {
-    if (autoplay && stack.length > 1 && !isPaused && !isTransitioning) {
+    if (autoplay && order.length > 1 && !isPaused && !isTransitioning) {
       const timer = setTimeout(() => {
         sendToBack(1);
       }, autoplayDelay);
       return () => clearTimeout(timer);
     }
-  }, [autoplay, autoplayDelay, stack.length, isPaused, isTransitioning, sendToBack]);
+  }, [autoplay, autoplayDelay, order.length, isPaused, isTransitioning, sendToBack]);
 
   const shouldDisableDrag = mobileClickOnly && isMobile;
 

@@ -130,7 +130,7 @@ export function Hero({ newProducts = [] }: HeroProps) {
         className="w-full h-full flex flex-col justify-between bg-white p-5 sm:p-6 select-none relative overflow-hidden group"
       >
         {/* Top Header: Badge + MRP */}
-        <div className="flex items-center justify-between gap-2 pb-3 border-b border-[rgba(18,21,15,0.08)]">
+        <div className="shrink-0 flex items-center justify-between gap-2 pb-3 border-b border-[rgba(18,21,15,0.08)]">
           <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-[#EBF5EE] border border-[#1F4D3A]/20 text-[#1F4D3A] text-[10px] sm:text-[11px] font-mono font-semibold tracking-wide">
             <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
             <Sparkles className="w-3 h-3 text-[#1F4D3A]" />
@@ -142,8 +142,8 @@ export function Hero({ newProducts = [] }: HeroProps) {
         </div>
 
         {/* Center: Image Stage */}
-        <div className="relative my-auto py-4 w-full flex items-center justify-center">
-          <div className="relative w-full aspect-square max-h-96 rounded-2xl bg-gradient-to-b from-[#F7F9F7] to-[#EEF4F0] border border-[rgba(18,21,15,0.06)] flex items-center justify-center p-2 overflow-hidden shadow-inner group-hover:scale-105 transition-transform duration-500">
+        <div className="relative flex-1 min-h-0 w-full py-3 flex items-center justify-center">
+          <div className="relative w-full h-full rounded-2xl bg-gradient-to-b from-[#F7F9F7] to-[#EEF4F0] border border-[rgba(18,21,15,0.06)] flex items-center justify-center p-2 overflow-hidden shadow-inner group-hover:scale-105 transition-transform duration-500">
             <Image
               src={item.image}
               alt={item.name}
@@ -156,7 +156,7 @@ export function Hero({ newProducts = [] }: HeroProps) {
         </div>
 
         {/* Bottom: Details & Monograph Link */}
-        <div className="pt-3 border-t border-[rgba(18,21,15,0.08)] space-y-2">
+        <div className="shrink-0 pt-3 border-t border-[rgba(18,21,15,0.08)] space-y-2">
           <div>
             <h3 className="font-serif text-base sm:text-lg font-bold text-[#12150F] leading-snug line-clamp-1 group-hover:text-[#1F4D3A] transition-colors">
               {item.name}
@@ -211,7 +211,7 @@ export function Hero({ newProducts = [] }: HeroProps) {
             </div>
 
             {/* Refined H1 Headline */}
-            <h1 className="font-serif text-3xl sm:text-5xl lg:text-[3.5rem] xl:text-[4rem] font-bold text-[#12150F] leading-[1.1] tracking-tight">
+            <h1 className="font-serif text-2xl sm:text-3xl lg:text-[2.5rem] xl:text-[2.75rem] font-bold text-[#12150F] leading-[1.15] tracking-tight">
               Precision Homoeopathy. <br />
               <span className="text-[#1F4D3A] font-normal italic font-serif">
                 Rooted in Classical Science,
@@ -220,7 +220,7 @@ export function Hero({ newProducts = [] }: HeroProps) {
             </h1>
 
             {/* Lead Positioning Copy */}
-            <p className="text-base sm:text-lg lg:text-xl text-[#595C54] leading-relaxed max-w-2xl">
+            <p className="text-sm sm:text-base text-[#595C54] leading-relaxed max-w-2xl">
               Founded by <strong>Dr. Tarak Prasad Chatterjee</strong> on the Hahnemannian tenet that every physician deserves untainted standardisation. Operating a licensed bonded pharmaceutical laboratory powered by 100% Extra Neutral Alcohol and continuous chromatographic assay.
             </p>
 
