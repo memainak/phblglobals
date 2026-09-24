@@ -1,6 +1,6 @@
 /**
  * Applies the 2026-27 MRP price list to Firestore:
- *   - creates 23 ointment + 11 tablet products
+ *   - creates the ointment, tablet, dilution and mother-tincture products
  *   - reprices the 10 existing cosmetics / special products (packSizes only)
  *   - writes the 10 GNCT DELHI ointment batch records
  *
@@ -58,7 +58,10 @@ async function run() {
   const db = getFirestore(initializeApp({ credential: cert({ projectId, clientEmail, privateKey }) }));
 
   const newProducts = initialProducts.filter(
-    (p) => p.subCategory === 'ointment' || p.subCategory === 'tablets'
+    (p) =>
+      p.subCategory === 'ointment' ||
+      p.subCategory === 'tablets' ||
+      p.id.startsWith('prod-drop-')
   );
   const cosmetics = initialProducts.filter((p) => REPRICED_COSMETIC_IDS.includes(p.id));
   const batches = initialBatches.filter((b) => OINTMENT_BATCH_NOS.includes(b.batchNo));

@@ -16,8 +16,7 @@ import {
   Settings,
   FileDown,
   Camera,
-  Quote,
-} from 'lucide-react';
+  Quote, ListTree } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
 export function AdminNav() {
@@ -50,6 +49,7 @@ export function AdminNav() {
     { href: '/admin', label: 'Dashboard', icon: LayoutDashboard },
     { href: '/admin/batches', label: 'Batch Records & CSV', icon: FileCheck2 },
     { href: '/admin/products', label: 'Products', icon: Boxes },
+  { href: '/admin/reference', label: 'Reference Indexes', icon: ListTree },
     { href: '/admin/downloads', label: 'Downloads', icon: FileDown },
     { href: '/admin/gallery', label: 'Gallery', icon: Camera },
     { href: '/admin/certifications', label: 'Certificates', icon: Award },

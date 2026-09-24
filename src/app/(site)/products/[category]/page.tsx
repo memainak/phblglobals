@@ -2,8 +2,12 @@ import React from 'react';
 import type { Metadata } from 'next';
 import Image from 'next/image';
 import { notFound } from 'next/navigation';
-import { getProducts } from '@/lib/queries';
+import { getProducts, getReferenceItems, getReferenceSchedule } from '@/lib/queries';
 import { ProductCatalogFilter } from '@/components/site/ProductCatalogFilter';
+import { ProductCard } from '@/components/site/ProductCard';
+import { DilutionReference } from '@/components/site/DilutionReference';
+import { MotherTinctureReference } from '@/components/site/MotherTinctureReference';
+
 import { ProductCategory } from '@/types';
 import Link from 'next/link';
 import { ArrowLeft, Boxes, ArrowRight } from 'lucide-react';
@@ -19,8 +23,8 @@ const categoryMeta: Record<
   { title: string; subtitle: string; description: string }
 > = {
   homoeopathy: {
-    title: 'Homoeopathic Formulations',
-    subtitle: 'Mother Tinctures, Patent Tonics, Specialty Drops & Biochemics',
+    title: 'Homoeopathy Products',
+    subtitle: 'Patent Tonics · Drops · Mother Tinctures · Dilutions · Biochemics · Tablets · Ointments',
     description:
       'Classical and patent homoeopathic medicines prepared in strict accordance with the Homoeopathic Pharmacopoeia of India (HPI) using 100% pure Extra Neutral Alcohol (ENA).',
   },
@@ -37,6 +41,52 @@ const categoryMeta: Record<
       'Residue-free, organic veterinary homoeopathy for mastitis, lactation optimization, and animal vitality without synthetic hormones or antibiotics.',
   },
 };
+
+/**
+ * The homoeopathy catalogue is presented as seven named sub-ranges, in the same
+ * order the trade literature lists them, all under one main heading.
+ */
+const HOMOEOPATHY_RANGES: {
+  subCategory: string;
+  label: string;
+  blurb: string;
+}[] = [
+  {
+    subCategory: 'patent-tonic',
+    label: 'Patent (Tonic)',
+    blurb: 'Proprietary syrups and restorative tonics compounded to PHBL formulae.',
+  },
+  {
+    subCategory: 'drops',
+    label: 'Drop Products',
+    blurb: 'Clinical specialty drops for targeted indications.',
+  },
+  {
+    subCategory: 'mother-tincture',
+    label: 'Mother Tincture',
+    blurb: 'Classical Ø extracts in 100% ENA. Search the 258-remedy index below for grade and pack pricing.',
+  },
+  {
+    subCategory: 'dilution',
+    label: 'Dilution',
+    blurb: 'Potentised dilutions supplied across the full potency range. Search the remedy index below.',
+  },
+  {
+    subCategory: 'biochemic',
+    label: 'Biochemic',
+    blurb: 'Schuessler tissue salts and biochemic compounds, including the upcoming tablet range.',
+  },
+  {
+    subCategory: 'tablets',
+    label: 'Homoeopathy Tablet',
+    blurb: 'Compressed tablet presentations of the patent range.',
+  },
+  {
+    subCategory: 'ointment',
+    label: 'Ointment',
+    blurb: 'External applications prepared on a bonded ointment base.',
+  },
+];
 
 export async function generateStaticParams() {
   return [
@@ -75,6 +125,24 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
   }
 
   const allProducts = await getProducts();
+
+  const isHomoeopathy = validCategory === 'homoeopathy';
+  const [mtItems, dilItems, bioItems, mtSchedule, dilSchedule] = isHomoeopathy
+    ? await Promise.all([
+        getReferenceItems('mother-tincture'),
+        getReferenceItems('dilution'),
+        getReferenceItems('biochemic'),
+        getReferenceSchedule('mother-tincture'),
+        getReferenceSchedule('dilution'),
+      ])
+    : [[], [], [], null, null];
+
+  const mtRemedies = mtItems.map((i) => ({ sl: i.sl, name: i.name, cat: i.cat ?? '' }));
+  const dilRemedies = dilItems.map((i) => i.name);
+  const upcomingBiochemic = bioItems.map((i) => ({
+    name: i.name,
+    potencies: i.potencies ?? null,
+  }));
 
   return (
     <div className="py-12 bg-[#FAFAF8] min-h-screen">
@@ -198,11 +266,106 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
           </div>
         )}
 
-        {/* Catalog Filter with initialCategory set */}
-        <ProductCatalogFilter
-          initialProducts={allProducts}
-          initialCategory={validCategory}
-        />
+        {validCategory === 'homoeopathy' ? (
+          <div className="space-y-12">
+            {/* Jump nav across the seven sub-ranges */}
+            <nav className="flex flex-wrap gap-2">
+              {HOMOEOPATHY_RANGES.map((range) => {
+                const count = allProducts.filter(
+                  (p) => p.category === 'homoeopathy' && p.subCategory === range.subCategory
+                ).length;
+                return (
+                  <a
+                    key={range.subCategory}
+                    href={`#${range.subCategory}`}
+                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white border border-[rgba(18,21,15,0.12)] text-xs font-medium text-[#12150F] hover:border-[#1F4D3A]/40 hover:text-[#1F4D3A] transition-colors"
+                  >
+                    <span>{range.label}</span>
+                    {range.subCategory !== 'dilution' && (
+                      <span className="font-mono text-[10px] text-[#595C54]">{count}</span>
+                    )}
+                  </a>
+                );
+              })}
+            </nav>
+
+            {HOMOEOPATHY_RANGES.map((range) => {
+              const rangeProducts = allProducts.filter(
+                (p) => p.category === 'homoeopathy' && p.subCategory === range.subCategory
+              );
+
+              return (
+                <section key={range.subCategory} id={range.subCategory} className="scroll-mt-28 space-y-5">
+                  <div className="flex flex-wrap items-baseline justify-between gap-2 border-b border-[rgba(18,21,15,0.08)] pb-3">
+                    <div className="space-y-1">
+                      <h2 className="font-serif text-xl sm:text-2xl font-bold text-[#12150F]">
+                        {range.label}
+                      </h2>
+                      <p className="text-xs text-[#595C54]">{range.blurb}</p>
+                    </div>
+                    {range.subCategory !== 'dilution' && (
+                      <span className="text-xs font-mono text-[#595C54] shrink-0">
+                        {rangeProducts.length} {rangeProducts.length === 1 ? 'formulation' : 'formulations'}
+                      </span>
+                    )}
+                  </div>
+
+                  {range.subCategory === 'mother-tincture' && <MotherTinctureReference remedies={mtRemedies} schedule={mtSchedule} />}
+
+                  {range.subCategory === 'biochemic' && (
+                    <div className="bg-white rounded-md border border-[rgba(18,21,15,0.08)] overflow-hidden">
+                      <div className="px-4 py-3 border-b border-[rgba(18,21,15,0.08)] bg-[#FAFAF8] flex flex-wrap items-center gap-2">
+                        <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-[#1F4D3A] text-white text-[10px] font-mono font-semibold tracking-wider">
+                          UPCOMING
+                        </span>
+                        <span className="text-xs font-mono uppercase tracking-wider text-[#1F4D3A]">
+                          Bio-Chemic Tablet Range
+                        </span>
+                      </div>
+                      <ul className="p-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-2">
+                        {upcomingBiochemic.map((item) => (
+                          <li
+                            key={item.name}
+                            className="flex flex-wrap items-baseline justify-between gap-x-3 gap-y-0.5 text-sm py-1.5 border-b border-[rgba(18,21,15,0.05)]"
+                          >
+                            <span className="font-medium text-[#12150F]">{item.name}</span>
+                            <span className="font-mono text-[11px] text-[#595C54]">
+                              {item.potencies ?? 'Potencies to be confirmed'}
+                            </span>
+                          </li>
+                        ))}
+                      </ul>
+                      <p className="px-4 py-3 text-[11px] text-[#595C54] border-t border-[rgba(18,21,15,0.06)] bg-[#FAFAF8]">
+                        Announced for release and not yet on the published price list. Contact the
+                        plant for availability.
+                      </p>
+                    </div>
+                  )}
+
+                  {range.subCategory === 'dilution' ? (
+                    <DilutionReference remedies={dilRemedies} schedule={dilSchedule} />
+                  ) : rangeProducts.length > 0 ? (
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+                      {rangeProducts.map((product) => (
+                        <ProductCard key={product.id} product={product} />
+                      ))}
+                    </div>
+                  ) : (
+                    <p className="text-sm text-[#595C54] bg-white border border-[rgba(18,21,15,0.08)] rounded-md px-4 py-6">
+                      This range is manufactured to order. Contact the plant for the current
+                      potency and pack schedule.
+                    </p>
+                  )}
+                </section>
+              );
+            })}
+          </div>
+        ) : (
+          <ProductCatalogFilter
+            initialProducts={allProducts}
+            initialCategory={validCategory}
+          />
+        )}
       </div>
     </div>
   );

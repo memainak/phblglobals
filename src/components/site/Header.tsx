@@ -165,48 +165,64 @@ export function Header() {
                   <div className="flex items-center gap-2 pb-3 mb-3 border-b border-[rgba(18,21,15,0.08)]">
                     <Boxes className="w-4 h-4 text-[#1F4D3A]" />
                     <span className="font-serif font-semibold text-base text-[#12150F]">
-                      Homoeopathic Range
+                      Homoeopathy Products
                     </span>
                   </div>
                   <ul className="space-y-2 text-sm">
                     <li>
                       <Link
-                        href="/products/homoeopathy"
+                        href="/products/homoeopathy#patent-tonic"
                         className="text-[#595C54] hover:text-[#1F4D3A] block transition-colors"
                       >
-                        Mother Tinctures (Q Extract)
+                        Patent (Tonic)
                       </Link>
                     </li>
                     <li>
                       <Link
-                        href="/products/homoeopathy"
+                        href="/products/homoeopathy#drops"
                         className="text-[#595C54] hover:text-[#1F4D3A] block transition-colors"
                       >
-                        Patent Syrups & Tonics
+                        Drop Products
                       </Link>
                     </li>
                     <li>
                       <Link
-                        href="/products/homoeopathy"
+                        href="/products/homoeopathy#mother-tincture"
                         className="text-[#595C54] hover:text-[#1F4D3A] block transition-colors"
                       >
-                        Clinical Specialty Drops
+                        Mother Tincture
                       </Link>
                     </li>
                     <li>
                       <Link
-                        href="/products/homoeopathy"
+                        href="/products/homoeopathy#dilution"
                         className="text-[#595C54] hover:text-[#1F4D3A] block transition-colors"
                       >
-                        Biochemic Tissue Salts & 6X
+                        Dilution
                       </Link>
                     </li>
                     <li>
                       <Link
-                        href="/products/homoeopathy"
+                        href="/products/homoeopathy#biochemic"
                         className="text-[#595C54] hover:text-[#1F4D3A] block transition-colors"
                       >
-                        Dilutions & Potencies
+                        Biochemic
+                      </Link>
+                    </li>
+                    <li>
+                      <Link
+                        href="/products/homoeopathy#tablets"
+                        className="text-[#595C54] hover:text-[#1F4D3A] block transition-colors"
+                      >
+                        Homoeopathy Tablet
+                      </Link>
+                    </li>
+                    <li>
+                      <Link
+                        href="/products/homoeopathy#ointment"
+                        className="text-[#595C54] hover:text-[#1F4D3A] block transition-colors"
+                      >
+                        Ointment
                       </Link>
                     </li>
                     <li className="pt-1">

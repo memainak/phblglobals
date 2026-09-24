@@ -1,4 +1,7 @@
 import { adminDb } from '@/lib/firebase/admin';
+import { MOTHER_TINCTURE_REMEDIES, MOTHER_TINCTURE_PRICING, MOTHER_TINCTURE_COMBO_NOTE } from '@/lib/data/motherTinctures';
+import { DILUTION_REMEDIES, DILUTION_PRICING, DILUTION_COMBO_NOTE } from '@/lib/data/dilutions';
+import { BIOCHEMIC_UPCOMING } from '@/lib/data/biochemic';
 import type { Query, DocumentData, QueryDocumentSnapshot } from 'firebase-admin/firestore';
 import {
   Product,
@@ -11,6 +14,9 @@ import {
   SiteSettings,
   Enquiry,
   DistributorEnquiry,
+  ReferenceItem,
+  ReferenceList,
+  ReferenceSchedule,
 } from '@/types';
 import {
   initialSiteSettings,
@@ -740,4 +746,174 @@ export async function deleteTestimonial(id: string): Promise<boolean> {
     memoryTestimonials.splice(idx, 1);
   }
   return true;
+}
+
+/* ---------------------------------------------------------------------------
+ * Reference indexes (mother tincture remedies, dilution remedies, biochemic)
+ * ------------------------------------------------------------------------- */
+
+const REFERENCE_COLLECTION = 'reference';
+
+/** Seeds the in-memory fallback from the static catalogue files. */
+function staticReferenceItems(list: ReferenceList): ReferenceItem[] {
+  if (list === 'mother-tincture') {
+    return MOTHER_TINCTURE_REMEDIES.map((r) => ({
+      id: `mt-${r.sl}`,
+      list,
+      sl: r.sl,
+      name: r.name,
+      cat: r.cat,
+    }));
+  }
+  if (list === 'biochemic') {
+    return BIOCHEMIC_UPCOMING.map((b, i) => ({
+      id: `bio-${i + 1}`,
+      list,
+      sl: i + 1,
+      name: b.name,
+      potencies: b.potencies ?? undefined,
+    }));
+  }
+  return DILUTION_REMEDIES.map((name, i) => ({
+    id: `dil-${i + 1}`,
+    list,
+    sl: i + 1,
+    name,
+  }));
+}
+
+export async function getReferenceItems(list: ReferenceList): Promise<ReferenceItem[]> {
+  noStore();
+  if (adminDb) {
+    try {
+      const snap = await adminDb
+        .collection(REFERENCE_COLLECTION)
+        .where('list', '==', list)
+        .get();
+      if (!snap.empty) {
+        return snap.docs
+          .map((d: QueryDocumentSnapshot) => ({ id: d.id, ...d.data() } as ReferenceItem))
+          .sort((a, b) => a.sl - b.sl);
+      }
+      // Empty collection: fall through to the bundled catalogue.
+    } catch (err) {
+      console.warn('Error fetching reference items, using fallback:', err);
+    }
+  }
+  return staticReferenceItems(list);
+}
+
+export async function saveReferenceItem(item: ReferenceItem): Promise<ReferenceItem> {
+  if (adminDb) {
+    try {
+      await adminDb.collection(REFERENCE_COLLECTION).doc(item.id).set(item, { merge: true });
+      return item;
+    } catch (err) {
+      console.error('Firestore reference write error:', err);
+    }
+  }
+  return item;
+}
+
+export async function saveReferenceItemsBulk(items: ReferenceItem[]): Promise<number> {
+  let count = 0;
+  for (const item of items) {
+    await saveReferenceItem(item);
+    count++;
+  }
+  return count;
+}
+
+export async function deleteReferenceItem(id: string): Promise<boolean> {
+  if (adminDb) {
+    try {
+      await adminDb.collection(REFERENCE_COLLECTION).doc(id).delete();
+      return true;
+    } catch (err) {
+      console.error('Firestore reference delete error:', err);
+      return false;
+    }
+  }
+  return false;
+}
+
+/** Replaces an entire list in one go (used by the CSV/paste importer). */
+export async function replaceReferenceList(
+  list: ReferenceList,
+  items: ReferenceItem[]
+): Promise<number> {
+  if (adminDb) {
+    try {
+      const snap = await adminDb
+        .collection(REFERENCE_COLLECTION)
+        .where('list', '==', list)
+        .get();
+      for (const doc of snap.docs) {
+        await doc.ref.delete();
+      }
+    } catch (err) {
+      console.error('Firestore reference clear error:', err);
+    }
+  }
+  return saveReferenceItemsBulk(items);
+}
+
+/* --------------------------- Reference schedules -------------------------- */
+
+const SCHEDULE_COLLECTION = 'referenceSchedules';
+
+function staticSchedule(list: ReferenceList): ReferenceSchedule | null {
+  if (list === 'mother-tincture') {
+    return {
+      id: list,
+      packSizes: ['30 ml', '100 ml', '450 ml'],
+      rows: MOTHER_TINCTURE_PRICING.map((g) => ({
+        key: g.grade,
+        packs: g.packs.map((p) => ({ size: p.size, mrp: p.mrp })),
+      })),
+      note: MOTHER_TINCTURE_COMBO_NOTE,
+    };
+  }
+  if (list === 'dilution') {
+    return {
+      id: list,
+      packSizes: ['10 ml', '30 ml', '100 ml', '450 ml'],
+      rows: DILUTION_PRICING.map((r) => ({
+        key: r.potency,
+        packs: r.packs.map((p) => ({ size: p.size, mrp: p.mrp })),
+      })),
+      note: DILUTION_COMBO_NOTE,
+    };
+  }
+  return null;
+}
+
+export async function getReferenceSchedule(
+  list: ReferenceList
+): Promise<ReferenceSchedule | null> {
+  noStore();
+  if (adminDb) {
+    try {
+      const snap = await adminDb.collection(SCHEDULE_COLLECTION).doc(list).get();
+      if (snap.exists) {
+        return { id: list, ...snap.data() } as ReferenceSchedule;
+      }
+    } catch (err) {
+      console.warn('Error fetching reference schedule, using fallback:', err);
+    }
+  }
+  return staticSchedule(list);
+}
+
+export async function saveReferenceSchedule(
+  schedule: ReferenceSchedule
+): Promise<ReferenceSchedule> {
+  if (adminDb) {
+    try {
+      await adminDb.collection(SCHEDULE_COLLECTION).doc(schedule.id).set(schedule);
+    } catch (err) {
+      console.error('Firestore schedule write error:', err);
+    }
+  }
+  return schedule;
 }

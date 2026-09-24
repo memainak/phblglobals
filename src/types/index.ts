@@ -193,3 +193,43 @@ export interface AdminUser {
   email: string;
   role: 'superadmin' | 'admin' | 'editor';
 }
+
+export type ReferenceList = 'mother-tincture' | 'dilution' | 'biochemic';
+
+/**
+ * A row in one of the printed catalogue indexes (mother tincture remedies,
+ * dilution remedies, upcoming biochemic tablets). These are reference data
+ * rather than sellable products, so they live outside the Product model.
+ */
+export interface ReferenceItem {
+  id: string;
+  list: ReferenceList;
+  sl: number;
+  name: string;
+  /** Mother tincture price grade (A-J). */
+  cat?: string;
+  /** Biochemic potency string, e.g. "3x, 6x, 12x, 30x". */
+  potencies?: string;
+}
+
+export interface SchedulePack {
+  size: string;
+  mrp: number | null;
+}
+
+export interface ScheduleRow {
+  /** Grade letter (A-J) for mother tinctures, or potency label for dilutions. */
+  key: string;
+  packs: SchedulePack[];
+}
+
+/**
+ * The price schedule behind a reference index. Pricing is per grade/potency
+ * rather than per remedy, which is how the printed price list is organised.
+ */
+export interface ReferenceSchedule {
+  id: ReferenceList;
+  packSizes: string[];
+  rows: ScheduleRow[];
+  note?: string;
+}
