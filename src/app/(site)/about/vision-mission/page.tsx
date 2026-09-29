@@ -186,16 +186,28 @@ export default function VisionMissionPage() {
                 </p>
               </div>
 
-              <div className="p-5 rounded-lg bg-[#F8FAF9] border border-[#1F4D3A]/15 space-y-2">
-                <div className="w-8 h-8 rounded-full bg-[#1F4D3A] text-white flex items-center justify-center font-bold text-xs font-mono">
-                  2
+              <div className="p-5 rounded-lg bg-[#F8FAF9] border border-[#1F4D3A]/15 space-y-3">
+                <div className="flex items-center gap-3">
+                  <div className="relative w-12 h-14 rounded-md overflow-hidden border border-[#1F4D3A]/20 shrink-0 bg-[#12150F]">
+                    <Image
+                      src="/images/managing-partner-portrait.webp"
+                      alt="Dr. Trinath Chatterjee"
+                      fill
+                      className="object-cover object-top"
+                    />
+                  </div>
+                  <div>
+                    <span className="text-[10px] font-mono text-[#1F4D3A] uppercase font-bold tracking-wider">
+                      Managing Partner
+                    </span>
+                    <h4 className="font-serif font-bold text-base text-[#12150F]">
+                      Dr. Trinath Chatterjee
+                    </h4>
+                    <span className="text-[11px] text-[#595C54] block">B.Sc., BHMS</span>
+                  </div>
                 </div>
-                <h4 className="font-serif font-bold text-base text-[#12150F]">
-                  Market & Distribution Policy
-                </h4>
                 <p className="text-xs text-[#595C54] leading-relaxed">
-                  Younger son <strong>Dr. Trinath Chatterjee</strong> (B.Sc, BHMS) is tasked to develop,
-                  lead, and direct ethical trade policies and nationwide outreach to dispensaries and stockists.
+                  Leading ethical trade policies, quality management systems, nationwide distributor outreach across 18+ states, and spearheading the modern botanical formulations of <strong>PHBL Naturals</strong>.
                 </p>
               </div>
             </div>

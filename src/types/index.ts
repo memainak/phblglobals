@@ -83,7 +83,7 @@ export interface Certification {
 
 export interface GalleryItem {
   id: string;
-  album: 'Factory' | 'Laboratory' | 'Events' | 'Exhibitions' | 'Products';
+  album: 'Factory' | 'Laboratory' | 'Events' | 'Exhibitions' | 'Products' | 'Cultivation & Grounds' | 'Quality & Analysis' | 'Packaging & Dispatch';
   imageUrl: string;
   caption: string;
   width: number;
@@ -180,6 +180,14 @@ export interface SiteSettings {
     enabled: boolean;
     text: string;
     link?: string;
+  };
+  brochure?: {
+    title: string;
+    description?: string;
+    fileUrl: string;
+    fileSize?: number;
+    totalPages?: number;
+    edition?: string;
   };
   stats: {
     label: string;

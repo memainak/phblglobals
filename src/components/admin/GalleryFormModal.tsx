@@ -16,6 +16,9 @@ interface GalleryFormModalProps {
 const ALBUMS: GalleryItem['album'][] = [
   'Factory',
   'Laboratory',
+  'Cultivation & Grounds',
+  'Quality & Analysis',
+  'Packaging & Dispatch',
   'Products',
   'Exhibitions',
   'Events',

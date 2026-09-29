@@ -138,13 +138,15 @@ export default function AboutPage() {
               Over the past two decades, the plant has grown from a regional research initiative into an advanced facility with Class 10,000 cleanroom filling stations, continuous RO-EDI water purification loops, and automated mechanised succussion units.
             </p>
 
-            <div className="pt-6 border-t border-[rgba(18,21,15,0.08)] space-y-4">
-              <h3 className="font-serif text-xl font-bold text-[#12150F]">
-                Our Institutional Leadership
-              </h3>
-              <p className="text-sm">
-                The laboratory is guided by seasoned homoeopathic academicians, analytical chemists, and pharmacologists committed to upholding the Homoeopathic Pharmacopoeia of India (HPI) and the German Homoeopathic Pharmacopoeia (GHP).
-              </p>
+            <div className="pt-6 border-t border-[rgba(18,21,15,0.08)] space-y-6">
+              <div>
+                <h3 className="font-serif text-xl font-bold text-[#12150F]">
+                  Our Institutional Leadership
+                </h3>
+                <p className="text-sm text-[#595C54] mt-1">
+                  The laboratory is guided by senior clinicians, academic researchers, and operational leaders committed to pharmacopoeial fidelity, GMP standards, and ethical distribution across India.
+                </p>
+              </div>
 
               {/* Founder Profile Card */}
               <div className="bg-[#F8FAF9] rounded-lg border border-[#1F4D3A]/15 p-5 sm:p-6 space-y-4">
@@ -168,8 +170,11 @@ export default function AboutPage() {
                     <h4 className="font-serif text-lg font-bold text-[#12150F]">
                       Dr. Tarak Prasad Chatterjee
                     </h4>
+                    <span className="text-xs text-[#1F4D3A] font-medium block">
+                      Ex. H.O.D., Obstetrics &amp; Gynecology, Medinipur Homoeopathic Medical College &amp; Hospital
+                    </span>
                     <p className="text-xs text-[#595C54] leading-relaxed">
-                      Former Head of Obstetrics & Gynaecology, Medinipur Homoeopathic Medical College & Hospital. Over 40 years of clinical and academic research in pharmacopoeial standardization.
+                      Ex-member of Board of Studies, Calcutta University &amp; Ex-President of Kharagpur Homoeopathic Medical College &amp; Hospital. Inspired by Samuel Hahnemann&apos;s dictum &ldquo;Every physician should prepare his own medicine,&rdquo; he established PHBL in 2003 to provide absolute purity, safe natural manufacturing, and standardized homoeopathy.
                     </p>
 
                     <div className="pt-2 flex items-center justify-between border-t border-[rgba(18,21,15,0.08)]">
@@ -186,11 +191,93 @@ export default function AboutPage() {
                         href="/about/founder"
                         className="text-xs font-semibold text-[#1F4D3A] hover:underline inline-flex items-center gap-1"
                       >
-                        <span>Full Interview</span>
+                        <span>Full Monograph</span>
                         <ArrowRight className="w-3 h-3" />
                       </Link>
                     </div>
                   </div>
+                </div>
+              </div>
+
+              {/* Managing Partner Profile Card */}
+              <div className="bg-[#F8FAF9] rounded-lg border border-[#1F4D3A]/15 p-5 sm:p-6 space-y-4">
+                <div className="grid grid-cols-1 sm:grid-cols-12 gap-5 items-center">
+                  <div className="sm:col-span-4">
+                    <div className="relative rounded-md overflow-hidden border border-[rgba(18,21,15,0.1)] bg-[#12150F] aspect-[3/4]">
+                      <Image
+                        src="/images/managing-partner-portrait.webp"
+                        alt="Dr. Trinath Chatterjee, Managing Partner"
+                        fill
+                        className="object-cover object-top"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="sm:col-span-8 space-y-2">
+                    <span className="text-[10px] font-mono font-semibold uppercase tracking-wider text-[#1F4D3A] bg-[#1F4D3A]/10 px-2 py-0.5 rounded-xs inline-block">
+                      Managing Partner
+                    </span>
+                    <h4 className="font-serif text-lg font-bold text-[#12150F]">
+                      Dr. Trinath Chatterjee
+                    </h4>
+                    <span className="text-xs text-[#1F4D3A] font-medium block">
+                      B.Sc., BHMS · Managing Partner, Purusottam Homoeo Bikash Laboratory (Bonded)
+                    </span>
+                    <p className="text-xs text-[#595C54] leading-relaxed">
+                      Directing corporate governance, nationwide distributor networks, modern manufacturing quality policies, and brand diversification. Instrumental in spearheading PHBL&apos;s personal care vertical, <strong>PHBL Naturals</strong>, integrating botanical homoeopathy into daily dermatological and personal hygiene care.
+                    </p>
+
+                    <div className="pt-2 flex items-center justify-between border-t border-[rgba(18,21,15,0.08)]">
+                      <div className="text-[11px] font-mono text-[#595C54]">
+                        Operations &amp; Regulatory Head · Paschim Medinipur
+                      </div>
+                      <Link
+                        href="/about/vision-mission"
+                        className="text-xs font-semibold text-[#1F4D3A] hover:underline inline-flex items-center gap-1"
+                      >
+                        <span>Charter &amp; Vision</span>
+                        <ArrowRight className="w-3 h-3" />
+                      </Link>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Official Quality Policy from Brochure Page 19 */}
+              <div className="p-6 rounded-lg bg-white border border-[#1F4D3A]/20 shadow-xs space-y-4">
+                <div className="flex items-center gap-2 text-xs font-mono text-[#1F4D3A] uppercase tracking-wider font-semibold">
+                  <ShieldCheck className="w-4 h-4" />
+                  <span>Quality Policy · Purusottam Homoeo Bikash Laboratory (Bonded)</span>
+                </div>
+                <h4 className="font-serif text-lg font-bold text-[#12150F]">
+                  Institutional Quality Management &amp; Regulatory Commitments
+                </h4>
+                <p className="text-xs text-[#595C54] leading-relaxed">
+                  PHBL is manufacturing and marketing homoeopathic drugs and medicines with its operation centre at Paschim Medinipur, West Bengal. While doing so we admit our commitments towards:
+                </p>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
+                  <div className="flex items-start gap-2.5 text-xs text-[#12150F] p-3 rounded-md bg-[#F8FAF9] border border-[rgba(18,21,15,0.06)]">
+                    <CheckCircle2 className="w-4 h-4 text-[#1F4D3A] shrink-0 mt-0.5" />
+                    <span>Implement Quality Management Systems covering all products and services conforming to ISO 9001:2015, GMP &amp; HACCP.</span>
+                  </div>
+                  <div className="flex items-start gap-2.5 text-xs text-[#12150F] p-3 rounded-md bg-[#F8FAF9] border border-[rgba(18,21,15,0.06)]">
+                    <CheckCircle2 className="w-4 h-4 text-[#1F4D3A] shrink-0 mt-0.5" />
+                    <span>Complying with all legal, excise bonded, and pharmacopoeial statutory requirements relating to our business.</span>
+                  </div>
+                  <div className="flex items-start gap-2.5 text-xs text-[#12150F] p-3 rounded-md bg-[#F8FAF9] border border-[rgba(18,21,15,0.06)]">
+                    <CheckCircle2 className="w-4 h-4 text-[#1F4D3A] shrink-0 mt-0.5" />
+                    <span>Set time-bound quality objectives with targets and meet them through continuous management review programs.</span>
+                  </div>
+                  <div className="flex items-start gap-2.5 text-xs text-[#12150F] p-3 rounded-md bg-[#F8FAF9] border border-[rgba(18,21,15,0.06)]">
+                    <CheckCircle2 className="w-4 h-4 text-[#1F4D3A] shrink-0 mt-0.5" />
+                    <span>Continually enhance the competence of the workforce and overall performance of the organization.</span>
+                  </div>
+                </div>
+                <div className="pt-2 flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-t border-[rgba(18,21,15,0.08)] text-[11px] text-[#595C54]">
+                  <span>Issued with the approval of the Competent Authority. Reviewed for continuing suitability, relevance, and adequacy.</span>
+                  <span className="font-semibold text-[#1F4D3A] font-mono whitespace-nowrap">
+                    Dr. Trinath Chatterjee (B.Sc., BHMS) · Managing Partner
+                  </span>
                 </div>
               </div>
             </div>

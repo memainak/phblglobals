@@ -6,16 +6,18 @@ import { ProductShowcase } from '@/components/site/ProductShowcase';
 import { Capabilities } from '@/components/site/Capabilities';
 import { QualityPolicy } from '@/components/site/QualityPolicy';
 
+import { BrochureDownloadSection } from '@/components/site/BrochureDownloadSection';
 import { TestimonialsSection } from '@/components/site/TestimonialsSection';
-import { getSiteSettings, getProducts, getTestimonials } from '@/lib/queries';
+import { getSiteSettings, getProducts, getTestimonials, getTherapeuticBrochure } from '@/lib/queries';
 
 export const revalidate = 3600; // ISR 1 hour
 
 export default async function HomePage() {
-  const [settings, allProducts, testimonials] = await Promise.all([
+  const [settings, allProducts, testimonials, brochure] = await Promise.all([
     getSiteSettings(),
     getProducts(),
     getTestimonials(),
+    getTherapeuticBrochure(),
   ]);
 
   // Extract newly launched products (up to 8)
@@ -37,13 +39,14 @@ export default async function HomePage() {
       {/* 4. Product Showcase */}
       <ProductShowcase products={allProducts} />
 
-      {/* 5. Capabilities */}
+      {/* 5. Official 44-Page Brochure & Therapeutic Index Instant Download */}
+      <BrochureDownloadSection brochure={brochure} />
+
+      {/* 6. Capabilities */}
       <Capabilities />
 
-      {/* 6. Quality Policy */}
+      {/* 7. Quality Policy */}
       <QualityPolicy />
-
-
 
       {/* 8. Testimonials */}
       <TestimonialsSection testimonials={testimonials} />

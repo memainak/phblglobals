@@ -55,6 +55,36 @@ export async function getSiteSettings(): Promise<SiteSettings> {
   return memorySiteSettings;
 }
 
+export async function getTherapeuticBrochure(): Promise<{
+  title: string;
+  description: string;
+  fileUrl: string;
+  fileSize: number;
+  totalPages: number;
+  edition: string;
+}> {
+  const settings = await getSiteSettings().catch(() => initialSiteSettings);
+  if (settings.brochure && settings.brochure.fileUrl) {
+    return {
+      title: settings.brochure.title || initialSiteSettings.brochure?.title || 'PHBL Official Therapeutic Index & Product Formulary',
+      description: settings.brochure.description || initialSiteSettings.brochure?.description || 'Comprehensive 44-page compendium detailing over 560+ Dilutions, Classical Mother Tinctures, Patent Formulations, and Veterinary Homoeopathy.',
+      fileUrl: settings.brochure.fileUrl,
+      fileSize: settings.brochure.fileSize || 1380321,
+      totalPages: settings.brochure.totalPages || 44,
+      edition: settings.brochure.edition || '2024–2025 Official Edition',
+    };
+  }
+
+  return {
+    title: initialSiteSettings.brochure?.title || 'PHBL Official Therapeutic Index & Product Formulary',
+    description: initialSiteSettings.brochure?.description || 'Comprehensive 44-page compendium detailing over 560+ Dilutions, Classical Mother Tinctures, Patent Formulations, and Veterinary Homoeopathy.',
+    fileUrl: initialSiteSettings.brochure?.fileUrl || '/downloads/phbl-therapeutic-index-brochure.pdf',
+    fileSize: initialSiteSettings.brochure?.fileSize || 1380321,
+    totalPages: initialSiteSettings.brochure?.totalPages || 44,
+    edition: initialSiteSettings.brochure?.edition || '2024–2025 Official Edition',
+  };
+}
+
 export async function getProducts(options?: {
   category?: string;
   featuredOnly?: boolean;

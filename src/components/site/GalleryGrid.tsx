@@ -14,7 +14,27 @@ export function GalleryGrid({ initialItems }: GalleryGridProps) {
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
   const [refreshKey, setRefreshKey] = useState<number>(0);
 
-  const albums = ['All', 'Factory', 'Laboratory', 'Exhibitions'];
+  const albums = useMemo(() => {
+    const definedOrder = [
+      'Factory',
+      'Laboratory',
+      'Cultivation & Grounds',
+      'Quality & Analysis',
+      'Packaging & Dispatch',
+      'Products',
+      'Exhibitions',
+      'Events',
+    ];
+    const presentAlbums = new Set(initialItems.map((item) => item.album));
+    const sortedPresent = definedOrder.filter((a) => presentAlbums.has(a as GalleryItem['album']));
+    // Include any other album names present that might not be in definedOrder
+    for (const a of presentAlbums) {
+      if (a && !sortedPresent.includes(a)) {
+        sortedPresent.push(a);
+      }
+    }
+    return ['All', ...sortedPresent];
+  }, [initialItems]);
 
   const filteredItems = useMemo(() => {
     if (activeAlbum === 'All') return initialItems;

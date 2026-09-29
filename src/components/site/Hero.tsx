@@ -12,6 +12,7 @@ import {
   ExternalLink,
   Leaf,
   Layers,
+  FileDown,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
@@ -232,7 +233,12 @@ export function Hero({ newProducts = [] }: HeroProps) {
                   <ArrowRight className="w-4 h-4" />
                 </Button>
               </Link>
-
+              <a href="#brochure-download">
+                <Button variant="outline" size="lg" className="gap-2 text-base px-6 py-3.5 border-[#1F4D3A]/30 text-[#1F4D3A] hover:bg-[#1F4D3A]/5 shadow-xs">
+                  <FileDown className="w-4 h-4 text-[#1F4D3A]" />
+                  <span>Download Brochure (PDF)</span>
+                </Button>
+              </a>
             </div>
 
 
