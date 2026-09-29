@@ -51,16 +51,16 @@ export function ProductCard({ product }: ProductCardProps) {
         {/* Product Visual Container (Clean Clinical Staging) */}
         <Link
           href={`/products/${product.category}/${product.slug}`}
-          className="block px-6 py-6"
+          className="block px-4 pt-4 pb-2"
         >
-          <div className="w-full aspect-square rounded-sm bg-[#F5F5F2] border border-[rgba(18,21,15,0.04)] flex flex-col items-center justify-center relative overflow-hidden group-hover:bg-[#EFEFEA] transition-colors">
+          <div className="w-full aspect-square rounded-lg bg-white border border-[rgba(18,21,15,0.06)] flex items-center justify-center relative overflow-hidden group-hover:border-[#1F4D3A]/40 transition-all shadow-2xs">
             {primaryImage ? (
-              <div className="relative w-full h-full p-2">
+              <div className="relative w-full h-full">
                 <Image
                   src={primaryImage}
                   alt={product.name}
                   fill
-                  className="object-contain p-3 group-hover:scale-105 transition-transform duration-300"
+                  className="object-contain transition-transform duration-300 group-hover:scale-105"
                   sizes="(max-width: 768px) 100vw, 33vw"
                 />
               </div>

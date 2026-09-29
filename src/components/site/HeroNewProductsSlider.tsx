@@ -111,14 +111,14 @@ export function HeroNewProductsSlider({ products }: HeroNewProductsSliderProps) 
           href={`/products/${current.category}/${current.slug}`}
           className="relative w-full aspect-4/3 sm:aspect-16/10 rounded-xl bg-white border border-[rgba(18,21,15,0.06)] shadow-xs flex items-center justify-center overflow-hidden group/img transition-transform hover:scale-[1.01]"
         >
-          <div className="relative w-full h-full p-2">
+          <div className="relative w-full h-full">
             <Image
               key={current.id}
               src={primaryImage}
               alt={current.name}
               fill
               priority
-              className="object-contain p-2 drop-shadow-md transition-transform duration-500 group-hover/img:scale-105"
+              className="object-contain drop-shadow-md transition-transform duration-500 group-hover/img:scale-105"
               sizes="(max-width: 768px) 100vw, 450px"
             />
           </div>

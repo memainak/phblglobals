@@ -253,12 +253,12 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
                   href={`/products/cosmetics/${heroItem.slug}`}
                   className="group block bg-white rounded-xl border border-[rgba(18,21,15,0.08)] hover:border-[#1F4D3A]/40 shadow-sm hover:shadow-md transition-all overflow-hidden p-4"
                 >
-                  <div className="relative w-full aspect-3/4 rounded-lg bg-[#F7F7F4] overflow-hidden flex items-center justify-center p-2 mb-3">
+                  <div className="relative w-full aspect-3/4 rounded-lg bg-white border border-[rgba(18,21,15,0.06)] overflow-hidden flex items-center justify-center mb-3">
                     <Image
                       src={heroItem.img}
                       alt={heroItem.name}
                       fill
-                      className="object-contain p-2 group-hover:scale-105 transition-transform duration-300"
+                      className="object-contain group-hover:scale-105 transition-transform duration-300"
                       sizes="(max-width: 768px) 100vw, 33vw"
                     />
                     <div className="absolute top-2 left-2 px-2 py-0.5 rounded bg-[#1F4D3A] text-white text-[9px] font-mono font-semibold tracking-wider shadow-xs">

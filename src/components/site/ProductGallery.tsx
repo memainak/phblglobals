@@ -17,7 +17,7 @@ export function ProductGallery({ images = [], name, subCategory }: ProductGaller
   return (
     <div className="w-full flex flex-col items-center">
       {/* Main Image Frame */}
-      <div className="w-full aspect-square rounded-md bg-[#F7F7F4] border border-[rgba(18,21,15,0.06)] flex flex-col items-center justify-center relative p-6 overflow-hidden">
+      <div className="w-full aspect-square rounded-xl bg-white border border-[rgba(18,21,15,0.08)] flex flex-col items-center justify-center relative overflow-hidden shadow-xs">
         {activeImage ? (
           <div className="relative w-full h-full">
             <Image
@@ -25,7 +25,7 @@ export function ProductGallery({ images = [], name, subCategory }: ProductGaller
               alt={name}
               fill
               priority
-              className="object-contain p-2 transition-transform duration-300 hover:scale-105"
+              className="object-contain transition-transform duration-300 hover:scale-105"
               sizes="(max-width: 768px) 100vw, 500px"
             />
           </div>
@@ -65,7 +65,7 @@ export function ProductGallery({ images = [], name, subCategory }: ProductGaller
               key={idx}
               type="button"
               onClick={() => setSelectedIndex(idx)}
-              className={`relative w-14 h-14 rounded border p-1 bg-white transition-all overflow-hidden ${
+              className={`relative w-14 h-14 rounded-md border bg-white transition-all overflow-hidden ${
                 selectedIndex === idx
                   ? 'border-[#1F4D3A] ring-2 ring-[#1F4D3A]/20'
                   : 'border-[rgba(18,21,15,0.12)] opacity-70 hover:opacity-100'
@@ -75,7 +75,7 @@ export function ProductGallery({ images = [], name, subCategory }: ProductGaller
                 src={img}
                 alt={`${name} thumbnail ${idx + 1}`}
                 fill
-                className="object-contain p-1"
+                className="object-contain"
                 sizes="56px"
               />
             </button>
