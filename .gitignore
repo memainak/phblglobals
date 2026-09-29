@@ -38,6 +38,10 @@ service-account*.json
 # vercel
 .vercel
 
-# typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# python
+__pycache__/
+*.pyc
+scripts/raw_brochure_images/

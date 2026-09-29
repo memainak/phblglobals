@@ -1688,7 +1688,7 @@ export const initialProducts: Product[] = [
     ],
     storage: 'Keep in a cool and dry place, away from direct sunlight. Close the tube tightly after use.',
     caution: 'For external use only. Keep out of reach of children.',
-    images: [],
+    images: ['/images/products/ointment-berberis.webp'],
     featured: false,
     order: 29,
     seo: {
@@ -1912,7 +1912,7 @@ export const initialProducts: Product[] = [
     ],
     storage: 'Keep in a cool and dry place, away from direct sunlight. Close the tube tightly after use.',
     caution: 'For external use only. Keep out of reach of children.',
-    images: [],
+    images: ['/images/products/ointment-ledum.webp'],
     featured: false,
     order: 37,
     seo: {
@@ -1940,7 +1940,7 @@ export const initialProducts: Product[] = [
     ],
     storage: 'Keep in a cool and dry place, away from direct sunlight. Close the tube tightly after use.',
     caution: 'For external use only. Keep out of reach of children.',
-    images: [],
+    images: ['/images/products/ointment-petroleum.webp'],
     featured: false,
     order: 38,
     seo: {
@@ -2080,7 +2080,7 @@ export const initialProducts: Product[] = [
     ],
     storage: 'Keep in a cool and dry place, away from direct sunlight. Close the tube tightly after use.',
     caution: 'For external use only. Keep out of reach of children.',
-    images: [],
+    images: ['/images/products/ointment-tellurium.webp'],
     featured: false,
     order: 43,
     seo: {
@@ -2108,7 +2108,7 @@ export const initialProducts: Product[] = [
     ],
     storage: 'Keep in a cool and dry place, away from direct sunlight. Close the tube tightly after use.',
     caution: 'For external use only. Keep out of reach of children.',
-    images: [],
+    images: ['/images/products/ointment-urtica.webp'],
     featured: false,
     order: 44,
     seo: {
